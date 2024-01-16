@@ -4,7 +4,8 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
-import { Channel } from 'diagnostics_channel';
+import { Channel } from './entities/channel.entity';
+
 
 @Module({
   imports: [

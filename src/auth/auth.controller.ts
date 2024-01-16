@@ -17,9 +17,6 @@ export class AuthController
     private readonly configService: ConfigService
   ) { }
 
-
-
-
   @UseGuards(KakaoAuthGuard)
   @Get('login/kakao')
   async kakao(
@@ -29,15 +26,14 @@ export class AuthController
 
   }
 
+  @Redirect('/')
   @UseGuards(KakaoAuthGuard)
   @Get('/login/kakao/callback')
   async callbacks(
     @Req() req, @Res() res: Response
   )
   {
-    console.log("!")
     console.log(req.user)
-
   }
 
 

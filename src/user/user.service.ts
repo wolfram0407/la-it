@@ -1,5 +1,5 @@
 import { channel } from 'diagnostics_channel';
-import { Injectable } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -21,15 +21,27 @@ export class UserService
   async create(reqCreateUserDto: ReqCreateUserDto)
   {
     const { kakaoId, nickname, profileImage, provider } = reqCreateUserDto;
-    const user = await this.userRepository.save({
-      kakaoId,
-      nickname,
-      profileImage,
-      provider
-    })
-
-
-    return user
+    try
+    {
+      // user create
+      const user = await this.userRepository.save({
+        kakaoId,
+        nickname,
+        profileImage,
+        provider
+      })
+      // user channel create
+      const userChannel = await this.channelRepository.save({
+        description: '',
+        channelImage: profileImage,
+        user_id: user.userId
+      })
+      return user
+    } catch (error)
+    {
+      console.log(error)
+      throw new ServiceUnavailableException()
+    }
   }
 
 
@@ -38,7 +50,6 @@ export class UserService
     const user = this.userRepository.findOne({
       where: { kakaoId: id }
     })
-
     return user
   }
 

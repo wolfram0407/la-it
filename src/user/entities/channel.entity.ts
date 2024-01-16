@@ -1,13 +1,13 @@
 
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "./user.entity";
 
-@Entity({
-  name: "channels",
-})
+
+@Entity('channels')
 export class Channel
 {
 
-  @PrimaryGeneratedColumn({ name: 'channel_id' })
+  @PrimaryGeneratedColumn({ name: 'channel_id', unsigned: true })
   channelId: number
 
   @Column({ nullable: true })
@@ -23,4 +23,7 @@ export class Channel
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
+  @OneToOne(() => User, (user => user.channelId))
+  @JoinColumn({ name: 'user_id' })
+  user: User
 }

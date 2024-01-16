@@ -1,6 +1,6 @@
 
 import { Role } from "src/common/types/userRoles.type";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, Index, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Channel } from "./channel.entity";
 
 

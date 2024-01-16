@@ -8,13 +8,10 @@ export class ReqCreateUserDto
   @IsNotEmpty()
   kakaoId: string
 
-
-  @ApiProperty({ required: true, example: '홍길동' })
   @IsNotEmpty()
   @IsString()
   nickname: string
 
-  @ApiProperty({ required: true, example: 'EYsQMY0QMYgAQyCggCEAAYsQMYgAQyDQgDEAAYgw' })
   @IsString()
   @IsNotEmpty()
   profileImage: string
@@ -32,7 +29,6 @@ export class ReqCreateChannelDto
   @IsString()
   @IsNotEmpty()
   description: string
-
 
   @ApiProperty({ required: true, example: "" })
   @IsString()

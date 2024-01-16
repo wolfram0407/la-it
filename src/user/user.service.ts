@@ -1,4 +1,3 @@
-import { channel } from 'diagnostics_channel';
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -44,7 +43,6 @@ export class UserService
     }
   }
 
-
   async findByKakaoId(id: string): Promise<any> 
   {
     const user = this.userRepository.findOne({
@@ -52,8 +50,5 @@ export class UserService
     })
     return user
   }
-
-
-
 
 }

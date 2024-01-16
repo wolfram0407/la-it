@@ -1,7 +1,7 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { HttpException, Injectable, NotAcceptableException, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { ReqCreateUserDto } from 'src/auth/dto/req.auth.dto';
 import { Channel } from './entities/channel.entity';
 
@@ -43,12 +43,29 @@ export class UserService
     }
   }
 
-  async findByKakaoId(id: string): Promise<any> 
+  async findByKakaoId(id: string)
   {
     const user = this.userRepository.findOne({
       where: { kakaoId: id }
     })
     return user
   }
+
+  async findByNickname(search: string)
+  {
+    try
+    {
+      const user = this.userRepository.findOne({
+        where: { nickname: Like(`%${search}%`) }
+      })
+      return user;
+    } catch (error)
+    {
+      throw new NotAcceptableException('닉네임검색')
+    }
+
+
+  }
+
 
 }

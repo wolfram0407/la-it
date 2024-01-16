@@ -31,6 +31,7 @@ export class AuthController
   {
     // 토큰 확인용 주석
     console.log(req.user)
+    return
   }
 
 

@@ -20,7 +20,7 @@ export class User
   @Column({ nullable: true })
   provider: string
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   nickname: string
 
   @Column({ name: 'profile_image', nullable: false })

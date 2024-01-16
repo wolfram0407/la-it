@@ -12,12 +12,6 @@ export class UserController
 {
   constructor(private readonly userService: UserService) { }
 
-
-  /**
- * 정보 조회
- * @param req
- * @returns
- */
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()

@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmModuleOptions } from 'config/database.config';
 import { configModuleValidationSchema } from 'config/env-validation.config';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -11,6 +13,8 @@ import { configModuleValidationSchema } from 'config/env-validation.config';
       validationSchema: configModuleValidationSchema,
     }),
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    UserModule,
+    AuthModule,
 
   ],
   controllers: [],

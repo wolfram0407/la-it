@@ -6,7 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap()
 {
   const app = await NestFactory.create(AppModule);
-
+  app.setGlobalPrefix('/api');
   const config = new DocumentBuilder()
     .setTitle('NestJS project')
     .setDescription('')
@@ -26,7 +26,6 @@ async function bootstrap()
       transform: true,
     }),
   );
-
 
   await app.listen(3002);
 }

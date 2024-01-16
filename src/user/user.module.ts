@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { Channel } from './entities/channel.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
   imports: [
+    JwtModule,
     PassportModule,
     TypeOrmModule.forFeature([User, Channel])
   ],

@@ -6,6 +6,7 @@ import { UserModule } from 'src/user/user.module';
 import { KakaoStrategy } from './strategies/kakao.strategy'
 import { ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { PassportModule } from '@nestjs/passport';
   providers: [
     AuthService,
     KakaoStrategy,
-
+    JwtStrategy
   ],
 })
 export class AuthModule { }

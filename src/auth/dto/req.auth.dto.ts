@@ -35,8 +35,3 @@ export class ReqCreateChannelDto
   @IsNotEmpty()
   channelImage: string
 }
-
-
-
-// 로그인
-export class ReqLoginDto extends PickType(ReqCreateUserDto, [] as const) { }

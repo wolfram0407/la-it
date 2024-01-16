@@ -1,0 +1,30 @@
+@host = http://localhost:3002
+
+
+### 라이브 생성
+POST {{host}}/live/create
+Content-Type: application/json
+
+{
+  "userName": "foo",
+  "userImage": "image://",
+  "thumbnail": "image://",
+  "title": "foo Live"
+}
+
+### 라이브 전체 조회
+GET {{host}}/live
+
+### 라이브 조회(:liveId)
+GET {{host}}/live/3
+
+### 라이브 수정
+PATCH {{host}}/live/3
+Content-Type: application/json
+
+{
+  "thumbnail": "image://image.png"
+}
+
+### 라이브 삭제
+DELETE  {{host}}/live/5

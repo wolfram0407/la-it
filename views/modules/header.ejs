@@ -1,0 +1,77 @@
+<header>
+    <h1 style="display: none">HEADER</h1>
+    <div class="headerWrap">
+        <div class="menuAndLogoWrap">
+            <div class="logo">Li iT</div>
+        </div>
+        <div class="searchWrap">
+            <input type="text" placeholder="스트리머, 게임 영상 검색" />
+            <button class="searchBtn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <div class="userBtnWrap">
+            <div class="logoutBtn">로그아웃</div>
+            <div class="myInfoBtn">내 채널</div>
+            <!-- 알림버튼 토글 -->
+            <div class="dropdown myNotificationBtn">
+                <button data-bs-toggle="dropdown" data-bs-auto-close="false">알림</button>
+                <ul class="dropdown-menu">
+                    <!-- 알림 한 단위 -->
+                    <li>
+                        <div>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                <div style="font-weight: 600"><라이브 시작 알림></div>
+                                <div style="margin-right: 15px">✖️</div>
+                            </div>
+                            <div><span style="color: #94fc13">레커</span> 님의 라이브가 시작되었습니다!</div>
+                        </div>
+                    </li>
+                    <!--  -->
+                    <li>
+                        <div>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                <div style="font-weight: 600"><라이브 시작 알림></div>
+                                <div style="margin-right: 15px">✖️</div>
+                            </div>
+                            <div><span style="color: #94fc13">응디</span> 님의 라이브가 시작되었습니다!</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                <div style="font-weight: 600"><라이브 시작 알림></div>
+                                <div style="margin-right: 15px">✖️</div>
+                            </div>
+                            <div><span style="color: #94fc13">soo</span> 님의 라이브가 시작되었습니다!</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="myNotificationBtn" hidden>알림</div> -->
+            <div id="naver" hidden>
+                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/naverlogo.jpeg" /></a>
+            </div>
+            <div id="kakao" hidden>
+                <a href="http://localhost:3002/api/auth/login/kakao">
+                    <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
+                </a>
+            </div>
+            <div id="google" hidden>
+                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/googlelogo.png" /></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    document.querySelector('.myInfoBtn').addEventListener('click', function () {
+        window.location.href = '/api/my-page';
+    });
+
+    document.querySelector('.logo').addEventListener('click', function () {
+    window.location.href = '/api';
+});
+
+</script>

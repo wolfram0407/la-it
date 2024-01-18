@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,7 +15,8 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([User, Channel])
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, Logger],
   exports: [UserService],
+
 })
 export class UserModule { }

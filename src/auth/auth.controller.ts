@@ -19,10 +19,12 @@ export class AuthController {
     @UseGuards(KakaoAuthGuard)
     @Get('/login/kakao/callback')
     async callbacks(@Req() req, @Res() res) {
+        console.log(req.user);
+
         // 토큰 확인용 주석
-        const token = req.user.access_token;
-        res.cookie('Authorization', token);
-        res.redirect('http://localhost:4000');
+        //const token = req.user.access_token;
+        //res.cookie('Authorization', token); //
+        //res.redirect('http://localhost:3002'); //
         return req.user;
     }
 }

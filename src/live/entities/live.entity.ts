@@ -1,6 +1,16 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Channel } from 'src/user/entities/channel.entity';
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 @Entity({
-    name: 'live',
+    name: 'lives',
 })
 export class Live {
     @PrimaryGeneratedColumn({ unsigned: true })
@@ -17,6 +27,10 @@ export class Live {
 
     @Column({ type: 'varchar', name: 'user_name', nullable: false })
     userName: string;
+
+    @OneToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
+    @JoinColumn({ name: 'channel_id' })
+    channel: Channel;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;

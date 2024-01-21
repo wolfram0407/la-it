@@ -1,105 +1,122 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <!-- axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- 부트스트랩 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-      crossorigin="anonymous"
-    />
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/styles/common.css" />
-  </head>
-  <body>
-    <!-- HEADER -->
-    <div class="headerBox"><%- include('./modules/header.ejs') %></div>
+    <cross-domain-policy>
+        <allow-access-from domain="*" to-ports="80,443" secure="false" />
+        <site-control permitted-cross-domain-policies="master-only" />
+    </cross-domain-policy>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <!-- hls -->
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <!-- axios -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- socket -->
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+        <!-- 부트스트랩 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous"
+        />
+        <title><%= title %></title>
+        <link rel="stylesheet" href="/styles/common.css" />
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div class="headerBox"><%- include('./modules/header.ejs') %></div>
 
-    <main>
-      <!-- GNB -->
-      <div class="gnbBox"><%- include('./modules/sideBar.ejs') %></div>
+        <main>
+            <!-- GNB -->
+            <div class="gnbBox"><%- include('./modules/sideBar.ejs') %></div>
 
-      <!-- SECTION -->
-      <div class="liveMasterWrap">
-        <div class="liveMasterMainBox">
-          <div class="liveMasterVideoBox"></div>
-          <div class="liveMasterVideoBoxSetting">
-            <div class="masterSettingLeft">
-              <img src="/imgs/speaker-volume.png" />
-              <div class="volume">
-                <input id="speaker-volume" type="range" />
-              </div>
-              <img src="/imgs/mic.png" />
-              <div class="volume">
-                <input id="mic-volume" type="range" />
-              </div>
-              <img src="/imgs/settings-cogwheel-button.png" />
-            </div>
-            <div class="masterSettingRight">
-              <img src="/imgs/free-icon-rec-6796523.png" />
-            </div>
-          </div>
-          <div class="liveMasterSettingBox">
-            <div class="masterSettingBoxLeft">
-              <div class="masterSettingTitle">
-                TEST 방송입니다 <img src="/imgs/edit.png" />
-              </div>
-              <div class="masterSettingCatecory">
-                <div class="selectBox">
-                  <select name="lineCategory" class="select">
-                    <option disabled selected>카테고리</option>
-                    <option value="토크/게임">토크/게임</option>
-                    <option value="그랑프리">그랑프리</option>
-                    <option value="먹방">먹방</option>
-                    <option value="잡담">잡담</option>
-                  </select>
+            <!-- SECTION -->
+            <div class="liveMasterWrap">
+                <div class="liveMasterMainBox">
+                    <div class="liveMasterVideoBox">
+                        <div id="call">
+                            <div id="myStream">
+                                <video id="video" autoplay width="100%" height="777px" controls></video>
+                                <!-- <button id="mute">Mute</button>
+                                <button id="camera">Turn Camera Off</button>
+                                <select name="" id="cameras">
+                                    <option value="device">Face Camera</option>
+                                </select>
+                                <select name="" id="audios">
+                                    <option value="device">Default Audio Input</option>
+                                </select> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="liveMasterVideoBoxSetting">
+                        <div class="masterSettingLeft">
+                            <img src="/imgs/speaker-volume.png" />
+                            <div class="volume">
+                                <input id="speaker-volume" type="range" />
+                            </div>
+                            <img src="/imgs/mic.png" />
+                            <div class="volume">
+                                <input id="mic-volume" type="range" />
+                            </div>
+                            <img src="/imgs/settings-cogwheel-button.png" />
+                        </div>
+                        <div class="masterSettingRight">
+                            <img src="/imgs/free-icon-rec-6796523.png" />
+                        </div>
+                    </div>
+                    <div class="liveMasterSettingBox">
+                        <div class="masterSettingBoxLeft">
+                            <div class="masterSettingTitle">TEST 방송입니다 <img src="/imgs/edit.png" /></div>
+                            <div class="masterSettingCatecory">
+                                <div class="selectBox">
+                                    <select name="lineCategory" class="select">
+                                        <option disabled selected>카테고리</option>
+                                        <option value="토크/게임">토크/게임</option>
+                                        <option value="그랑프리">그랑프리</option>
+                                        <option value="먹방">먹방</option>
+                                        <option value="잡담">잡담</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="MasterSettingBoxRight">
+                            <div class="broadcastBtn">
+                                <img src="/imgs/facetime-button (1).png" /><button id="liveStartBtn">방송시작</button>
+                            </div>
+                            <div class="broadcastCloseBtn" hidden>
+                                <img src="/imgs/facetime-button (1).png" /><button id="liveEndBtn">방송종료</button>
+                            </div>
+                            <div class="masterSettingBtn">
+                                <img src="/imgs/settings-cogwheel-button.png" />
+                                방송설정
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <div class="liveMasterChatBox">
+                    <div class="chatTitle">채팅</div>
+                    <div class="chatMain">
+                        <div class="chatBox">
+                            <div class="chatList">
+                                <div class="chatNickname">방정맞은 라이언</div>
+                                <div class="chatText">대박이네요!!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="MasterSettingBoxRight">
-              <div class="broadcastBtn">
-                <img src="/imgs/facetime-button (1).png" /> 방송시작
-              </div>
-              <div class="broadcastCloseBtn" hidden>
-                <img src="/imgs/facetime-button (1).png" /> 방송종료
-              </div>
-              <div class="masterSettingBtn">
-                <img src="/imgs/settings-cogwheel-button.png" />
-                방송설정
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="liveMasterChatBox">
-          <div class="chatTitle">채팅</div>
-          <div class="chatMain">
-            <div class="chatBox">
-              <div class="chatList">
-                <div class="chatNickname">방정맞은 라이언</div>
-                <div class="chatText">대박이네요!!</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <!-- FOOTER -->
-    <div class="footerBox"><%- include('./modules/footer.ejs') %></div>
-    <script></script>
-  </body>
+        </main>
+        <!-- FOOTER -->
+        <div class="footerBox"><%- include('./modules/footer.ejs') %></div>
+        <script defer src="/script/live.js"></script>
+    </body>
 </html>

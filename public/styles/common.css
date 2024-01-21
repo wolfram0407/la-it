@@ -1,887 +1,947 @@
+/*#showContent {
+  height: 500px;
+  width: 500px;
+  border: 1px solid black;
+}
+
+#chatComment {
+  height: 30px;
+  width: 200px;
+  border: transparent;
+  background-color: aliceblue;
+}
+
+#Live1,
+#Live2,
+#Live3 {
+  background-color: beige;
+  margin: 20px;
+  height: 30px;
+  width: 100px;
+}
+
+#outChat,
+#sendChat {
+  border-radius: 3px;
+  border: transparent;
+  background-color: black;
+  color: white;
+  height: 30px;
+  width: 80px;
+}*/
 * {
-  margin: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 *,
 :after,
 :before {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 :root {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  cursor: default;
-  line-height: 1.5;
-  overflow-wrap: break-word;
-  -moz-tab-size: 4;
-  tab-size: 4;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    cursor: default;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    -moz-tab-size: 4;
+    tab-size: 4;
 }
 html,
 body {
-  height: 100%;
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #1d1e21;
-  color: #dfe2ea;
+    height: 100%;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #1d1e21;
+    color: #dfe2ea;
 }
 img,
 picture,
 video,
 canvas,
 svg {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
+
 button {
-  background: none;
-  border: 0;
-  cursor: pointer;
+    background: none;
+    border: 0;
+    cursor: pointer;
 }
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /* HEADER */
 .headerWrap {
-  width: 2200px;
+    width: 2200px;
 
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 25px;
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .menuAndLogoWrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .menuBtnWrap {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .searchWrap {
-  width: 30%;
-  height: 60px;
+    width: 30%;
+    height: 60px;
 }
 
 input {
-  width: 90%;
-  height: 100%;
-  background-color: #141517;
-  color: #9da5b6;
-  border-radius: 50px;
-  border: 1px solid white;
+    width: 90%;
+    height: 100%;
+    background-color: #141517;
+    color: #9da5b6;
+    border-radius: 50px;
+    border: 1px solid white;
 }
 
 input::placeholder {
-  font-size: 30px;
-  align-items: center;
-  padding-left: 30px;
+    font-size: 30px;
+    align-items: center;
+    padding-left: 30px;
 }
 
 .searchBtn {
-  width: 50px;
-  height: 50px;
-  margin-left: 5px;
+    width: 50px;
+    height: 50px;
+    margin-left: 5px;
 }
 .searchBtn > i {
-  width: 100%;
+    width: 100%;
 }
 
 .userBtnWrap {
-  width: 300px;
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 .userBtnWrap > div {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .logoutBtn {
-  width: 110px;
-  height: 50px;
-  border: 2px solid white;
-  border-radius: 15px;
-  font-size: 18px;
-  line-height: 2.5;
-  text-align: center;
+    width: 110px;
+    height: 50px;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    line-height: 2.5;
+    text-align: center;
 }
 
 .myInfoBtn {
-  width: 110px;
-  height: 50px;
-  border: 2px solid white;
-  border-radius: 15px;
-  font-size: 18px;
-  line-height: 2.5;
-  text-align: center;
+    width: 110px;
+    height: 50px;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    line-height: 2.5;
+    text-align: center;
 }
 
 .myNotificationBtn {
-  width: 90px;
-  height: 50px;
-  border: 2px solid white;
-  border-radius: 15px;
-  font-size: 18px;
-  line-height: 2.5;
-  text-align: center;
+    width: 90px;
+    height: 50px;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    line-height: 2.5;
+    text-align: center;
 }
 
 .dropdown-menu {
-  width: 400px;
-  background-color: transparent;
-  border-radius: 20px;
+    width: 400px;
+    background-color: transparent;
+    border-radius: 20px;
 }
 
 .dropdown-menu > li {
-  background-color: #032d3cbd;
-  border-radius: 10px;
-  margin-top: 15px;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 500;
-  padding-left: 10px;
+    background-color: #032d3cbd;
+    border-radius: 10px;
+    margin-top: 15px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding-left: 10px;
 }
 
 .loginBtn {
-  background-color: white;
-  border-radius: 50px;
-  width: 50px;
-  height: 50px;
+    background-color: white;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
 }
 
 .loginBtn > img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
 }
 
 .logo {
-  width: 400px;
-  height: 180px;
-  padding-top: 20px;
-  margin-bottom: 20px;
-  color: #f7ff56;
-  font-weight: 600;
-  font-size: 90px;
+    width: 400px;
+    height: 180px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    color: #f7ff56;
+    font-weight: 600;
+    font-size: 90px;
 }
 
 /* MAIN */
 main {
-  width: 2500px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-  padding: 50px;
-  font-size: 20px;
+    width: 2500px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    font-size: 20px;
 }
 /* sideBar */
 .gnbBox {
-  width: 500px;
-  height: 1200px;
-  display: flex;
-  flex-direction: column;
+    width: 500px;
+    height: 1200px;
+    display: flex;
+    flex-direction: column;
 }
 
 .recommendChannelsList {
-  height: 500px;
+    height: 500px;
 }
 
 .sideBarTitle {
-  margin-left: 25px;
-  margin-bottom: 25px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 600;
-  font-size: 24px;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    font-size: 24px;
 }
 
 .sideLiList {
-  width: 85%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sideLi {
-  width: 60%;
-  height: 60px;
-  padding-left: 10px;
+    width: 60%;
+    height: 60px;
+    padding-left: 10px;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-  font-size: 23px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+    font-size: 23px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .sideLiImg {
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
-  margin-right: 15px;
-  border: 2px solid #f7ff56;
-  border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    margin-right: 15px;
+    border: 2px solid #f7ff56;
+    border-radius: 50%;
 }
 .sidebarViews {
-  color: red;
-  font-weight: 500;
+    color: red;
+    font-weight: 500;
 }
 
 .dummyContents1 {
-  display: flex;
-  flex-direction: column;
-  width: 85%;
-  height: 200px;
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: 200px;
 }
 
 .dummyContents2 {
-  width: 85%;
-  height: 400px;
+    width: 85%;
+    height: 400px;
 }
 .dummyImg {
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
-  margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    margin-right: 15px;
 }
 /* SECTION */
 .sectionBox {
-  width: 1800px;
+    width: 1800px;
 }
 section {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-right: 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-right: 30px;
 }
 
 .mainVideoBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 70px;
-  width: 90%;
-  height: 500px;
-  border: 1px solid #9da5b6;
-  position: relative;
-  z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 70px;
+    width: 90%;
+    height: 500px;
+    border: 1px solid #9da5b6;
+    position: relative;
+    z-index: 1;
 }
 
 .mainVideoBox > img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
 }
 
 .mainVideoBoxOver {
-  display: block;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 400px;
-  margin-left: 40px;
-  position: absolute;
-  z-index: 3;
+    display: block;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    height: 400px;
+    margin-left: 40px;
+    position: absolute;
+    z-index: 3;
 }
 
 .mainoBoxOverTop {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .videoBox {
-  display: block;
-  align-items: center;
-  justify-content: center;
-  width: 30%;
-  height: 330px;
-  margin-bottom: 50px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 330px;
+    margin-bottom: 50px;
 }
 
 .videoBoxTop {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 
 .videoBoxTopImg {
-  width: 100%;
-  height: 70%;
-  background-color: rgb(68, 93, 114);
-  z-index: 1;
+    width: 100%;
+    height: 70%;
+    background-color: rgb(68, 93, 114);
+    z-index: 1;
 }
 
 .videoBoxBottom {
-  width: 100%;
-  height: 30%;
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(40, 40, 40);
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(40, 40, 40);
 }
 
 .videoBoxBottomImgWrap {
-  width: 70px;
-  height: 70px;
+    width: 70px;
+    height: 70px;
 }
 
 .videoBoxBottomImg {
-  margin-top: 20px;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 3px solid #f7ff56;
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #f7ff56;
 }
 
 .videoBoxBottomInfo {
-  margin-top: 12px;
-  margin-left: 20px;
+    margin-top: 12px;
+    margin-left: 20px;
 }
 
 .videoBoxBottomNickname {
-  color: rgba(255, 255, 255, 0.73);
-  font-weight: 800;
-  font-size: 20px;
+    color: rgba(255, 255, 255, 0.73);
+    font-weight: 800;
+    font-size: 20px;
 }
 
 /* FOOTER */
 .memberWrap {
-  font-size: 20px;
-  margin-left: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    font-size: 20px;
+    margin-left: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .meber {
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* live page */
 
 .liveMainBox {
-  width: 1800px;
-  height: 1110px;
-  display: flex;
-  flex-direction: row;
+    width: 1800px;
+    height: 1110px;
+    display: flex;
+    flex-direction: row;
 }
 
 .liveVideoBox {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
 }
 
 .VideoBox {
-  background-color: black;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 800px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 800px;
 }
 
 .videoSection {
-  width: 100%;
-  height: 730px;
+    width: 100%;
+    height: 730px;
 }
 
 .videoSetting {
-  border-top: 1px solid white;
-  padding-top: 10px;
-  width: 100%;
-  height: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+    border-top: 1px solid white;
+    padding-top: 10px;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .setting1 {
-  width: 23%;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 30px;
+    width: 23%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 30px;
 }
 .setting1 > div {
-  align-items: center;
-  height: 80%;
+    align-items: center;
+    height: 80%;
 }
 .setting1 > div > img {
-  width: 35px;
-  height: 35px;
+    width: 35px;
+    height: 35px;
 }
 .liveSign {
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.801);
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.801);
 }
 .setting2 {
-  width: 9.5%;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 25px;
+    width: 9.5%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 25px;
 }
 .setting2 > div {
-  align-items: center;
-  height: 80%;
+    align-items: center;
+    height: 80%;
 }
 
 .settingBtn {
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 5px;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
 }
 
 .wideBtn {
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  margin-bottom: 13px;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 13px;
 }
 
 .liveStreamerInfo {
-  background-color: #191b1d;
-  width: 100%;
-  height: 320px;
+    background-color: #191b1d;
+    width: 100%;
+    height: 320px;
 }
 
 .liveTitle {
-  font-size: 35px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 100%;
-  height: 50px;
+    font-size: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 50px;
 }
 .streamerInfo {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 230px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 230px;
 }
 
 .streamerImg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18%;
 }
 
 .streamerImg > img {
-  width: 80%;
-  height: 80%;
-  border-radius: 50%;
-  border: 2px solid #f7ff56;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: 2px solid #f7ff56;
 }
 .streamerInfoDetail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 82%;
-  height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 82%;
+    height: 230px;
 }
 .streamerNickname {
-  width: 82%;
-  height: 40%;
-  margin-top: 20px;
-  font-size: 35px;
-  font-weight: 700;
+    width: 82%;
+    height: 40%;
+    margin-top: 20px;
+    font-size: 35px;
+    font-weight: 700;
 }
 .streamerTheme {
-  width: 82%;
-  height: 20%;
-  font-size: 25px;
-  font-weight: 600;
-  color: #f7ff56;
+    width: 82%;
+    height: 20%;
+    font-size: 25px;
+    font-weight: 600;
+    color: #f7ff56;
 }
 .streamInfo {
-  display: flex;
-  flex-direction: row;
-  width: 82%;
-  height: 30%;
-  color: rgba(255, 255, 255, 0.727);
-  font-size: 25px;
-  font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    width: 82%;
+    height: 30%;
+    color: rgba(255, 255, 255, 0.727);
+    font-size: 25px;
+    font-weight: 400;
 }
 .liveChatBox {
-  background-color: #292a2e;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
+    background-color: #292a2e;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+#sendChatBtn {
+    width: 90px;
+    height: 65%;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    line-height: 2.5;
+    text-align: center;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+.record {
+    width: 250px;
+    height: 43px;
+    text-align: center;
+    align-items: center;
+    border: 3px solid rgba(0, 0, 0, 0.61);
+    border-radius: 20px;
+    color: black;
+    font-weight: 700;
+    line-height: 1.8;
 }
 
 .chatTitle {
-  border: 0.2px solid #9da5b631;
-  height: 5%;
-  text-align: center;
-  font-weight: 600;
-  font-size: 32px;
-  color: rgba(255, 255, 255, 0.857);
+    border: 0.2px solid #9da5b631;
+    height: 5%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.857);
 }
 
 .chatMain {
-  border: 0.2px solid #9da5b631;
-  height: 95%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    border: 0.2px solid #9da5b631;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .chatBox {
-  margin-top: 10px;
-  /* border: 0.2px solid #9da5b631; */
-  width: 90%;
-  height: 90%;
+    margin-top: 10px;
+    /* border: 0.2px solid #9da5b631; */
+    width: 90%;
+    height: 90%;
 }
 
 .chatInput {
-  width: 90%;
-  height: 10%;
-  justify-content: center;
-  text-align: center;
-  margin-top: 30px;
+    width: 90%;
+    height: 8%;
+    justify-content: center;
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+}
+#chatInputText {
+    width: 10px;
 }
 
 .chatInput > input {
-  padding-left: 20px;
+    padding-left: 20px;
 }
 
 #chatInput {
-  width: 100%;
-  height: 62px;
-  background-color: #1b1b1d;
-  border: none;
-  border-radius: 20px;
+    width: 100%;
+    height: 62px;
+    background-color: #1b1b1d;
+    border: none;
+    border-radius: 20px;
 }
 
 .chatList {
-  width: 100%;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .chatNickname {
-  color: #f7ff56;
-  font-weight: 500;
-  margin-right: 20px;
+    color: #f7ff56;
+    font-weight: 500;
+    margin-right: 20px;
 }
 
 .spacelLeft {
-  color: white;
-  font-weight: 300;
-  margin-left: 20px;
+    color: white;
+    font-weight: 300;
+    margin-left: 20px;
 }
 
 /* myPage */
 
 .InfoMainBox {
-  background-color: #f7ff56;
-  border-radius: 10px;
-  width: 1800px;
-  height: 1110px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    background-color: #f7ff56;
+    border-radius: 10px;
+    width: 1800px;
+    height: 1110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .channelInfoContainer {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 
-  display: flex;
-  flex-direction: row;
-  width: 90%;
-  height: 20%;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: 20%;
 }
 
 .channelInfoImg {
-  width: 200px;
-  height: 200px;
-  align-items: center;
-  text-align: center;
-  border-radius: 50%;
-  border: 10px solid rgba(0, 0, 0, 0.448);
+    width: 200px;
+    height: 200px;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    border: 10px solid rgba(0, 0, 0, 0.448);
 }
 
 .channelInfoImg > img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
 
 .infoEtc {
-  margin-left: 5px;
-  font-weight: 500;
+    margin-left: 5px;
+    font-weight: 500;
 }
 .myChannelInfoDetail {
-  color: black;
-  width: 85%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
-  margin-top: 30px;
-  margin-left: 30px;
+    color: black;
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 30px;
+    margin-left: 30px;
 }
 
 .myChannelNickname {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: rgba(0, 0, 0, 0.859);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.859);
 }
 .myChannelInfo {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
 }
 .startLiveBtn,
 .channelSettingBtn {
-  width: 120px;
-  height: 43px;
-  text-align: center;
-  align-items: center;
-  border: 3px solid rgba(0, 0, 0, 0.61);
-  border-radius: 20px;
-  color: black;
-  font-weight: 700;
-  line-height: 1.8;
+    width: 120px;
+    height: 43px;
+    text-align: center;
+    align-items: center;
+    border: 3px solid rgba(0, 0, 0, 0.61);
+    border-radius: 20px;
+    color: black;
+    font-weight: 700;
+    line-height: 1.8;
 }
 
 .homeBox {
-  border: 3px solid rgba(0, 0, 0, 0.236);
-  border-radius: 10px;
-  width: 90%;
-  height: 70%;
-  text-align: center;
-  color: black;
-  line-height: 15;
-  font-size: 3rem;
+    border: 3px solid rgba(0, 0, 0, 0.236);
+    border-radius: 10px;
+    width: 90%;
+    height: 70%;
+    text-align: center;
+    color: black;
+    line-height: 15;
+    font-size: 3rem;
 }
 
 /* 라이브 생성화면 */
 .liveMasterWrap {
-  background-color: rgb(41, 41, 41);
-  width: 1800px;
-  height: 1110px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    background-color: rgb(41, 41, 41);
+    width: 1800px;
+    height: 1110px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .liveMasterMainBox {
-  /* display: flex; */
-  flex-direction: column;
-  width: 70%;
-  height: 100%;
+    /* display: flex; */
+    flex-direction: column;
+    width: 70%;
+    height: 100%;
 }
 
 .liveMasterVideoBox {
-  background-color: rgb(11, 11, 11);
-  width: 100%;
-  height: 70%;
+    background-color: rgb(11, 11, 11);
+    width: 100%;
+    height: 70%;
 }
 
 .liveMasterVideoBoxSetting {
-  background-color: rgb(55, 55, 55);
-  width: 100%;
-  height: 7%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+    background-color: rgb(55, 55, 55);
+    width: 100%;
+    height: 7%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .liveMasterSettingBox {
-  width: 100%;
+    width: 100%;
 }
 .masterSettingLeft {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 50%;
-  height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+    height: 100%;
 }
 .masterSettingLeft > img {
-  margin-left: 20px;
-  width: 40px;
-  height: 40px;
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
 }
 .volume {
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 150px;
-  accent-color: red;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 150px;
+    accent-color: red;
 }
 
 .masterSettingRight {
-  width: 10%;
-  height: 100%;
-  margin-bottom: 20px;
+    width: 10%;
+    height: 100%;
+    margin-bottom: 20px;
 }
 
 .masterSettingRight > img {
-  width: 100px;
-  /* height: 40px; */
+    width: 100px;
+    /* height: 40px; */
 }
 
 .liveMasterSettingBox {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  background-color: rgb(55, 55, 55);
-  width: 100%;
-  height: 23%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
-  padding-top: 20px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    background-color: rgb(55, 55, 55);
+    width: 100%;
+    height: 23%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    padding-top: 20px;
 }
 
 .masterSettingTitle {
-  font-size: 2rem;
-  margin-left: 20px;
-  display: flex;
-  flex-direction: row;
+    font-size: 2rem;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
 }
 
 .masterSettingTitle > img {
-  margin-left: 20px;
-  margin-top: 10px;
-  width: 40px;
-  height: 40px;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
 }
 
 .masterSettingCatecory {
-  margin-left: 20px;
-  font-size: 1.7rem;
+    margin-left: 20px;
+    font-size: 1.7rem;
 }
 
 .selectBox {
-  position: relative;
-  width: 150px;
-  height: 40px;
-  margin-top: 20px;
-  border-radius: 4px;
-  border: none;
-  font-size: 24px;
+    position: relative;
+    width: 150px;
+    height: 40px;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: none;
+    font-size: 24px;
 }
 .selectBox .select {
-  width: inherit;
-  height: inherit;
-  background: transparent;
-  border: 0 none;
-  outline: 0 none;
-  padding: 0 5px;
-  position: relative;
-  z-index: 3;
+    width: inherit;
+    height: inherit;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+    padding: 0 5px;
+    position: relative;
+    z-index: 3;
 }
 .selectBox .select option {
-  background: #f7ff56;
-  color: #fff;
-  padding: 3px 0;
-  font-size: 16px;
+    background: #f7ff56;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 16px;
 }
 
 .MasterSettingBoxRight {
-  width: 18%;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
+    width: 18%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 
 .broadcastBtn,
 .broadcastCloseBtn {
-  display: flex;
-  flex-direction: row;
-  background-color: #f7ff56;
-  width: 200px;
-  height: 100px;
-  border-radius: 10px;
-  color: black;
-  text-align: center;
-  line-height: 4;
-  font-size: 24px;
-  font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    background-color: #f7ff56;
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    line-height: 4;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .broadcastBtn > img {
-  width: 40px;
-  height: 40px;
-  margin-top: 28px;
-  margin-left: 20px;
-  margin-right: 20px;
+    width: 40px;
+    height: 40px;
+    margin-top: 28px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .broadcastCloseBtn > img {
-  width: 40px;
-  height: 40px;
-  margin-top: 28px;
-  margin-left: 20px;
-  margin-right: 20px;
+    width: 40px;
+    height: 40px;
+    margin-top: 28px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 .masterSettingBtn {
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(85, 85, 85);
-  margin-top: 10px;
-  width: 200px;
-  height: 60px;
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-  font-size: 24px;
-  line-height: 2.2;
-  font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(85, 85, 85);
+    margin-top: 10px;
+    width: 200px;
+    height: 60px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    line-height: 2.2;
+    font-weight: 600;
 }
 
 .masterSettingBtn > img {
-  width: 40px;
-  height: 40px;
-  margin-top: 8px;
-  margin-left: 20px;
-  margin-right: 20px;
+    width: 40px;
+    height: 40px;
+    margin-top: 8px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 .liveMasterChatBox {
-  width: 30%;
-  height: 100%;
+    width: 30%;
+    height: 100%;
 }

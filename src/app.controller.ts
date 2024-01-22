@@ -1,28 +1,38 @@
 import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
-export class AppController {
-    @Get()
+export class AppController
+{
+    constructor(
+
+    ) { }
+
+
+    @Get('/')
     @Render('main') // Render the 'main' EJS template
-    main() {
+    main()
+    {
         return { title: 'Home Page' }; // Pass data to the template
     }
 
     @Get('live')
     @Render('livePage') // Render the 'main' EJS template
-    live() {
+    live()
+    {
         return { title: 'Live Page' }; // Pass data to the template
     }
 
     @Get('my-page')
     @Render('channelInfo') // Render the 'main' EJS template
-    myInfo() {
+    myInfo()
+    {
         return { title: 'My Page' }; // Pass data to the template
     }
 
     @Get('live-master')
     @Render('live-provide-page') // Render the 'main' EJS template
-    provideLive() {
+    provideLive()
+    {
         return { title: 'My Page' }; // Pass data to the template
     }
 }

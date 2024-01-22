@@ -54,6 +54,24 @@ export class UserService
     return user;
   }
 
+  async updateUserInfo(userId: number, nickname: string, profileImage: string, email: string)
+  {
+    try
+    {
+      const user = await this.userRepository.findOne({
+        where: { userId },
+      });
+
+      user.nickname = nickname ? nickname : user.nickname;
+      user.profileImage = profileImage ? profileImage : user.profileImage;
+      user.email = email ? email : user.email;
+      return await this.userRepository.save(user);
+
+    } catch (error)
+    {
+      console.log(error);
+    }
+  }
   async findByKakaoId(id: string)
   {
     const user = this.userRepository.findOne({

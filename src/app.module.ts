@@ -17,9 +17,7 @@ import { join } from 'path';
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
         }),
-        // ServeStaticModule.forRoot({
-        //     rootPath: join(__dirname, '../..', 'public'),
-        // }),
+
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,
@@ -29,4 +27,4 @@ import { join } from 'path';
     controllers: [AppController],
     providers: [],
 })
-export class AppModule {}
+export class AppModule { }

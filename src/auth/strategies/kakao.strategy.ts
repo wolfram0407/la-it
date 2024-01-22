@@ -33,6 +33,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         }
 
         const access_token = await this.authService.createAccessToken(user.userId);
+        console.log('access_token', access_token);
         //const refresh_token = await this.authService.createRefreshToken(user.userId);
 
         return { access_token };

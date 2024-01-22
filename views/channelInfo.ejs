@@ -25,6 +25,9 @@
         <link rel="stylesheet" href="/styles/common.css" />
     </head>
     <body>
+        <script type="module" src="/script/chatRecord.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
         <!-- HEADER -->
         <div class="headerBox"><%- include('./modules/header.ejs') %></div>
 
@@ -51,6 +54,9 @@
                         <div class="myChannelInfo">
                             <div class="startLiveBtn"><button id="goToStudioBtn">방송하기</button></div>
                             <div class="channelSettingBtn spacelLeft">채널관리</div>
+                        </div>
+                        <div>
+                            <button id="first" class="record">first 방송 채팅 기록 조회</button>
                         </div>
                     </div>
                 </div>

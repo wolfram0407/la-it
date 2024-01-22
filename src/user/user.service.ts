@@ -93,7 +93,20 @@ export class UserService
 
     }
   }
-
+  // channel information update
+  async updateChannelInfo(id: number, description: string, channelImage: string)
+  {
+    try
+    {
+      const channel = await this.channelRepository.findOne({ where: { channelId: id } });
+      channel.description = description ? description : channel.description;
+      channel.channelImage = channelImage ? channelImage : channel.channelImage;
+      return await this.channelRepository.save(channel);
+    } catch (error)
+    {
+      console.log(error)
+    }
+  }
   // channel Image update
   async updateChannelImage(id: number, channelImage: string)
   {

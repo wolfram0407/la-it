@@ -1,3 +1,34 @@
+/*#showContent {
+  height: 500px;
+  width: 500px;
+  border: 1px solid black;
+}
+
+#chatComment {
+  height: 30px;
+  width: 200px;
+  border: transparent;
+  background-color: aliceblue;
+}
+
+#Live1,
+#Live2,
+#Live3 {
+  background-color: beige;
+  margin: 20px;
+  height: 30px;
+  width: 100px;
+}
+
+#outChat,
+#sendChat {
+  border-radius: 3px;
+  border: transparent;
+  background-color: black;
+  color: white;
+  height: 30px;
+  width: 80px;
+}*/
 * {
     margin: 0;
     padding: 0;
@@ -35,6 +66,7 @@ svg {
     display: block;
     max-width: 100%;
 }
+
 button {
     background: none;
     border: 0;
@@ -531,6 +563,29 @@ main {
     flex-direction: column;
 }
 
+#sendChatBtn {
+    width: 90px;
+    height: 65%;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-size: 18px;
+    line-height: 2.5;
+    text-align: center;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+.record {
+    width: 250px;
+    height: 43px;
+    text-align: center;
+    align-items: center;
+    border: 3px solid rgba(0, 0, 0, 0.61);
+    border-radius: 20px;
+    color: black;
+    font-weight: 700;
+    line-height: 1.8;
+}
+
 .chatTitle {
     border: 0.2px solid #9da5b631;
     height: 5%;
@@ -557,10 +612,15 @@ main {
 
 .chatInput {
     width: 90%;
-    height: 10%;
+    height: 8%;
     justify-content: center;
     text-align: center;
     margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+}
+#chatInputText {
+    width: 10px;
 }
 
 .chatInput > input {

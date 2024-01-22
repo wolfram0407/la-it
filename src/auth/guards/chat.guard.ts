@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { UserService } from 'src/user/user.service';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
@@ -12,28 +11,27 @@ export class WsGuard implements CanActivate {
     ) {}
     private readonly secretKey = this.configService.get<string>('JWT_SECRET_KEY');
 
-    canActivate(context: ExecutionContext): any {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const token = context.switchToWs().getClient().handshake.auth.token;
-        console.log('token', token);
-
         try {
-            const verifyToken = async (token: string): Promise<boolean | Error> => {
+            const verifyToken = async (token: string): Promise<any> => {
                 const verify = jwt.verify(token, process.env.JWT_SECRET_KEY);
-                console.log('verify', verify, typeof verify.sub);
+                console.log('가드가드', token);
+                console.log(verify);
                 const userId = verify.sub;
+
                 if (!verify) {
                     throw new UnauthorizedException('인증이 유효하지 않습니다. ');
                 } else {
-                    const user = await this.userService.findByKakaoIdGetUserName(+userId);
-                    context.switchToWs().getData().user = user;
-
-                    console.log('user', user);
+                    //next()
+                    const findUser = await this.userService.findByKakaoIdGetUserName(+userId);
+                    context.switchToWs().getClient().handshake.auth.user = findUser; //TypeError: Cannot create property 'user' on string 'first'
                     return true;
                 }
             };
-            verifyToken(token);
+            return await verifyToken(token);
         } catch (err) {
-            throw new UnauthorizedException('인증이 유효하지 않습니다. ');
+            return false;
         }
     }
 }

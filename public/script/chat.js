@@ -1,7 +1,9 @@
 //const socket = io(`ws://localhost:3002/api/live`);
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1NzQ3Njc0LCJleHAiOjE3MDU4MzQwNzR9.MT_ClHuevF0DolsnzJryPHFxQleJGmVFRyGAmurGk9Q',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1OTA0MjUyLCJleHAiOjE3MDU5OTA2NTJ9.348kV0iSreQLY30UXVuLSnO2BnNpvWGTdGs0LmbzH3c',
+
+        //token: '//토큰 넣으면 됩니당',
         //token: getCookie(access_token),
     },
 });
@@ -20,10 +22,7 @@ let roomNum;
 
 //방 선택하면 서버에게 알려주는 애.
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('-----');
     const liveId = 'first'; //임으로 방 선정
-    console.log('liveId', liveId);
-    //emit의 마지막 argument가 함수여야만함.
     socket.emit('enter_room', liveId);
     console.log('두둥');
     roomNum = liveId;

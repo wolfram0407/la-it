@@ -74,7 +74,16 @@ button {
 }
 a {
     text-decoration: none;
+    outline: none;
+    color: #dfe2ea;
 }
+
+a:hover,
+a:active {
+    text-decoration: none;
+    color: #dfe2ea;
+}
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -92,6 +101,11 @@ table {
     flex-direction: column;
     height: 100vh;
     width: 100%;
+    font-size: 12px;
+}
+
+main {
+    padding: 0px !important;
 }
 
 .mainBox {
@@ -100,6 +114,7 @@ table {
     justify-content: space-between;
     align-items: center;
     width: 90%;
+    padding: 0;
 }
 
 /* HEADER */
@@ -108,9 +123,13 @@ table {
     display: flex;
     flex-direction: row;
     padding-left: 200px;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 .menuAndLogoWrap {
     width: 100%;
+    font-size: 40px;
+    padding: 20px 30px 50px 70px;
 }
 
 .searchWrap {
@@ -226,13 +245,14 @@ main {
 }
 
 .sideBarTitle {
+    padding-left: 20px;
     color: rgba(255, 255, 255, 0.5);
     font-weight: 600;
     font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .sideLiList {
-    width: 85%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -240,22 +260,19 @@ main {
 }
 
 .sideLi {
-    width: 60%;
-    height: 60px;
-    padding-left: 10px;
-
+    padding-left: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
-
-    font-size: 23px;
+    font-size: 15px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
 }
 
 .sideLiImg {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     overflow: hidden;
     margin-right: 15px;
     border: 2px solid #faef9b;
@@ -274,7 +291,6 @@ main {
 }
 
 .dummyContents2 {
-    width: 85%;
     height: 400px;
 }
 .dummyImg {
@@ -292,6 +308,7 @@ main {
 
 .sectionContainer {
     width: 80vw;
+    margin-bottom: 40px;
 }
 
 .mainVideoBox {
@@ -658,10 +675,9 @@ main {
 /* myPage */
 
 .InfoMainBox {
-    background-color: #faef9b;
     border-radius: 10px;
-    width: 1800px;
-    height: 1110px;
+    width: 80vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -671,7 +687,6 @@ main {
 .channelInfoContainer {
     margin-left: auto;
     margin-right: auto;
-
     display: flex;
     flex-direction: row;
     width: 90%;
@@ -698,7 +713,7 @@ main {
     font-weight: 500;
 }
 .myChannelInfoDetail {
-    color: black;
+    color: #dfe2ea;
     width: 85%;
     display: flex;
     flex-direction: row;
@@ -711,7 +726,7 @@ main {
 .myChannelNickname {
     font-size: 2.5rem;
     font-weight: 900;
-    color: rgba(0, 0, 0, 0.859);
+    color: #dfe2ea;
 }
 .myChannelInfo {
     display: flex;
@@ -725,16 +740,16 @@ main {
     width: 120px;
     height: 43px;
     text-align: center;
-    align-items: center;
-    border: 3px solid rgba(0, 0, 0, 0.61);
+    border: 1px solid #9da5b6;
     border-radius: 20px;
-    color: black;
-    font-weight: 700;
+    color: #dfe2ea;
+    font-weight: 500;
     line-height: 1.8;
+    padding-top: 3px;
 }
 
 .homeBox {
-    border: 3px solid rgba(0, 0, 0, 0.236);
+    border: 1px solid #9da5b6;
     border-radius: 10px;
     width: 90%;
     height: 70%;
@@ -933,4 +948,9 @@ main {
 .liveMasterChatBox {
     width: 30%;
     height: 100%;
+}
+
+.ch-videoBox {
+    width: 300px;
+    height: 150px;
 }

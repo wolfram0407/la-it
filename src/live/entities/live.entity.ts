@@ -1,10 +1,12 @@
 import { Channel } from 'src/user/entities/channel.entity';
-import {
+import
+{
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -12,7 +14,8 @@ import {
 @Entity({
     name: 'lives',
 })
-export class Live {
+export class Live
+{
     @PrimaryGeneratedColumn({ unsigned: true })
     live_id: number;
 
@@ -22,16 +25,12 @@ export class Live {
     @Column({ type: 'varchar', nullable: false })
     title: string;
 
-    @Column({ type: 'varchar', name: 'user_image', nullable: false })
-    userImage: string;
-
     @Column({ type: 'varchar', name: 'user_name', nullable: false })
     userName: string;
 
-    @OneToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
+    @ManyToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
     @JoinColumn({ name: 'channel_id' })
-    channel: Channel;
-
+    channel: Channel[];
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

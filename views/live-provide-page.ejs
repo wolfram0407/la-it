@@ -1,5 +1,9 @@
 <!doctype html>
 <html lang="en">
+    <cross-domain-policy>
+        <allow-access-from domain="*" to-ports="80,443" secure="false" />
+        <site-control permitted-cross-domain-policies="master-only" />
+    </cross-domain-policy>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,8 +15,12 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <!-- hls -->
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         <!-- axios -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- socket -->
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
         <!-- 부트스트랩 -->
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
@@ -34,7 +42,21 @@
             <!-- SECTION -->
             <div class="liveMasterWrap">
                 <div class="liveMasterMainBox">
-                    <div class="liveMasterVideoBox"></div>
+                    <div class="liveMasterVideoBox">
+                        <div id="call">
+                            <div id="myStream">
+                                <video id="video" autoplay width="100%" height="777px" controls></video>
+                                <!-- <button id="mute">Mute</button>
+                                <button id="camera">Turn Camera Off</button>
+                                <select name="" id="cameras">
+                                    <option value="device">Face Camera</option>
+                                </select>
+                                <select name="" id="audios">
+                                    <option value="device">Default Audio Input</option>
+                                </select> -->
+                            </div>
+                        </div>
+                    </div>
                     <div class="liveMasterVideoBoxSetting">
                         <div class="masterSettingLeft">
                             <img src="/imgs/speaker-volume.png" />
@@ -67,8 +89,12 @@
                             </div>
                         </div>
                         <div class="MasterSettingBoxRight">
-                            <div class="broadcastBtn"><img src="/imgs/facetime-button (1).png" /> 방송시작</div>
-                            <div class="broadcastCloseBtn" hidden><img src="/imgs/facetime-button (1).png" /> 방송종료</div>
+                            <div class="broadcastBtn">
+                                <img src="/imgs/facetime-button (1).png" /><button id="liveStartBtn">방송시작</button>
+                            </div>
+                            <div class="broadcastCloseBtn" hidden>
+                                <img src="/imgs/facetime-button (1).png" /><button id="liveEndBtn">방송종료</button>
+                            </div>
                             <div class="masterSettingBtn">
                                 <img src="/imgs/settings-cogwheel-button.png" />
                                 방송설정
@@ -91,6 +117,6 @@
         </main>
         <!-- FOOTER -->
         <div class="footerBox"><%- include('./modules/footer.ejs') %></div>
-        <script></script>
+        <script defer src="/script/live.js"></script>
     </body>
 </html>

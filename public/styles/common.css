@@ -623,15 +623,10 @@ section {
 
 .chatInput {
     width: 90%;
-    height: 8%;
+    height: 10%;
     justify-content: center;
     text-align: center;
     margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-}
-#chatInputText {
-    width: 10px;
 }
 
 .chatInput > input {

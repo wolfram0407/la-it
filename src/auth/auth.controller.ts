@@ -15,12 +15,9 @@ export class AuthController {
     @Get('login/kakao')
     async kakao(@Req() req): Promise<void> {}
 
-    @Redirect('/')
     @UseGuards(KakaoAuthGuard)
     @Get('/login/kakao/callback')
     async callbacks(@Req() req, @Res() res) {
-        console.log(req.user);
-
         // 토큰 확인용 주석
         //const token = req.user.access_token;
         //res.cookie('Authorization', token); //

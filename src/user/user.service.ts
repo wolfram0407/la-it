@@ -21,7 +21,6 @@ export class UserService
   {
     const { kakaoId, nickname, profileImage, provider } = reqCreateUserDto;
     const randomId = () => crypto.randomBytes(8).toString('hex').toString();
-
     try
     {
       // user create
@@ -144,4 +143,16 @@ export class UserService
     }
   }
 
+  async resetStreamKey(id: number)
+  {
+    try
+    {
+      const channel = await this.channelRepository.findOne({ where: { channelId: id } });
+      channel.streamKey = '';
+      return await this.channelRepository.save(channel);
+    } catch (error)
+    {
+      console.log(error)
+    }
+  }
 }

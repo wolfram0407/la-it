@@ -19,17 +19,20 @@ export class UserController
   constructor(private readonly userService: UserService) { }
 
   @ApiBearerAuth()
-  @Roles(Role.User)
-  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
-
-  @Get('')
+  @Get('/user')
   async temp(
     @UserInfo() { id }: UserAfterAuth
   )
   {
-    //console.log(id);
+    return await this.userService.findUserIdByUser(+id);
   }
+
+
+
+
+
+
 
   /*
   채널 정보
@@ -70,6 +73,16 @@ export class UserController
     return await this.userService.changeStreamKey(+id)
   }
 
-
+  @ApiBearerAuth()
+  @Roles(Role.User)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @Put('/channel/stream/:id')
+  async resetStreamKey(
+    @Param('id') id: string,
+  )
+  {
+    return await this.userService.resetStreamKey(+id)
+  }
 
 }

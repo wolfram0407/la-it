@@ -20,6 +20,7 @@ async function bootstrap()
 
     //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
     app.useWebSocketAdapter(new IoAdapter(app));
+
     const config = new DocumentBuilder().setTitle('NestJS project').setDescription('').setVersion('1.0').addBearerAuth().build();
     const customOptions: SwaggerCustomOptions = {
         swaggerOptions: {

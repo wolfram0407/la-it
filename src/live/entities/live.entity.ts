@@ -1,6 +1,5 @@
 import { Channel } from 'src/user/entities/channel.entity';
-import
-{
+import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -14,8 +13,7 @@ import
 @Entity({
     name: 'lives',
 })
-export class Live
-{
+export class Live {
     @PrimaryGeneratedColumn({ unsigned: true })
     live_id: number;
 

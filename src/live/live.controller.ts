@@ -4,7 +4,7 @@ import { ReqCreateLiveDto, ReqUpdateLiveDto } from './dto/req.live.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Live')
-@Controller('live')
+@Controller('/api/live')
 export class LiveController {
     constructor(private readonly liveService: LiveService) {}
 

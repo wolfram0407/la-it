@@ -7,7 +7,8 @@ import { join } from 'path';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
-async function bootstrap() {
+async function bootstrap()
+{
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     const corsOptions: CorsOptions = {

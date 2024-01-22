@@ -4,7 +4,6 @@ import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 // 회원가입
 export class ReqCreateUserDto
 {
-  @IsUUID()
   @IsNotEmpty()
   kakaoId: string
 

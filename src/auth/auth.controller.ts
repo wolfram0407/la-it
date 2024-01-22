@@ -7,17 +7,19 @@ import { KakaoAuthGuard } from './guards/kakao.guard';
 import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Auth')
-@Controller('auth')
-export class AuthController {
-    constructor(private readonly configService: ConfigService) {}
+@Controller('/api/auth')
+export class AuthController
+{
+    constructor(private readonly configService: ConfigService) { }
 
     @UseGuards(KakaoAuthGuard)
     @Get('login/kakao')
-    async kakao(@Req() req): Promise<void> {}
+    async kakao(@Req() req): Promise<void> { }
 
     @UseGuards(KakaoAuthGuard)
     @Get('/login/kakao/callback')
-    async callbacks(@Req() req, @Res() res) {
+    async callbacks(@Req() req, @Res() res)
+    {
         // 토큰 확인용 주석
         //const token = req.user.access_token;
         //res.cookie('Authorization', token); //

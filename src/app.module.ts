@@ -9,7 +9,6 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
-import { join } from 'path';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -27,9 +26,7 @@ import { MongooseModule } from '@nestjs/mongoose';
                 useUnifiedTopology: true,
             }),
         }),
-        ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '../..', 'public'),
-        }),
+
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,
@@ -40,4 +37,4 @@ import { MongooseModule } from '@nestjs/mongoose';
     controllers: [AppController],
     providers: [],
 })
-export class AppModule {}
+export class AppModule { }

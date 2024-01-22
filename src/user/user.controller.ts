@@ -9,6 +9,7 @@ import { ResUpdateChannelImageDto } from './dto/res.channel.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/common/decorator/role.decorator';
 import { Role } from 'src/common/types/userRoles.type';
+import { ReqUpdateUserInfoDto } from './dto/req.user.dto';
 
 
 @ApiTags('UserInfo')
@@ -27,11 +28,17 @@ export class UserController
   {
     return await this.userService.findUserIdByUser(+id);
   }
-
-
-
-
-
+  /*
+    유저 정보
+  */
+  @Put('/user/:id')
+  async userInfo(
+    @Param('id') id: string,
+    @Body() { nickname, profileImage, email }: ReqUpdateUserInfoDto
+  )
+  {
+    return await this.userService.updateUserInfo(+id, nickname, profileImage, email)
+  }
 
 
   /*

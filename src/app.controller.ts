@@ -1,28 +1,36 @@
+import { Controller, Get, Render } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Render, Req } from '@nestjs/common';
 
+@ApiTags('Frontend')
 @Controller()
-export class AppController {
+export class AppController
+{
     @Get()
     @Render('main') // Render the 'main' EJS template
-    main(@Req() req) {
+    main(@Req() req)
+    {
         return { title: 'Home Page', path: req.url }; // Pass data to the template
     }
 
     @Get('live')
     @Render('main') // Render the 'main' EJS template
-    live(@Req() req) {
+    live(@Req() req)
+    {
         return { title: 'Live Page', path: req.url }; // Pass data to the template
     }
 
     @Get('my-page')
     @Render('main') // Render the 'main' EJS template
-    myInfo(@Req() req) {
+    myInfo(@Req() req)
+    {
         return { title: 'My Page', path: req.url }; // Pass data to the template
     }
 
     @Get('live-master')
     @Render('main') // Render the 'main' EJS template
-    provideLive(@Req() req) {
+    provideLive(@Req() req)
+    {
         return { title: 'live-master', path: req.url }; // Pass data to the template
     }
 }

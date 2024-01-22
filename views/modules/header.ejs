@@ -13,7 +13,7 @@
 
         <div class="userBtnWrap">
             <div class="logoutBtn">로그아웃</div>
-            <div class="myInfoBtn">내 채널</div>
+            <div class="myInfoBtn"><button id="goToMyChannelBtn">내 채널</button></div>
             <!-- 알림버튼 토글 -->
             <div class="dropdown myNotificationBtn">
                 <button data-bs-toggle="dropdown" data-bs-auto-close="false">알림</button>
@@ -71,7 +71,6 @@
     });
 
     document.querySelector('.logo').addEventListener('click', function () {
-    window.location.href = '/api';
-});
-
+        window.location.href = '/api';
+    });
 </script>

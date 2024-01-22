@@ -23,10 +23,12 @@ async function bootstrap() {
         }),
     );
 
-    
     app.useStaticAssets(join(__dirname, '../..', 'public'));
     app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setViewEngine('ejs');
+
+    app.enableCors();
+
     await app.listen(3002);
 }
 bootstrap();

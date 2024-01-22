@@ -24,7 +24,7 @@ html,
 body {
     height: 100%;
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #1d1e21;
+    background-color: #141517;
     color: #dfe2ea;
 }
 img,
@@ -48,45 +48,63 @@ table {
     border-spacing: 0;
 }
 
-/* HEADER */
-.headerWrap {
-    width: 2200px;
-
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 25px;
-    padding: 30px;
+.laitBox {
+    width: 100vw;
     display: flex;
     justify-content: space-between;
+    height: 100vh;
+}
+
+.sideBarContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.mainBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    width: 90%;
+}
+
+/* HEADER */
+.headerWrap {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    padding-left: 200px;
 }
 .menuAndLogoWrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.menuBtnWrap {
-    margin-right: 20px;
+    width: 100%;
 }
 
 .searchWrap {
-    width: 30%;
-    height: 60px;
-}
-
-input {
-    width: 90%;
-    height: 100%;
-    background-color: #141517;
-    color: #9da5b6;
-    border-radius: 50px;
-    border: 1px solid white;
-}
-
-input::placeholder {
-    font-size: 30px;
+    width: 80%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    padding-left: 30px;
+    text-align: center;
+}
+
+.searchInput {
+    margin-left: 150px;
+    width: 400px;
+    height: 45px;
+    font-size: 15px;
+    background-color: #141517;
+    border-radius: 50px;
+    border: 1px solid #9da5b6;
+    text-align: center;
+}
+
+.searchInput::placeholder {
+    font-size: 15px;
+    text-align: center;
 }
 
 .searchBtn {
@@ -99,45 +117,23 @@ input::placeholder {
 }
 
 .userBtnWrap {
-    width: 300px;
+    flex-shrink: 1;
     height: 100px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
 }
 .userBtnWrap > div {
     margin-right: 20px;
 }
 
-.logoutBtn {
-    width: 110px;
-    height: 50px;
-    border: 2px solid white;
-    border-radius: 15px;
-    font-size: 18px;
-    line-height: 2.5;
+.userBtn {
+    cursor: pointer;
     text-align: center;
-}
-
-.myInfoBtn {
-    width: 110px;
-    height: 50px;
-    border: 2px solid white;
-    border-radius: 15px;
-    font-size: 18px;
-    line-height: 2.5;
-    text-align: center;
-}
-
-.myNotificationBtn {
-    width: 90px;
-    height: 50px;
-    border: 2px solid white;
-    border-radius: 15px;
-    font-size: 18px;
-    line-height: 2.5;
-    text-align: center;
+    border: 1px solid #9da5b6;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .dropdown-menu {
@@ -170,18 +166,12 @@ input::placeholder {
 }
 
 .logo {
-    width: 400px;
-    height: 180px;
-    padding-top: 20px;
-    margin-bottom: 20px;
-    color: #f7ff56;
-    font-weight: 600;
-    font-size: 90px;
+    font-weight: 700;
+    color: #faef9b;
 }
 
 /* MAIN */
 main {
-    width: 2500px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -191,8 +181,10 @@ main {
 }
 /* sideBar */
 .gnbBox {
-    width: 500px;
-    height: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
     display: flex;
     flex-direction: column;
 }
@@ -202,8 +194,6 @@ main {
 }
 
 .sideBarTitle {
-    margin-left: 25px;
-    margin-bottom: 25px;
     color: rgba(255, 255, 255, 0.5);
     font-weight: 600;
     font-size: 24px;
@@ -236,7 +226,7 @@ main {
     height: 40px;
     overflow: hidden;
     margin-right: 15px;
-    border: 2px solid #f7ff56;
+    border: 2px solid #faef9b;
     border-radius: 50%;
 }
 .sidebarViews {
@@ -262,14 +252,14 @@ main {
     margin-right: 15px;
 }
 /* SECTION */
-.sectionBox {
-    width: 1800px;
+
+main {
+    width: 100%;
+    margin: 0;
 }
-section {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-right: 30px;
+
+.sectionContainer {
+    width: 80vw;
 }
 
 .mainVideoBox {
@@ -310,12 +300,7 @@ section {
 }
 
 .videoBox {
-    display: block;
-    align-items: center;
-    justify-content: center;
-    width: 30%;
-    height: 330px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .videoBoxTop {
@@ -350,7 +335,7 @@ section {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 3px solid #f7ff56;
+    border: 3px solid #faef9b;
 }
 
 .videoBoxBottomInfo {
@@ -365,9 +350,13 @@ section {
 }
 
 /* FOOTER */
+.footerBox {
+    width: 90%;
+    border-top: 1px solid #9da5b6;
+}
 .memberWrap {
+    height: 200px;
     font-size: 20px;
-    margin-left: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -503,7 +492,7 @@ section {
     width: 80%;
     height: 80%;
     border-radius: 50%;
-    border: 2px solid #f7ff56;
+    border: 2px solid #faef9b;
 }
 .streamerInfoDetail {
     display: flex;
@@ -524,7 +513,7 @@ section {
     height: 20%;
     font-size: 25px;
     font-weight: 600;
-    color: #f7ff56;
+    color: #faef9b;
 }
 .streamInfo {
     display: flex;
@@ -595,7 +584,7 @@ section {
 }
 
 .chatNickname {
-    color: #f7ff56;
+    color: #faef9b;
     font-weight: 500;
     margin-right: 20px;
 }
@@ -609,7 +598,7 @@ section {
 /* myPage */
 
 .InfoMainBox {
-    background-color: #f7ff56;
+    background-color: #faef9b;
     border-radius: 10px;
     width: 1800px;
     height: 1110px;
@@ -815,7 +804,7 @@ section {
     z-index: 3;
 }
 .selectBox .select option {
-    background: #f7ff56;
+    background: #faef9b;
     color: #fff;
     padding: 3px 0;
     font-size: 16px;
@@ -833,7 +822,7 @@ section {
 .broadcastCloseBtn {
     display: flex;
     flex-direction: row;
-    background-color: #f7ff56;
+    background-color: #faef9b;
     width: 200px;
     height: 100px;
     border-radius: 10px;

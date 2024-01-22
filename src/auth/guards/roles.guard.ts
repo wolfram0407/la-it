@@ -30,7 +30,7 @@ export class RolesGuard extends AuthGuard('jwt') implements CanActivate
     {
       return false;
     }
-    const role = userRole.some((role) => user.role >= role)
+    const role = userRole.some((role) => getUser.role >= role)
     return role
   }
 }

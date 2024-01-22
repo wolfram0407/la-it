@@ -5,6 +5,7 @@ import {
     DeleteDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -22,16 +23,12 @@ export class Live {
     @Column({ type: 'varchar', nullable: false })
     title: string;
 
-    // @Column({ type: 'varchar', name: 'user_image', nullable: false })
-    // userImage: string;
-
     @Column({ type: 'varchar', name: 'user_name', nullable: false })
     userName: string;
 
-    @OneToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
+    @ManyToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
     @JoinColumn({ name: 'channel_id' })
-    channel: Channel;
-
+    channel: Channel[];
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

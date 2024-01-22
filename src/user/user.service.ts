@@ -47,6 +47,14 @@ export class UserService
     }
   }
 
+  async findUserIdByUser(userId: number)
+  {
+    const user = this.userRepository.findOne({
+      where: { userId },
+    });
+    return user;
+  }
+
   async findByKakaoId(id: string)
   {
     const user = this.userRepository.findOne({

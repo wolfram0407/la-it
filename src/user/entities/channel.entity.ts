@@ -1,9 +1,11 @@
-import {
+import
+{
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
     JoinColumn,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -12,7 +14,8 @@ import { User } from './user.entity';
 import { Live } from 'src/live/entities/live.entity';
 
 @Entity('channels')
-export class Channel {
+export class Channel
+{
     @PrimaryGeneratedColumn({ name: 'channel_id', unsigned: true })
     channelId: number;
 
@@ -21,6 +24,9 @@ export class Channel {
 
     @Column({ name: 'profile_image', nullable: true })
     channelImage: string;
+
+    @Column({ name: 'steam_key', nullable: true })
+    streamKey: string;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
@@ -33,7 +39,6 @@ export class Channel {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @OneToOne(() => Live, (live) => live.live_id, { cascade: true })
-    @JoinColumn({ name: 'live_id' })
+    @OneToMany(() => Live, (live) => live.live_id, { cascade: true })
     live: Live;
 }

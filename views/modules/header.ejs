@@ -1,50 +1,51 @@
-<header>
+<div>
     <h1 style="display: none">HEADER</h1>
     <div class="headerWrap">
-        <div class="menuAndLogoWrap">
-            <div class="logo">Li iT</div>
-        </div>
         <div class="searchWrap">
-            <input type="text" placeholder="스트리머, 게임 영상 검색" />
-            <button class="searchBtn">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+            <div class="searchInputBox">
+                <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
+            </div>
+            <div class="searchBtnBox">
+                <button class="searchBtn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
         </div>
 
         <div class="userBtnWrap">
-            <div class="logoutBtn">로그아웃</div>
-            <div class="myInfoBtn"><button id="goToMyChannelBtn">내 채널</button></div>
+            <div class="logoutBtn userBtn">로그아웃</div>
+            <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
             <!-- 알림버튼 토글 -->
-            <div class="dropdown myNotificationBtn">
+            <div class="dropdown myNotificationBtn userBtn">
                 <button data-bs-toggle="dropdown" data-bs-auto-close="false">알림</button>
                 <ul class="dropdown-menu">
                     <!-- 알림 한 단위 -->
                     <li>
                         <div>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                <div style="font-weight: 600"><라이브 시작 알림></div>
-                                <div style="margin-right: 15px">✖️</div>
+                            <div>
+                                <div><라이브 시작 알림></div>
+                                <div>✖️</div>
                             </div>
-                            <div><span style="color: #94fc13">레커</span> 님의 라이브가 시작되었습니다!</div>
+                            <div><span>레커</span> 님의 라이브가 시작되었습니다!</div>
                         </div>
                     </li>
                     <!--  -->
                     <li>
                         <div>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                <div style="font-weight: 600"><라이브 시작 알림></div>
-                                <div style="margin-right: 15px">✖️</div>
+                            <div>
+                                <div><라이브 시작 알림></div>
+                                <div>✖️</div>
                             </div>
-                            <div><span style="color: #94fc13">응디</span> 님의 라이브가 시작되었습니다!</div>
+                            <div><span>응디</span> 님의 라이브가 시작되었습니다!</div>
                         </div>
                     </li>
                     <li>
                         <div>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                <div style="font-weight: 600"><라이브 시작 알림></div>
-                                <div style="margin-right: 15px">✖️</div>
+                            <div>
+                                <div><라이브 시작 알림></div>
+                                <div>✖️</div>
                             </div>
-                            <div><span style="color: #94fc13">soo</span> 님의 라이브가 시작되었습니다!</div>
+                            <div><span>soo</span> 님의 라이브가 시작되었습니다!</div>
                         </div>
                     </li>
                 </ul>
@@ -67,10 +68,10 @@
 
 <script>
     document.querySelector('.myInfoBtn').addEventListener('click', function () {
-        window.location.href = '/api/my-page';
+        window.location.href = '/my-page';
     });
 
     document.querySelector('.logo').addEventListener('click', function () {
-        window.location.href = '/api';
+        window.location.href = '/';
     });
 </script>

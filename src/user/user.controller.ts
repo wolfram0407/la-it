@@ -19,7 +19,7 @@ export class UserController
   constructor(private readonly userService: UserService) { }
 
   @ApiBearerAuth()
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
 
@@ -69,4 +69,7 @@ export class UserController
   {
     return await this.userService.changeStreamKey(+id)
   }
+
+
+
 }

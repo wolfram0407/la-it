@@ -1,5 +1,7 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Frontend')
 @Controller()
 export class AppController
 {

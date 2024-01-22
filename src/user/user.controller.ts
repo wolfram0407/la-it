@@ -14,7 +14,7 @@ export class UserController
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('/api')
   async temp(
     @UserInfo() { id }: UserAfterAuth
   )

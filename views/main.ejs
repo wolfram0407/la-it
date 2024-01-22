@@ -28,21 +28,25 @@
         />
         <title><%= title %></title>
         <link rel="stylesheet" href="/styles/common.css" />
-        <script defer src="/script/main.js"></script>
+       
     </head>
     <body>
-        <!-- HEADER -->
-        <div class="headerBox"><%- include('./modules/header.ejs') %></div>
-
-        <main>
-            <!-- GNB -->
+        <div class="laitBox">
             <div class="gnbBox"><%- include('./modules/sideBar.ejs') %></div>
 
-            <!-- SECTION -->
-            <div class="sectionBox"><%- include('./modules/section.ejs') %></div>
-        </main>
-        <!-- FOOTER -->
-        <div class="footerBox"><%- include('./modules/footer.ejs') %></div>
+            <div class="mainBox">
+                <header class="headerBox"><%- include('./modules/header.ejs') %></header>
+                <main>
+                    <% if(path === '/my-page') { %>
+                    <!-- SECTION -->
+                    <div class="sectionBox"><%- include('./channelInfo.ejs') %></div>
+                    <% } %>
+                </main>
+                <!-- FOOTER -->
+                <footer class="footerBox"><%- include('./modules/footer.ejs') %></footer>
+            </div>
+        </div>
         <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+        <script defer src="/script/main.js"></script>
     </body>
 </html>

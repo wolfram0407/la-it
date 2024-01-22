@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { UserInfo } from 'src/common/decorator/user.decorator';
 import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
-import { ReqUpdateChannelImageDto } from './dto/req.channel.dto';
+import { ReqUpdateChannelImageDto, ReqUpdateChannelInfoDto } from './dto/req.channel.dto';
 import { ResUpdateChannelImageDto } from './dto/res.channel.dto';
 
 
@@ -29,8 +29,16 @@ export class UserController
   채널 정보
   */
 
+  //
   // update channel information
-
+  @Put('/channel/info/:id')
+  async updateChannelInfo(
+    @Param('id') id: string,
+    @Body() { description, channelImage }: ReqUpdateChannelInfoDto
+  )
+  {
+    return await this.userService.updateChannelInfo(+id, description, channelImage)
+  }
 
   // channel profile update
   @Put('/channel/update/:id')

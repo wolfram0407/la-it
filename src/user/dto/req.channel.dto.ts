@@ -1,5 +1,20 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsOptional, IsString } from "class-validator";
+
+
+export class ReqUpdateChannelInfoDto
+{
+  @ApiProperty({ required: true, example: "channel 설명" })
+  @IsString()
+  @IsOptional()
+  description: string
+
+  @ApiProperty({ required: true, example: "testImageUrl" })
+  @IsString()
+  @IsOptional()
+  channelImage: string
+}
+
 
 
 export class ReqUpdateChannelImageDto

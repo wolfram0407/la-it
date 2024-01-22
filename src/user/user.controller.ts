@@ -6,6 +6,9 @@ import { UserInfo } from 'src/common/decorator/user.decorator';
 import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
 import { ReqUpdateChannelImageDto, ReqUpdateChannelInfoDto } from './dto/req.channel.dto';
 import { ResUpdateChannelImageDto } from './dto/res.channel.dto';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/common/decorator/role.decorator';
+import { Role } from 'src/common/types/userRoles.type';
 
 
 @ApiTags('UserInfo')
@@ -16,13 +19,16 @@ export class UserController
   constructor(private readonly userService: UserService) { }
 
   @ApiBearerAuth()
+  @Roles(Role.Admin)
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+
   @Get('')
   async temp(
     @UserInfo() { id }: UserAfterAuth
   )
   {
-    console.log(id);
+    //console.log(id);
   }
 
   /*

@@ -3,10 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from './schema/chat.schema';
 import { Model } from 'mongoose';
 import { Socket } from 'socket.io';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class ChatService {
-    constructor(@InjectModel(Chat.name) private readonly ChatModel: Model<Chat>) {}
+    constructor(
+        @InjectModel(Chat.name) private readonly ChatModel: Model<Chat>,
+        private readonly userService: UserService,
+    ) {}
 
     async enterLiveRoomChat(liveId: string, socket: Socket) {
         try {
@@ -16,9 +20,9 @@ export class ChatService {
         }
     }
 
-    async createChat(socket: Socket, value: string, liveId: string) {
+    async createChat(socket: Socket, value: string, liveId: string, userId: number, nickname: string) {
         try {
-            const saveChat = new this.ChatModel({ userId: 1, liveId, content: value });
+            const saveChat = new this.ChatModel({ userId, nickname, liveId, content: value });
             return saveChat.save();
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
@@ -28,7 +32,9 @@ export class ChatService {
 
     async getAllChatByLiveId(liveId: string) {
         try {
-            const chats = await this.ChatModel.find({ where: { liveId }, select: [] });
+            console.log(liveId);
+            const chats = await this.ChatModel.find({ liveId }).select('userId nickname liveId content createdAt');
+            console.log('chats', chats);
             return chats;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');

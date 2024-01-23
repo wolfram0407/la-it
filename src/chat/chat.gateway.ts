@@ -2,9 +2,11 @@ import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from
 import { ChatService } from './chat.service';
 import { SearchDto } from './dto/chat.dto';
 import { Server, Socket } from 'socket.io';
-import { UseGuards } from '@nestjs/common';
+import { UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { EnterRoomSuccessDto } from './types/res.types';
 import { WsGuard } from 'src/auth/guards/chat.guard';
+import { AhoCorasick } from 'aho-corasick';
+import { searchProhibitedWords } from './forbidden.words';
 
 @WebSocketGateway({
     cors: {
@@ -29,17 +31,28 @@ export class ChatGateway {
 
     @SubscribeMessage('new_message')
     async createChat(client: Socket, [value, liveId]: [value: string, liveId: string]) {
-        console.log('wwuiweo');
-        const saveChat = await this.chatService.createChat(client, value, liveId);
-        console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
-        this.server.to(liveId).emit('sending_message', saveChat.content, client.handshake.auth.user.nickname);
+        console.log(client.handshake, 'client.id', client.id);
+        const { userId, nickname } = client.handshake.auth.user;
+        console.log(userId, nickname);
+        const filterWord = await searchProhibitedWords(value);
+        console.log('=====>', filterWord);
+        if (filterWord) {
+            return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
+            throw new UnprocessableEntityException('허용하지 않는 단어입니다.');
+        } else {
+            const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname);
+            console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
+            return this.server.to(liveId).emit('sending_message', saveChat.content, nickname);
+        }
     }
 
     @SubscribeMessage('get_all_chat_by_liveId')
     async getAllChatByLiveId(client: Socket, liveId: string) {
+        console.log('--');
         const socketId = client.id;
-        const messages = this.chatService.getAllChatByLiveId(liveId);
-        return this.server.emit('receiveAllChat', messages);
+        const messages = await this.chatService.getAllChatByLiveId(liveId);
+        console.log('messages', messages);
+        return this.server.emit('receive_all_chat', messages);
     }
 
     @SubscribeMessage('getSearchChatMessage')

@@ -1,7 +1,7 @@
 //const socket = io(`ws://localhost:3002/api/live`);
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1NzQ3Njc0LCJleHAiOjE3MDU4MzQwNzR9.MT_ClHuevF0DolsnzJryPHFxQleJGmVFRyGAmurGk9Q',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1OTA0MjUyLCJleHAiOjE3MDU5OTA2NTJ9.348kV0iSreQLY30UXVuLSnO2BnNpvWGTdGs0LmbzH3c',
         //token: getCookie(access_token),
     },
 });
@@ -20,5 +20,8 @@ function getAllChatByLiveId(e) {
     e.preventDefault();
     const liveId = e.target.id;
     console.log('채널메세지 가져오기 아이디', liveId);
-    return socket.emit('get_all_chat_by_liveId', liveId);
+    socket.emit('get_all_chat_by_liveId', liveId);
+    socket.on('receive_all_chat', (message) => {
+        console.log('프론트 message', message);
+    });
 }

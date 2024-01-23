@@ -55,10 +55,10 @@ export class UserService {
         }
     }
 
-    async findByKakaoIdGetUserName(id: number) {
+    async findByUserIdGetUserName(id: number) {
         const user = this.userRepository.findOne({
             where: { userId: id },
-            select: ['nickname'],
+            select: ['userId', 'nickname'],
         });
         return user;
     }

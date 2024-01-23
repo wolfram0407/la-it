@@ -49,6 +49,13 @@ socket.on('sending_message', (msg, nickname) => {
     addMessage(msg, nickname);
 });
 
+//금칙어_ 허용하지 않는 단어입니다.
+socket.on('alert', (msg) => {
+    console.log('받은거', msg);
+    alert(msg);
+    //addMessage(msg, nickname);
+});
+
 //채팅 전체 메세지 받아오기 _ 추후 방송별 채팅 메세지 받아오기 버튼 추가(유저 채널 쪽에)
 function getAllChatByLiveId(e) {
     e.preventDefault();

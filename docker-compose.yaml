@@ -8,14 +8,27 @@ services:
         ports:
             - 27017:27017
 
-    # mysql
-    lait-database-mysql:
-        image: mysql:8.0
-        environment:
-            MYSQL_DATABASE: 'final-docker'
-            MYSQL_ROOT_PASSWORD: '@gywls4646'
-        ports:
-            - 3306:3306
+  # mysql
+  lait-database-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DOCKER_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_NANE}
+    ports:
+      - 3306:3306
+    env_file:
+      - ./.env.docker
+      
+  # nginx
+  lait-backend-nginx:
+    build: 
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 1935:1935
+      - 8080:8080
+    depends_on:
+      - lait-backend-computer # lait-backend-computer 먼저 만들어진 후에 nginx 서버 생성
 
     # nginx
     lait-backend-nginx:

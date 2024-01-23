@@ -53,6 +53,7 @@
 }
 html,
 body {
+    width: 90%;
     height: 100%;
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #141517;
@@ -90,7 +91,6 @@ table {
 }
 
 .laitBox {
-    width: 100vw;
     display: flex;
     justify-content: space-between;
     height: 100vh;
@@ -100,27 +100,24 @@ table {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 100%;
+    width: 200px;
     font-size: 12px;
 }
 
-main {
-    padding: 0px !important;
-}
-
-.mainBox {
+/* .mainBox {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 90%;
     padding: 0;
-}
+} */
 
 /* HEADER */
+
 .headerWrap {
-    width: 100vw;
     display: flex;
+    width: 100vw;
     flex-direction: row;
     padding-left: 200px;
     margin-bottom: 20px;
@@ -218,18 +215,11 @@ main {
 
 .logo {
     font-weight: 700;
-    color: #faef9b;
+    color: #ffe062;
 }
 
 /* MAIN */
-main {
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    justify-content: center;
-    padding: 50px;
-    font-size: 20px;
-}
+
 /* sideBar */
 .gnbBox {
     display: flex;
@@ -301,14 +291,12 @@ main {
 }
 /* SECTION */
 
-main {
-    width: 100%;
-    margin: 0;
+.sectionBox {
+    width: 80%;
 }
 
-.sectionContainer {
-    width: 80vw;
-    margin-bottom: 40px;
+main {
+    margin: 0;
 }
 
 .mainVideoBox {
@@ -348,48 +336,68 @@ main {
     flex-direction: row;
 }
 
+.videoSectionBox {
+    margin-left: 50px;
+}
+
+.videoBoxWrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90vw;
+    margin-bottom: 500px;
+    margin-left: 100px;
+}
+
 .videoBox {
-    margin-bottom: 30px;
+    margin: 0 30px 0 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .videoBoxTop {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+    position: absolute;
 }
 
 .videoBoxTopImg {
-    width: 100%;
-    height: 70%;
-    background-color: rgb(68, 93, 114);
+    position: relative;
+    top: 60px;
+    left: 10px;
     z-index: 1;
 }
 
+.videoThumbnail {
+    position: relative;
+}
+
 .videoBoxBottom {
-    width: 100%;
-    height: 30%;
+    position: sticky;
+    top: 70px;
     display: flex;
-    flex-direction: row;
-    background-color: rgb(40, 40, 40);
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 100%;
+    margin-top: 350px;
+    width: 330px;
 }
 
 .videoBoxBottomImgWrap {
-    width: 70px;
-    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
 }
 
 .videoBoxBottomImg {
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     border: 3px solid #faef9b;
 }
 
 .videoBoxBottomInfo {
-    margin-top: 12px;
-    margin-left: 20px;
 }
 
 .videoBoxBottomNickname {
@@ -400,22 +408,27 @@ main {
 
 /* FOOTER */
 .footerBox {
-    width: 90%;
+    width: 80%;
     border-top: 1px solid #9da5b6;
 }
 .memberWrap {
     height: 200px;
-    font-size: 20px;
+    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .meber {
+    font-size: 20px;
     margin: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.icon-github:hover {
+    color: #ffe062;
 }
 
 /* live page */

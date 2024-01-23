@@ -4,16 +4,30 @@ import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/sw
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
-async function bootstrap() {
+async function bootstrap()
+{
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    app.setGlobalPrefix('/api');
+
+    const corsOptions: CorsOptions = {
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    };
+    app.enableCors(corsOptions);
+
+    //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
+    app.useWebSocketAdapter(new IoAdapter(app));
+
     const config = new DocumentBuilder().setTitle('NestJS project').setDescription('').setVersion('1.0').addBearerAuth().build();
     const customOptions: SwaggerCustomOptions = {
         swaggerOptions: {
             persistAuthorization: true,
         },
     };
+
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document, customOptions);
 

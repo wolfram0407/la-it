@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ReqSearchDto } from './dto/req.search.dto';
 
 @ApiTags('Main')
-@Controller('main')
+@Controller('/api/main')
 export class MainController
 {
   constructor(private readonly mainService: MainService) { }

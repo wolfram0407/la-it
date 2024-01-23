@@ -12,10 +12,12 @@ services:
   lait-database-mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: 'final-docker'
-      MYSQL_ROOT_PASSWORD: '@gywls4646'
+      MYSQL_DATABASE: ${DOCKER_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_NANE}
     ports:
       - 3306:3306
+    env_file:
+      - ./.env.docker
       
   # nginx
   lait-backend-nginx:

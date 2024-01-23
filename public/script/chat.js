@@ -1,7 +1,6 @@
-//const socket = io(`ws://localhost:3002/api/live`);
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1OTA0MjUyLCJleHAiOjE3MDU5OTA2NTJ9.348kV0iSreQLY30UXVuLSnO2BnNpvWGTdGs0LmbzH3c',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1OTkwNTI3LCJleHAiOjE3MDYwNzY5Mjd9.eRo5NiyCuqapfp4xV8Ez6zYc7b9xHVJvFiYQgl-1fmc',
 
         //token: '//토큰 넣으면 됩니당',
         //token: getCookie(access_token),

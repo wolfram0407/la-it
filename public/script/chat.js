@@ -68,7 +68,7 @@ function addMessage(msg, nickname) {
     console.log('==>', msg, nickname);
     const temp = `<div><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
-    chatInput.value = '';
+    return (chatInput.value = '');
 }
 
 //토큰 가져오는 함수

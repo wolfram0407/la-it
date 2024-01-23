@@ -1,10 +1,3 @@
-const socket = io(); // io function은 알아서 socket.io를 실행하고 있는 서버를 찾을 것이다!
-
-const myFace = document.getElementById('myFace');
-const muteBtn = document.getElementById('mute');
-const cameraBtn = document.getElementById('camera');
-const camerasSelect = document.getElementById('cameras');
-const audioInputsSelect = document.getElementById('audios');
 const liveStartBtn = document.getElementById('liveStartBtn');
 const liveEndBtn = document.getElementById('liveEndBtn');
 const broadcastBtn = document.querySelector('.broadcastBtn');
@@ -29,7 +22,7 @@ async function createLive() {
 }
 
 function endLive() {
-    window.location.href = '/api/my-page';
+    window.location.href = '/my-page';
 }
 
 // 방송 시작 버튼 눌렀을때 라이브 등록 처리

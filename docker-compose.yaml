@@ -1,11 +1,5 @@
 version: '0.1'
 
-# 예시
-  # my-backend-computer:
-  #   build:
-  #     파일경로: .
-  #     파일명: Dockerfile.nest
-
 #켬퓨터들
 services:
   # mongo

@@ -29,7 +29,7 @@ services:
       - lait-backend-computer # lait-backend-computer 먼저 만들어진 후에 nginx 서버 생성
 
   # nest
-  lait-backend-computer: # 추후 몽고디비 연결시 네임리졸루션(몽고 연결주소에 localhost 대신  해당 컴퓨터 이름 사용함)
+  lait-backend-computer: 
     depends_on:
     - lait-database-mongo
     - lait-database-mysql

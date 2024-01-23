@@ -1,15 +1,24 @@
+import { UserService } from './user/user.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Render, Req } from '@nestjs/common';
+import { LiveService } from './live/live.service';
 
 @ApiTags('Frontend')
 @Controller()
 export class AppController
 {
+    constructor(
+        private readonly userService: UserService,
+        private readonly liveService: LiveService
+    ) { }
+
     @Get()
     @Render('main') // Render the 'main' EJS template
-    main(@Req() req)
+    async main(@Req() req)
     {
-        return { title: 'Home Page', path: req.url }; // Pass data to the template
+        const lives = await this.liveService.findAll();
+        console.log(lives);
+        return { title: 'Home Page', path: req.url, lives: lives }; // Pass data to the template
     }
 
     @Get('live')

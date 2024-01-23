@@ -11,6 +11,7 @@ import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { join } from 'path';
 
 @Module({
     imports: [
@@ -37,4 +38,4 @@ import { MongooseModule } from '@nestjs/mongoose';
     controllers: [AppController],
     providers: [],
 })
-export class AppModule { }
+export class AppModule {}

@@ -38,11 +38,10 @@ export class ChatGateway {
         console.log('=====>', filterWord);
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
-        } else {
-            const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname);
-            console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
-            return this.server.to(liveId).emit('sending_message', saveChat.content, nickname);
         }
+        const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname);
+        console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
+        //return this.server.to(liveId).emit('sending_message', saveChat.content, nickname);
     }
 
     @SubscribeMessage('get_all_chat_by_liveId')

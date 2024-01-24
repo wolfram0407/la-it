@@ -1,19 +1,21 @@
 import { Channel } from 'src/user/entities/channel.entity';
-import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import
+    {
+        Column,
+        CreateDateColumn,
+        DeleteDateColumn,
+        Entity,
+        JoinColumn,
+        ManyToOne,
+        OneToOne,
+        PrimaryGeneratedColumn,
+        UpdateDateColumn,
+    } from 'typeorm';
 @Entity({
     name: 'lives',
 })
-export class Live {
+export class Live
+{
     @PrimaryGeneratedColumn({ unsigned: true })
     live_id: number;
 
@@ -34,7 +36,9 @@ export class Live {
 
     @ManyToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
     @JoinColumn({ name: 'channel_id' })
-    channel: Channel[];
+    channel: Channel;
+
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

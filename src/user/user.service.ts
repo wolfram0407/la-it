@@ -30,14 +30,15 @@ export class UserService
         profileImage,
         provider,
       });
+      console.log(user)
       // user channel create
       const userChannel = await this.channelRepository.save({
         description: '',
         channelImage: profileImage,
         streamKey: randomId(),
-        user_id: user.userId,
+        user: user
       });
-
+      console.log(userChannel);
       return user;
     } catch (error)
     {
@@ -112,6 +113,17 @@ export class UserService
     try
     {
       const channel = await this.channelRepository.findBy({ channelId: id });
+      return channel
+    } catch (error)
+    {
+
+    }
+  }
+  async FindChannelIdByChannel(id: number)
+  {
+    try
+    {
+      const channel = await this.channelRepository.findOne({ where: { channelId: id } });
       return channel
     } catch (error)
     {

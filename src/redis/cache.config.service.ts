@@ -15,6 +15,10 @@ export const redisProvider = [
                 },
             });
             await client.connect();
+
+            const connectCheck = await client.ping();
+            if (connectCheck === 'PONG') console.log('REDIS Connect!');
+
             return client;
         },
     },

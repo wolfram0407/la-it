@@ -15,6 +15,7 @@ const chatInputEnter = document.querySelector('#chatInput');
 
 const sendChatBtn = document.querySelector('#sendChatBtn');
 const chatRecord = document.querySelector('#record');
+let waitToSaveMongoDB = [];
 
 let roomNum;
 
@@ -38,7 +39,7 @@ function chatSending(e) {
     e.preventDefault();
     const chatInput = document.querySelector('#chatInput');
     console.log('chatInput', chatInput.value, roomNum);
-    socket.emit('new_message', chatInput.value, roomNum);
+    socket.emit('new_message', chatInput.value, roomNum, waitToSaveMongoDB);
 }
 
 //메세지 받아오기

@@ -30,18 +30,22 @@ export class ChatGateway {
     }
 
     @SubscribeMessage('new_message')
-    async createChat(client: Socket, [value, liveId]: [value: string, liveId: string]) {
+    async createChat(client: Socket, [value, liveId]: [value: string, liveId: string], waitToSaveMongoDB: object[]) {
         console.log(client.handshake, 'client.id', client.id);
+
         const { userId, nickname } = client.handshake.auth.user;
         console.log(userId, nickname);
+
         const filterWord = await searchProhibitedWords(value);
         console.log('=====>', filterWord);
+
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
         }
-        const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname);
+        const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname, waitToSaveMongoDB);
         console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
-        //return this.server.to(liveId).emit('sending_message', saveChat.content, nickname);
+
+        return this.server.to(liveId).emit('sending_message', value, nickname);
     }
 
     @SubscribeMessage('get_all_chat_by_liveId')

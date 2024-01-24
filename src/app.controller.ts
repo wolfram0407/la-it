@@ -1,6 +1,6 @@
 import { UserService } from './user/user.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Render, Req } from '@nestjs/common';
+import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 
 @ApiTags('Frontend')
@@ -21,7 +21,7 @@ export class AppController {
 
     @Get('live/:liveId')
     @Render('main') // Render the 'main' EJS template
-    async live(@Param('liveId') liveId: string) {
+    async live(@Param('liveId') liveId: string, @Res() res: Response) {
         const live = await this.liveService.findOne(+liveId);
         console.log(live);
         return { title: 'Live Page', path: '/live', live: live };
@@ -33,9 +33,11 @@ export class AppController {
         return { title: 'My Page', path: req.url };
     }
 
-    @Get('live-master')
+    @Get('live-master/:channelId')
     @Render('main') // Render the 'main' EJS template
-    provideLive(@Req() req) {
-        return { title: 'live-master', path: req.url };
+    async provideLive(@Param('channelId') channelId: string, @Req() req) {
+        //const channel = await this.userService.FindChannelIdByChannel(+channelId);
+        //console.log(channel);
+        //return { title: 'live-master', path: '/live-master', channel };
     }
 }

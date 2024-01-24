@@ -9,7 +9,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule],
+    imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule], //
     controllers: [],
     providers: [ChatService, ChatGateway],
 })

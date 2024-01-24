@@ -13,6 +13,7 @@ export class ChatService {
     constructor(
         @InjectModel(Chat.name) private readonly ChatModel: Model<Chat>,
         private readonly userService: UserService,
+        //private testService: TestService,
         //@Inject(CACHE_MANAGER) private cacheManager: Cache, // 캐시 매니저 인스턴스 주입
         @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
@@ -25,19 +26,15 @@ export class ChatService {
         }
     }
     async setHashCache(key: string, hashKey: string, value: string | number) {
-        //const store = this.cacheManager.store.getClient();
-        //const store = this.cacheManager.store.;
-        this.redis.hSet(key, hashKey, value); //이렇게 쓸 수 있나?
-        console.log('redis', this.redis);
-        //const store = this.cacheManager.store.getClient() : any
-        //console.log('-->', this.cacheManager);
-        //return await this.cacheManager.store.getClient().hset(key, hashKey, JSON);
+        return this.redis.hSet(key, hashKey, value); //이렇게 쓸 수 있나?
+        //console.log('redis', this.redis);
     }
+
     async createChat(socket: Socket, value: string, liveId: string, userId: number, nickname: string) {
         try {
-            await this.setHashCache('키', '해쉬키', '12, 우까까, 재밋네여');
+            await this.setHashCache('키1', '해쉬키1', '112, 우까까1, 재밋네여1');
             const saveChat = new this.ChatModel({ userId, nickname, liveId, content: value });
-            //return saveChat.save();
+            return saveChat.save();
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
             //throw new WsException('Invalid credentials.');
@@ -47,9 +44,9 @@ export class ChatService {
     async getAllChatByLiveId(liveId: string) {
         try {
             console.log(liveId);
-            const chats = await this.ChatModel.find({ liveId }).select('userId nickname liveId content createdAt');
-            console.log('chats', chats);
-            return chats;
+            //const chats = await this.ChatModel.find({ liveId }).select('userId nickname liveId content createdAt');
+            //console.log('chats', chats);
+            //return chats;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }

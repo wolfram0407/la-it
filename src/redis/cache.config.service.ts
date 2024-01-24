@@ -1,24 +1,3 @@
-//import { Injectable } from '@nestjs/common';
-//import { ConfigService } from '@nestjs/config';
-
-//@Injectable()
-//export class RedisConfigService {
-//    constructor(private configService: ConfigService) {}
-
-//    get host(): string {
-//        return this.configService.get<string>('REDIS_HOST');
-//    }
-
-//    get port(): number {
-//        return this.configService.get<number>('REDIS_PORT');
-//    }
-//    get password(): string {
-//        return this.configService.get<string>('REDIS_PASSWORD');
-//    }
-
-//    // 추가적으로 필요한 다른 설정들 (예: password, ttl 등)
-//}
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { createClient } from 'redis';
 

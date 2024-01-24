@@ -11,10 +11,7 @@ import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { redisStore } from 'cache-manager-redis-yet';
-import { RedisClientOptions } from 'redis'; //타입지정용.
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { ChatService } from './chat/chat.service';
 
 @Module({
     imports: [

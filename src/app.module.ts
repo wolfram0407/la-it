@@ -1,5 +1,5 @@
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmModuleOptions } from 'config/database.config';
@@ -11,7 +11,7 @@ import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { join } from 'path';
+
 
 @Module({
     imports: [
@@ -38,4 +38,4 @@ import { join } from 'path';
     controllers: [AppController],
     providers: [],
 })
-export class AppModule {}
+export class AppModule { }

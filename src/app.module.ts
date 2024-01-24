@@ -18,8 +18,8 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 @Module({
     imports: [
         ThrottlerModule.forRoot([{
-            ttl: 60,
-            limit: 10
+            ttl: 60000,
+            limit: 3
         }]),
         ConfigModule.forRoot({
             isGlobal: true,

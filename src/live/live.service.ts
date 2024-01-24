@@ -5,18 +5,15 @@ import { Live } from './entities/live.entity';
 import { Channel } from 'src/user/entities/channel.entity';
 
 @Injectable()
-export class LiveService
-{
+export class LiveService {
     constructor(
         @InjectRepository(Live)
         private liveRepository: Repository<Live>,
         @InjectRepository(Channel)
         private channelRepository: Repository<Channel>,
-    ) { }
+    ) {}
 
-
-    async create(title: string, thumbnail: string, category: string, channelName: string, hlsUrl: string)
-    {
+    async create(title: string, thumbnail: string, category: string, channelName: string, hlsUrl: string) {
         const userId = 1;
         const channelColumn = await this.channelRepository.findOne({ where: { user: { userId } } });
         console.log('channelColumn: ', channelColumn);
@@ -32,26 +29,35 @@ export class LiveService
             channelName,
             category,
             hlsUrl,
-            channel: channelColumn
+            channel: channelColumn,
         });
 
         return createLive;
     }
 
-    async findAll(): Promise<Live[]>
-    {
+    async end(liveId: number) {
+        const endLive = await this.liveRepository.update(liveId, {
+            status: false,
+        });
+        return endLive;
+    }
+
+    async findAll(): Promise<Live[]> {
         const allLive: Live[] = await this.liveRepository.find({ relations: ['channel'] });
         return allLive;
     }
 
-    async findOne(liveId: number)
-    {
+    async findOne(liveId: number) {
         const live = await this.liveRepository.findOne({ relations: ['channel'], where: { live_id: liveId } });
         return live;
     }
 
-    async update(liveId: number, title: string, thumbnail: string)
-    {
+    async findOneByChannelId(channelId: number) {
+        const channel = await this.liveRepository.findOne({ where: { channel: { channelId } } });
+        return channel;
+    }
+
+    async update(liveId: number, title: string, thumbnail: string) {
         const updateLive = await this.liveRepository.update(liveId, {
             thumbnail,
             title,
@@ -59,8 +65,7 @@ export class LiveService
         return this.findOne(liveId);
     }
 
-    async remove(liveId: number)
-    {
+    async remove(liveId: number) {
         const deleteLive = await this.liveRepository.delete(liveId);
         return this.findAll();
     }

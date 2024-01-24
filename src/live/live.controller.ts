@@ -17,6 +17,15 @@ export class LiveController {
         return this.liveService.create(title, thumbnail, category, channelName, hlsUrl);
     }
 
+    @ApiOperation({
+        summary: '라이브 종료',
+        description: '라이브 종료',
+    })
+    @Post('end/:liveId')
+    end(@Param('liveId') liveId: string) {
+        return this.liveService.end(+liveId);
+    }
+
     @Get()
     findAll() {
         return this.liveService.findAll();

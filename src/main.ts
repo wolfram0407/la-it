@@ -7,6 +7,7 @@ import { join } from 'path';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
+import cookieParser from 'cookie-parser';
 async function bootstrap()
 {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,7 +18,7 @@ async function bootstrap()
         credentials: true,
     };
     app.enableCors(corsOptions);
-
+    app.use(cookieParser());
     //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
     app.useWebSocketAdapter(new IoAdapter(app));
 

@@ -1,4 +1,3 @@
-//const socket = io(`ws://localhost:3002/api/live`);
 const socket = io({
     auth: {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA2MDUxNDM4LCJleHAiOjE3MDYxMzc4Mzh9.fQJHMzuJUC-LrMs-Kg0sRJb8E4X1WUPTb-ZV7fvzpYg',

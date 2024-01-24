@@ -20,10 +20,10 @@ export class User
   @Column({ nullable: true })
   provider: string
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: true, unique: true })
   nickname: string
 
-  @Column({ name: 'profile_image', nullable: false })
+  @Column({ name: 'profile_image', nullable: true })
   profileImage: string
 
   @Column({ type: 'enum', enum: Role, default: Role.User })

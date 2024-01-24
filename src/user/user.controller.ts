@@ -11,85 +11,58 @@ import { Roles } from 'src/common/decorator/role.decorator';
 import { Role } from 'src/common/types/userRoles.type';
 import { ReqUpdateUserInfoDto } from './dto/req.user.dto';
 
-
 @ApiTags('UserInfo')
 @ApiExtraModels(ResUpdateChannelImageDto)
 @Controller('/api')
-export class UserController
-{
-  constructor(private readonly userService: UserService) { }
+export class UserController {
+    constructor(private readonly userService: UserService) {}
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('/user')
-  async temp(
-    @UserInfo() { id }: UserAfterAuth
-  )
-  {
-    return await this.userService.findUserIdByUser(+id);
-  }
-  /*
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get('/user')
+    async temp(@UserInfo() { id }: UserAfterAuth) {
+        return await this.userService.findUserIdByUser(+id);
+    }
+    /*
     유저 정보
   */
-  @Put('/user/:id')
-  async userInfo(
-    @Param('id') id: string,
-    @Body() { nickname, profileImage, email }: ReqUpdateUserInfoDto
-  )
-  {
-    return await this.userService.updateUserInfo(+id, nickname, profileImage, email)
-  }
+    @Put('/user/:id')
+    async userInfo(@Param('id') id: string, @Body() { nickname, profileImage, email }: ReqUpdateUserInfoDto) {
+        return await this.userService.updateUserInfo(+id, nickname, profileImage, email);
+    }
 
-
-  /*
+    /*
   채널 정보
   */
 
-  //
-  // update channel information
-  @Put('/channel/info/:id')
-  async updateChannelInfo(
-    @Param('id') id: string,
-    @Body() { description, channelImage }: ReqUpdateChannelInfoDto
-  )
-  {
-    return await this.userService.updateChannelInfo(+id, description, channelImage)
-  }
-
-  // channel profile update
-  @Put('/channel/update/:id')
-  async updatImage(
-    @Param('id') id: string,
-    @Body() { imageUrl, reset }: ReqUpdateChannelImageDto
-  ): Promise<ResUpdateChannelImageDto>
-  {
-    if (reset)
-    {
-      return await this.userService.updateChannelImage(+id, imageUrl)
+    //
+    // update channel information
+    @Put('/channel/info/:id')
+    async updateChannelInfo(@Param('id') id: string, @Body() { description, channelImage }: ReqUpdateChannelInfoDto) {
+        return await this.userService.updateChannelInfo(+id, description, channelImage);
     }
-    const defaultUrl = 'http://localhost:3000/testUrl';
-    return await this.userService.updateChannelImage(+id, defaultUrl)
 
-  }
+    // channel profile update
+    @Put('/channel/update/:id')
+    async updatImage(@Param('id') id: string, @Body() { imageUrl, reset }: ReqUpdateChannelImageDto): Promise<ResUpdateChannelImageDto> {
+        if (reset) {
+            return await this.userService.updateChannelImage(+id, imageUrl);
+        }
+        const defaultUrl = 'http://localhost:3000/testUrl';
+        return await this.userService.updateChannelImage(+id, defaultUrl);
+    }
 
-  @Put('/channel/change-key/:id')
-  async changeStreamKey(
-    @Param('id') id: string,
-  )
-  {
-    return await this.userService.changeStreamKey(+id)
-  }
+    @Put('/channel/change-key/:id')
+    async changeStreamKey(@Param('id') id: string) {
+        return await this.userService.changeStreamKey(+id);
+    }
 
-  @ApiBearerAuth()
-  @Roles(Role.User)
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
-  @Put('/channel/stream/:id')
-  async resetStreamKey(
-    @Param('id') id: string,
-  )
-  {
-    return await this.userService.resetStreamKey(+id)
-  }
-
+    @ApiBearerAuth()
+    @Roles(Role.User)
+    @UseGuards(RolesGuard)
+    @UseGuards(JwtAuthGuard)
+    @Put('/channel/stream/:id')
+    async resetStreamKey(@Param('id') id: string) {
+        return await this.userService.resetStreamKey(+id);
+    }
 }

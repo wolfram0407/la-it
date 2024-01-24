@@ -2,20 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Live } from './entities/live.entity';
+import { Channel } from 'src/user/entities/channel.entity';
 
 @Injectable()
 export class LiveService {
     constructor(
         @InjectRepository(Live)
         private liveRepository: Repository<Live>,
+        @InjectRepository(Channel)
+        private channelRepository: Repository<Channel>,
     ) {}
 
-    async create(title: string, userName: string, thumbnail: string, userImage: string) {
+    async create(title: string, thumbnail: string, category: string, channelName: string, hlsUrl: string) {
+        const userId = 1;
+        const channelColumn = await this.channelRepository.findOne({ where: { user: { userId } } });
+        console.log('channelColumn: ', channelColumn);
+        channelName = channelColumn.channelName;
+        console.log('channelName: ', channelName);
+        const streamKey = channelColumn.streamKey;
+        console.log('streamKey: ', streamKey);
+        hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
         const createLive = await this.liveRepository.save({
-            userName,
-            userImage,
-            thumbnail,
             title,
+            thumbnail,
+            channelName,
+            category,
+            hlsUrl,
         });
 
         return createLive;

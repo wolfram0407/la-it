@@ -1,8 +1,10 @@
 <div class="liveMainBox">
     <div class="liveVideoBox">
         <div class="VideoBox">
-            <div class="videoSection"></div>
-            <div class="videoSetting">
+            <div class="videoSection">
+                <video id="video" autoplay width="100%" height="777px" controls></video>
+            </div>
+            <!-- <div class="videoSetting">
                 <div class="setting1">
                     <div class="play">
                         <img src="/imgs/play-button-arrowhead.png" />
@@ -22,11 +24,11 @@
                     </div>
                     <div class="wideBtn"><img src="/imgs/fullscreen.png" /></div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="liveStreamerInfo">
             <div class="liveTitle spacelLeft">
-                <span>7시 산악회 전까지 마카오톡</span>
+                <span><%= live.title %></span>
             </div>
             <div class="streamerInfo spacelLeft">
                 <div class="streamerImg">
@@ -35,9 +37,9 @@
                     />
                 </div>
                 <div class="streamerInfoDetail spacelLeft">
-                    <div class="streamerNickname"><span>핫다주</span></div>
+                    <div class="streamerNickname"><span><%= live.channelName %></span></div>
                     <div class="streamerTheme">
-                        <span>마인크래프트 플레이 중</span>
+                        <span><%= live.title %></span>
                     </div>
                     <div class="streamInfo">
                         <div>현재<span> 5,131 </span>시청중</div>

@@ -6,10 +6,9 @@ const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
 async function createLive() {
     await axios
         .post('/api/live/create', {
-            title: '라이브 등록 테스트',
+            title: '라이브 타이틀',
             thumbnail: 'test image',
-            userName: 'test user',
-            userImage: 'test userImage',
+            category: '먹방',
         })
         .then(function (response) {
             broadcastBtn.hidden = true;

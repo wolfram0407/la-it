@@ -36,9 +36,9 @@
                 <% if(path==='/my-page' ) { %>
                     <div><%- include('./channelInfo.ejs') %></div>
                     <% } else if(path==='/live' ) { %>
-                        <div><%- include('./livePage.ejs', {live: live}) %></div>
-                        <% } else if(path==='/live-master' ) { %>
-                            <div><%- include('./live-provide-page.ejs') %></div>
+                        <div><%- include('./live.ejs', {live: live}) %></div>
+                        <% } else if(path==='/streaming' ) { %>
+                            <div><%- include('./streaming.ejs', {channel: channel}, {live: live}) %></div>
                             <% } else { %>
                                 <div class="videoBoxWrap">
                                     <% lives.forEach(live=> { %>

@@ -3,6 +3,8 @@ const liveEndBtn = document.getElementById('liveEndBtn');
 const broadcastBtn = document.querySelector('.broadcastBtn');
 const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
 const liveId = document.querySelector('.liveId').textContent;
+const channelId = document.querySelector('.channelId').textContent;
+console.log(channelId);
 
 // 방송 시작 버튼 눌렀을때 라이브 등록 처리
 liveStartBtn.addEventListener('click', createLive);
@@ -46,7 +48,7 @@ async function endLive() {
     await axios
         .post(`/api/live/end/${liveId}`)
         .then(function (response) {
-            window.location.href = '/my-page';
+            window.location.href = `/my-page/${channelId}`;
         })
         .catch(function (error) {
             console.log(error);

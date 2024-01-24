@@ -37,6 +37,7 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async provideLive(@Param('channelId') channelId: string, @Req() req) {
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
+        console.log('channel: ', channel);
         const live = await this.liveService.findOneByChannelId(+channelId);
         console.log('live: ', live);
 

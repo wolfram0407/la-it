@@ -1,4 +1,6 @@
 <div class="liveMasterWrap">
+    <div class="liveId" style="display: none"><%= live.live_id %></div>
+    <div class="channelId" style="display: none"><%= channel.channelId %></div>
     <div class="liveMasterMainBox">
         <div class="liveMasterVideoBox">
             <div id="call">
@@ -33,8 +35,7 @@
         </div> -->
         <div class="liveMasterSettingBox">
             <div class="masterSettingBoxLeft">
-                <div class="masterSettingTitle"><input type="text" placeholder="TEST 방송입니다" /> <img
-                        src="/imgs/edit.png" /></div>
+                <div class="masterSettingTitle"><input type="text" placeholder="TEST 방송입니다" /> <img src="/imgs/edit.png" /></div>
                 <div class="masterSettingCatecory">
                     <div class="selectBox">
                         <select name="lineCategory" class="select">
@@ -51,8 +52,7 @@
                 </div>
             </div>
             <div class="MasterSettingBoxRight">
-                <div class="broadcastBtn"><img src="/imgs/facetime-button (1).png" /><button
-                        id="liveStartBtn">방송시작</button></div>
+                <div class="broadcastBtn"><img src="/imgs/facetime-button (1).png" /><button id="liveStartBtn">방송시작</button></div>
                 <div class="broadcastCloseBtn" hidden>
                     <img src="/imgs/facetime-button (1).png" /><button id="liveEndBtn">방송종료</button>
                 </div>

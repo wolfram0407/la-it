@@ -1,4 +1,4 @@
-version: '0.1'
+version: '3.7'
 
 #켬퓨터들
 services:
@@ -12,8 +12,8 @@ services:
   lait-database-mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: ${DOCKER_DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_NANE}
+      MYSQL_DATABASE: ${DOCKER_DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_PASSWORD}
     ports:
       - 3306:3306
     env_file:

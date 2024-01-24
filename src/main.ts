@@ -8,9 +8,24 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
 import cookieParser from 'cookie-parser';
+import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
+import * as winston from 'winston';
+
 async function bootstrap()
 {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+        logger: WinstonModule.createLogger({
+            transports: [
+                new winston.transports.Console({
+                    level: 'info',
+                    format: winston.format.combine(
+                        winston.format.timestamp(),
+                        utilities.format.nestLike('La-it', { prettyPrint: true }),
+                    )
+                })
+            ]
+        })
+    });
 
     const corsOptions: CorsOptions = {
         origin: '*',

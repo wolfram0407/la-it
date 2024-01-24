@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
@@ -57,8 +57,12 @@ async function bootstrap()
     app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setViewEngine('ejs');
 
+
     app.enableCors();
 
+
     await app.listen(3002);
+    Logger.log(`STAGE: ${process.env.STAGE}`);
+    Logger.log(`listening on ${3002}`);
 }
 bootstrap();

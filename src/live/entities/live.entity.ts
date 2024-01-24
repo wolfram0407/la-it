@@ -23,8 +23,14 @@ export class Live {
     @Column({ type: 'varchar', nullable: false })
     title: string;
 
-    @Column({ type: 'varchar', name: 'user_name', nullable: false })
-    userName: string;
+    @Column({ type: 'varchar', name: 'channel_name', nullable: false })
+    channelName: string;
+
+    @Column({ type: 'varchar' })
+    category: string;
+
+    @Column({ type: 'varchar', name: 'hls_url' })
+    hlsUrl: string;
 
     @ManyToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
     @JoinColumn({ name: 'channel_id' })

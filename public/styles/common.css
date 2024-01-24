@@ -91,15 +91,17 @@ table {
 }
 
 .laitBox {
+    width: 100vw;
+    text-align: center;
     display: flex;
-    justify-content: space-between;
-    height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 /* HEADER */
 
 .headerWrap {
-    width: 100vw;
+    /* width: 100vw; */
     display: flex;
     justify-content: space-around;
     flex-direction: row;
@@ -118,7 +120,7 @@ table {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-left: 50px;
+    padding-left: 80px;
 }
 
 .searchInput {
@@ -197,23 +199,28 @@ table {
 /* MAIN */
 
 .videoBoxWrap {
-    margin-left: 290px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    /* width: 90vw; */
-    margin-bottom: 200px;
-}
-
-.videoBox {
+    /* margin-left: 250px; */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 100px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.videoBox {
+    cursor: pointer;
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .videoBoxTop {
-    position: absolute;
+    margin-bottom: 20px;
+    position: relative;
+    bottom: 50px;
+    height: 210px;
 }
 
 .videoBoxTopImg {
@@ -223,25 +230,21 @@ table {
     z-index: 1;
 }
 
-.videoThumbnail {
-    position: relative;
-}
-
 .videoBoxBottom {
-    position: sticky;
-    top: 70px;
+    cursor: pointer;
     display: flex;
     justify-content: flex-start;
-    align-items: stretch;
+    align-items: center;
     height: 100%;
-    margin-top: 350px;
-    width: 330px;
+    /* margin-top: 350px; */
+    /* width: 330px; */
 }
 
 .videoBoxBottomImgWrap {
+    cursor: pointer;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: start;
     margin-right: 20px;
 }
 
@@ -296,19 +299,6 @@ table {
     width: 70%;
     display: flex;
     flex-direction: column;
-}
-
-.VideoBox {
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 800px;
-}
-
-.videoSection {
-    width: 100%;
-    height: 730px;
 }
 
 .videoSetting {
@@ -534,6 +524,7 @@ table {
 /* myPage */
 
 .InfoMainBox {
+    width: 100vw;
     margin-top: 70px;
     height: 100vh;
     border-radius: 10px;

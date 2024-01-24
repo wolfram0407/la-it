@@ -28,18 +28,23 @@
         </div>
         <div class="liveStreamerInfo">
             <div class="liveTitle spacelLeft">
-                <span><%= live.title %></span>
+                <span>
+                    <%= live.title %>
+                </span>
             </div>
             <div class="streamerInfo spacelLeft">
                 <div class="streamerImg">
                     <img
-                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340"
-                    />
+                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340" />
                 </div>
                 <div class="streamerInfoDetail spacelLeft">
-                    <div class="streamerNickname"><span><%= live.channelName %></span></div>
+                    <div class="streamerNickname"><span>
+                            <%= live.channelName %>
+                        </span></div>
                     <div class="streamerTheme">
-                        <span><%= live.title %></span>
+                        <span>
+                            <%= live.title %>
+                        </span>
                     </div>
                     <div class="streamInfo">
                         <div>현재<span> 5,131 </span>시청중</div>
@@ -59,7 +64,8 @@
                 </div>
             </div>
             <div class="chatInput">
-                <input type="text" id="chatInput" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke" />
+                <input type="text" id="chatInput" class="chatInputText"
+                    style="width: 80%; font-size: 20px; color: whitesmoke" />
                 <button id="sendChatBtn">전송</button>
             </div>
         </div>

@@ -29,23 +29,23 @@
 
 <body>
     <div class="laitBox">
-        
+
         <div class="mainBox">
             <header class="headerBox"><%- include('./modules/header.ejs') %></header>
             <main>
                 <% if(path==='/my-page' ) { %>
                     <div><%- include('./channelInfo.ejs') %></div>
-                <% } else if(path==='/live' ) { %>
-                    <div><%- include('./livePage.ejs', {live: live}) %></div>
-                <% } else if(path==='/live-master' ) { %>
-                    <div><%- include('./live-provide-page.ejs') %></div>
-                <% } else { %>
-                    <div class="videoBoxWrap">
-                        <% lives.forEach(live=> { %>
-                            <div><%- include('./modules/section.ejs', {live:live}) %></div>
-                        <% }) %>
-                    </div>
-                <% } %>
+                    <% } else if(path==='/live' ) { %>
+                        <div><%- include('./livePage.ejs', {live: live}) %></div>
+                        <% } else if(path==='/live-master' ) { %>
+                            <div><%- include('./live-provide-page.ejs') %></div>
+                            <% } else { %>
+                                <div class="videoBoxWrap">
+                                    <% lives.forEach(live=> { %>
+                                        <div><%- include('./modules/section.ejs', {live:live}) %></div>
+                                        <% }) %>
+                                </div>
+                                <% } %>
             </main>
             <!-- FOOTER -->
             <footer class="footerBox"><%- include('./modules/footer.ejs') %></footer>

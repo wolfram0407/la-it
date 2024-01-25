@@ -9,72 +9,87 @@
                 <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
             </div>
             <div class="searchBtnBox">
-                <button class="searchBtn">
+                <button class="searchBtn" id="searchBtn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
         </div>
 
         <div class="userBtnWrap">
-            <div class="logoutBtn userBtn" hidden>로그아웃</div>
+            <div class="logoutBtn userBtn">로그아웃</div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
-            <!-- 알림버튼 토글 -->
-            <div class="dropdown myNotificationBtn userBtn">
-                <button data-bs-toggle="dropdown" data-bs-auto-close="false">알림</button>
-                <ul class="dropdown-menu">
-                    <!-- 알림 한 단위 -->
-                    <li>
-                        <div>
-                            <div>
-                                <div><라이브 시작 알림></div>
-                                <div>✖️</div>
-                            </div>
-                            <div><span>레커</span> 님의 라이브가 시작되었습니다!</div>
-                        </div>
-                    </li>
-                    <!--  -->
-                    <li>
-                        <div>
-                            <div>
-                                <div><라이브 시작 알림></div>
-                                <div>✖️</div>
-                            </div>
-                            <div><span>응디</span> 님의 라이브가 시작되었습니다!</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div>
-                                <div><라이브 시작 알림></div>
-                                <div>✖️</div>
-                            </div>
-                            <div><span>soo</span> 님의 라이브가 시작되었습니다!</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- <div class="myNotificationBtn" hidden>알림</div> -->
-            <!-- <div id="naver" >
-                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/naverlogo.jpeg" /></a>
-            </div> -->
-            <div id="kakao" >
+
+            <div id="kakao">
                 <a href="http://localhost:3002/api/auth/login/kakao">
                     <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
                 </a>
             </div>
-            <!-- <div id="google" >
-                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/googlelogo.png" /></a>
-            </div> -->
         </div>
     </div>
-</header>
+    </header>
 
-<script>
-    document.querySelector('.myInfoBtn').addEventListener('click', function () {
-        window.location.href = '/my-page/:channelId';
-    });
+    <script>
+        axios.defaults.withCredentials = true;
+        const myInfoBtn = document.querySelector('.myInfoBtn');
+        const myNotificationBtn = document.querySelector('.myNotificationBtn');
+        const kakaoLoginBtn = document.querySelector('#kakao');
+        const logoutBtn = document.querySelector('.logoutBtn');
 
-    document.querySelector('.logo').addEventListener('click', function () {
-        window.location.href = '/';
-    });
-</script>
+        const searchBtn = document.querySelector('#searchBtn');
+        const searchValue = document.querySelector('.searchInput');
+        const getAccessToken = getCookie('Authorization');
+        const AccessToken = `Bearer ${getAccessToken}`;
+        if (!getAccessToken)
+        {
+            myInfoBtn.hidden = true;
+            myNotificationBtn.hidden = true;
+            logoutBtn.hidden = true;
+        } else
+        {
+            kakaoLoginBtn.hidden = true;
+            logoutBtn.hidden = false;
+            myInfoBtn.addEventListener('click', async () =>
+            {
+                const myId = await axios.get('/my-page',
+                    {
+                        withCredentials: true,
+                        headers: {
+                            authorization: AccessToken
+                        }
+                    })
+                    .then((respones) =>
+                    {
+                        return respones.data
+                    })
+                const url = `http://localhost:3002/my-page/${myId}`
+                window.location.href = url
+            })
+
+        }
+
+        searchBtn.addEventListener('click', async () =>
+        {
+            const value = searchValue.value
+
+            if (!value)
+            {
+                alert("Please enter a value!");
+            } else
+            {
+                const url = `http://localhost:3002/search/${value}`
+                window.location.href = url
+            }
+        })
+
+        function getCookie(name)
+        {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+        document.querySelector('.logo').addEventListener('click', function ()
+        {
+            window.location.href = '/';
+        });
+    </script>

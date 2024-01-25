@@ -106,14 +106,22 @@ export class UserService {
             return channel;
         } catch (error) {}
     }
-
+    async findChannelIdByUserId(userId: number) {
+        try {
+            const channel = await this.channelRepository.findOne({
+                where: {
+                    user: { userId },
+                },
+            });
+            return channel;
+        } catch (error) {}
+    }
     async FindChannelIdByChannel(id: number) {
         try {
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
             return channel;
         } catch (error) {}
     }
-
     // channel information update
     async updateChannelInfo(id: number, description: string, channelImage: string) {
         try {

@@ -8,19 +8,17 @@ import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Auth')
 @Controller('/api/auth')
-export class AuthController
-{
-    constructor(private readonly configService: ConfigService) { }
+export class AuthController {
+    constructor(private readonly configService: ConfigService) {}
 
     @UseGuards(KakaoAuthGuard)
     @Get('login/kakao')
-    async kakao(@Req() req): Promise<void> { }
+    async kakao(@Req() req): Promise<void> {}
 
     @UseGuards(KakaoAuthGuard)
     @Redirect('/')
     @Get('/login/kakao/callback')
-    async callbacks(@Req() req, @Res({ passthrough: true }) res)
-    {
-        res.cookie('accessToken', req.user.access_token);
+    async callbacks(@Req() req, @Res({ passthrough: true }) res) {
+        res.cookie('Authorization', req.user.access_token);
     }
 }

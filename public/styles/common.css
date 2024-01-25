@@ -108,6 +108,7 @@ table {
     height: 150px;
 }
 .menuAndLogoWrap {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -196,6 +197,11 @@ table {
     color: #ffe062;
 }
 
+.main__inner {
+    max-width: 1400px;
+    min-width: 1000px;
+}
+
 /* MAIN */
 
 .videoBoxWrap {
@@ -209,6 +215,7 @@ table {
 }
 
 .videoBox {
+    height: 250px;
     cursor: pointer;
     margin: 40px;
     display: flex;

@@ -1,4 +1,5 @@
 import { ExecutionContext, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { AuthGuard } from "@nestjs/passport";
@@ -15,7 +16,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
   {
-    // refresh token 진행 할건지 논의 필요
     return super.canActivate(context)
   }
 }

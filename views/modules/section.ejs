@@ -1,27 +1,25 @@
 <!-- 비디오 박스 시작-->
-<div class="videoBox">
-    <div id="liveId" style="display: none"><%= live.live_id %></div>
+<a href="/live/<%= live.channel.channelId %>" class="videoBox">
     <div class="videoBoxTop">
         <div class="videoBoxTopImg">
             <img class="liveImage" src="/imgs/free-icon-live-1246264.png" />
         </div>
         <div class="videoThumbnail">
-            <img
-                src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAzMjZfMTA1%2FMDAxNjQ4MjgxOTA4NjU4.XSARTp9bx4QDc4OtOHmYZcsd8LkTAs2F-mZgXHgmKEcg.aypi_erZ1qcwZVaAzTYhkYedSkKP2dT8hnzpDz7WfQYg.PNG.kplayer02%2F3.png&type=a340"
-            />
+            <img src="/imgs/default/image.png" />
         </div>
     </div>
     <div class="videoBoxBottom">
         <div class="videoBoxBottomImgWrap">
-            <img
-                class="videoBoxBottomImg"
-                src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMThfMTY4%2FMDAxNzAwMjM2NjYwMDU2.zDEZy1sYaQiP9pLY6DqKve0U1kKH_7ASF-ESpm9P-Qkg.LePJ3k_0rhE5J9c7Nll3tl7xH5x50K5U6jxywPERD8wg.PNG.sso_mi__0_0%2F%25BE%25D5.png&type=a340"
-            />
+            <img class="videoBoxBottomImg" src="/imgs/default/userIcon.jpg" />
         </div>
         <div class="videoBoxBottomInfo">
-            <div><%= live.title %></div>
-            <div class="videoBoxBottomNickname"><%= live.channelName %></div>
+            <div>
+                <%= live.title %>
+            </div>
+            <div class="videoBoxBottomNickname">
+                <%= live.channelName %>
+            </div>
         </div>
     </div>
-</div>
+</a>
 <!-- 비디오박스 끝 -->

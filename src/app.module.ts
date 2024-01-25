@@ -12,6 +12,8 @@ import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import sentryConfig from './common/config/sentry.config';
 
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ImageModule } from './image/image.module';
@@ -27,6 +29,7 @@ import { ImageModule } from './image/image.module';
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
+            load: [sentryConfig],
         }),
         MongooseModule.forRootAsync({
             inject: [ConfigService],
@@ -34,6 +37,14 @@ import { ImageModule } from './image/image.module';
                 uri: configService.get<string>('MONGO_URL'),
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+            }),
+        }),
+        JwtModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                global: true,
+                secret: config.get<string>('JWT_SECRET_KEY'),
+                signOptions: { expiresIn: '1d' },
             }),
         }),
         ConfigModule.forRoot(), // 환경변수를 사용하기 위한 ConfigModule

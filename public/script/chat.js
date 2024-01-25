@@ -1,7 +1,6 @@
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA2MDEzOTU4LCJleHAiOjE3MDYxMDAzNTh9.6A7VB9VqyK_mLdYG8zyBHl9qXglOjsaeIMVe6qe8P4c',
-
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA2MDUxNDM4LCJleHAiOjE3MDYxMzc4Mzh9.fQJHMzuJUC-LrMs-Kg0sRJb8E4X1WUPTb-ZV7fvzpYg',
         //token: '//토큰 넣으면 됩니당',
         //token: getCookie(access_token),
     },
@@ -16,6 +15,7 @@ const chatInputEnter = document.querySelector('#chatInput');
 
 const sendChatBtn = document.querySelector('#sendChatBtn');
 const chatRecord = document.querySelector('#record');
+let waitToSaveMongoDB = [];
 
 let roomNum;
 
@@ -39,13 +39,20 @@ function chatSending(e) {
     e.preventDefault();
     const chatInput = document.querySelector('#chatInput');
     console.log('chatInput', chatInput.value, roomNum);
-    socket.emit('new_message', chatInput.value, roomNum);
+    socket.emit('new_message', chatInput.value, roomNum, waitToSaveMongoDB);
 }
 
 //메세지 받아오기
 socket.on('sending_message', (msg, nickname) => {
     console.log('받은거', msg, nickname);
     addMessage(msg, nickname);
+});
+
+//금칙어_ 허용하지 않는 단어입니다.
+socket.on('alert', (msg) => {
+    console.log('받은거', msg);
+    alert(msg);
+    //addMessage(msg, nickname);
 });
 
 //채팅 전체 메세지 받아오기 _ 추후 방송별 채팅 메세지 받아오기 버튼 추가(유저 채널 쪽에)
@@ -60,7 +67,7 @@ function addMessage(msg, nickname) {
     console.log('==>', msg, nickname);
     const temp = `<div><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
-    chatInput.value = '';
+    return (chatInput.value = '');
 }
 
 //토큰 가져오는 함수

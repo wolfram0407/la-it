@@ -62,7 +62,6 @@ export class UserController {
     @Put('/channel/change-key/:id')
     async changeStreamKey(@Param('id') id: string) {
         console.log('유저 컨트롤러 체인지', id);
-
         return await this.userService.changeStreamKey(+id);
     }
 

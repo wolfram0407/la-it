@@ -34,6 +34,7 @@ async function sendChannelInfoData(e) {
     //channel info 데이터 넣기
     await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, AccessToken);
 
+    location.reload();
     document.querySelector('.channelInfoContainer').removeAttribute('hidden');
     document.querySelector('.homeBox').removeAttribute('hidden');
     document.querySelector('.channelInfoSettingContainer').setAttribute('hidden', true);

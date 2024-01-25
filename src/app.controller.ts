@@ -1,3 +1,4 @@
+import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
@@ -14,6 +15,7 @@ export class AppController
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
+        private readonly mainService: MainService,
     ) { }
 
     @Get()
@@ -64,5 +66,13 @@ export class AppController
         const live = await this.liveService.findOneByChannelId(+channelId);
 
         return { title: 'Streaming Page', path: '/streaming', channel, live };
+    }
+    @Render('main') // Render the 'main' EJS template
+    @Get('search/:value')
+    async searchPage(@Param('value') search: string)
+    {
+        const findValue = await this.mainService.findByBJName(search);
+        console.log(findValue)
+        return { title: 'Search Page', path: '/search', findValue };
     }
 }

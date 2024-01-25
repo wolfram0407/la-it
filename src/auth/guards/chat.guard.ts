@@ -24,7 +24,8 @@ export class WsGuard implements CanActivate {
                     throw new UnauthorizedException('인증이 유효하지 않습니다. ');
                 } else {
                     //next()
-                    const findUser = await this.userService.findByKakaoIdGetUserName(+userId);
+                    const findUser = await this.userService.findByUserIdGetUserName(+userId);
+                    console.log('findUser', findUser);
                     context.switchToWs().getClient().handshake.auth.user = findUser; //TypeError: Cannot create property 'user' on string 'first'
                     return true;
                 }

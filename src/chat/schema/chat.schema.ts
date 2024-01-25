@@ -16,6 +16,9 @@ export class Chat {
     userId: number;
 
     @Prop()
+    nickname: string;
+
+    @Prop()
     liveId: string;
 
     @Prop({ required: true })

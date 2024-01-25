@@ -1,4 +1,3 @@
-
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,17 +15,21 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import sentryConfig from './common/config/sentry.config';
 
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { ImageModule } from './image/image.module';
 
 @Module({
     imports: [
-        ThrottlerModule.forRoot([{
-            ttl: 60000,
-            limit: 3
-        }]),
+        ThrottlerModule.forRoot([
+            {
+                ttl: 60000,
+                limit: 3,
+            },
+        ]),
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
-            load: [sentryConfig]
+            load: [sentryConfig],
         }),
         MongooseModule.forRootAsync({
             inject: [ConfigService],
@@ -42,23 +45,23 @@ import sentryConfig from './common/config/sentry.config';
                 global: true,
                 secret: config.get<string>('JWT_SECRET_KEY'),
                 signOptions: { expiresIn: '1d' },
-            })
+            }),
         }),
+        ConfigModule.forRoot(), // 환경변수를 사용하기 위한 ConfigModule
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,
         AuthModule,
         MainModule,
         ChatModule,
+        RedisModule,
+        ImageModule,
     ],
     controllers: [AppController],
     providers: [Logger],
-
 })
-export class AppModule implements NestModule
-{
-    configure(consumer: MiddlewareConsumer)
-    {
-        consumer.apply(LoggerMiddleware).forRoutes('*')
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
     }
 }

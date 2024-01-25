@@ -532,7 +532,7 @@ table {
 
 .InfoMainBox {
     width: 100vw;
-    margin-top: 70px;
+    /*margin-top: 70px;*/
     height: 100vh;
     border-radius: 10px;
     display: flex;
@@ -812,4 +812,76 @@ table {
 .ch-videoBox {
     width: 300px;
     height: 150px;
+}
+
+/*채널셋팅*/
+#channelSettingSaveBtn {
+    width: 120px;
+    height: 43px;
+    text-align: center;
+    border: 1px solid #9da5b6;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    line-height: 1.8;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+#channelInfoSettingWrap {
+    width: 65vw;
+    height: 65vh;
+    border-radius: 20px;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.channelInfoSettingInput {
+    margin: 20px;
+    width: 50vw;
+    background-color: rgb(85, 85, 85);
+}
+#streamKeyValue {
+    display: flex;
+    text-align: left;
+}
+.input-group-text {
+    width: 90px;
+}
+
+#channelInfoTitle {
+    margin: 20px auto 0px auto;
+}
+#channelInfoSettingText {
+    width: 50vw;
+    height: 200px;
+    max-height: 200px;
+    min-height: 200px;
+
+    border-radius: 10px;
+    padding: 15px;
+    color: black;
+    font-size: 18px;
+}
+
+#channelInfoSettingImage {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+#inputGroupFileAddon04 {
+    color: black;
+    border-left: transparent;
+    /*border-left: #eef1f3;*/
+}
+
+#inputGroupFileAddon04:hover {
+    color: black;
+    background-color: #f8f9fa;
+    margin: 1px;
+    border-left: transparent;
 }

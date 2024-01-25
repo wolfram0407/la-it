@@ -12,10 +12,9 @@ import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
 import * as winston from 'winston';
 import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 
-import * as Sentry from "@sentry/node"
+import * as Sentry from '@sentry/node';
 import { ConfigService } from '@nestjs/config';
-async function bootstrap()
-{
+async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
             transports: [
@@ -58,8 +57,8 @@ async function bootstrap()
     app.setViewEngine('ejs');
 
     app.enableCors();
-    Sentry.init({ dsn: configService.get('SENTRY_DSN') })
-    app.useGlobalInterceptors(new SentryInterceptor)
+    Sentry.init({ dsn: configService.get('SENTRY_DSN') });
+    app.useGlobalInterceptors(new SentryInterceptor());
     await app.listen(3002);
     Logger.log(`listening on ${3002}`);
 }

@@ -67,6 +67,7 @@ export class AppController {
 
         return { title: 'Streaming Page', path: '/streaming', channel };
     }
+
     @Render('main') // Render the 'main' EJS template
     @Get('search/:value')
     async searchPage(@Param('value') search: string) {

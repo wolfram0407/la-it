@@ -7,6 +7,9 @@ import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
+import { Roles } from './common/decorator/role.decorator';
+import { Role } from './common/types/userRoles.type';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @ApiTags('Frontend')
 @Controller()
@@ -54,8 +57,6 @@ export class AppController {
         return channel.channelId;
     }
 
-    // @ApiBearerAuth()
-    // @UseGuards(JwtAuthGuard)
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
     async provideLive(@Param('channelId') channelId: string) {

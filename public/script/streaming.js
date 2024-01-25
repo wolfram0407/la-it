@@ -3,23 +3,31 @@ const liveEndBtn = document.getElementById('liveEndBtn');
 const broadcastBtn = document.querySelector('.broadcastBtn');
 const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
 const channelId = document.querySelector('.channelId').textContent;
-console.log(channelId);
+console.log('channelId: ', channelId);
+
+const video = document.getElementById('video');
 
 // 방송 시작 버튼 눌렀을때 라이브 등록 처리
 liveStartBtn.addEventListener('click', createLive);
 liveEndBtn.addEventListener('click', endLive);
 
-const video = document.getElementById('video');
-
 async function createLive() {
+    let streamingTitle = document.getElementById('streamingTitle').value;
+    let streamingDesc = document.getElementById('streamingDesc').value;
+    console.log('streamingTitle: ', streamingTitle);
+    console.log('streamingDesc: ', streamingDesc);
+
     await axios
         .post('/api/live/create', {
-            title: '라이브 타이틀',
+            title: streamingTitle,
             thumbnail: 'test image',
-            category: '먹방',
+            description: streamingDesc,
+            channelId: channelId,
         })
         .then(function (response) {
             const streamKey = response.data.channel.streamKey;
+            console.log('streamKey: ', streamKey);
+
             broadcastBtn.hidden = true;
             broadcastCloseBtn.hidden = false;
 

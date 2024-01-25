@@ -23,9 +23,6 @@ export class Live {
     @Column({ type: 'varchar', nullable: false })
     title: string;
 
-    @Column({ type: 'varchar', name: 'channel_name', nullable: false })
-    channelName: string;
-
     @Column({ type: 'varchar' })
     description: string;
 

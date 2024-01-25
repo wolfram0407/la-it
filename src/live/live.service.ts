@@ -13,12 +13,9 @@ export class LiveService {
         private channelRepository: Repository<Channel>,
     ) {}
 
-    async create(title: string, thumbnail: string, description: string, channelName: string, hlsUrl: string) {
-        const userId = 1;
-        const channelColumn = await this.channelRepository.findOne({ where: { user: { userId } } });
+    async create(title: string, thumbnail: string, description: string, hlsUrl: string, channelId: number) {
+        const channelColumn = await this.channelRepository.findOneBy({ channelId });
         console.log('channelColumn: ', channelColumn);
-        channelName = channelColumn.channelName;
-        console.log('channelName: ', channelName);
         const streamKey = channelColumn.streamKey;
         console.log('streamKey: ', streamKey);
         hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
@@ -26,7 +23,6 @@ export class LiveService {
         const createLive = await this.liveRepository.save({
             title,
             thumbnail,
-            channelName,
             description,
             hlsUrl,
             channel: channelColumn,

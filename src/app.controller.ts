@@ -14,12 +14,14 @@ export class AppController {
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
+        private readonly mainService: MainService,
     ) {}
 
     @Get()
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
+        console.log('lives', lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 

@@ -31,7 +31,7 @@ export class UserService {
                 description: '',
                 channelImage: profileImage,
                 streamKey: randomId(),
-                user_id: user.userId,
+                user: user,
             });
 
             return user;

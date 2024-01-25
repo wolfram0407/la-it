@@ -9,7 +9,6 @@ import { Observable } from "rxjs";
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     private reflector: Reflector,
-    private jwtService: JwtService,
   )
   {
     super();
@@ -17,7 +16,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
   {
-
     return super.canActivate(context)
   }
 }

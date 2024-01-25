@@ -14,13 +14,14 @@ export class AppController {
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
-    ) { }
-
+        private readonly mainService: MainService,
+    ) {}
 
     @Get()
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
+        console.log(lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
@@ -68,10 +69,9 @@ export class AppController {
     }
     @Render('main') // Render the 'main' EJS template
     @Get('search/:value')
-    async searchPage(@Param('value') search: string)
-    {
+    async searchPage(@Param('value') search: string) {
         const findValue = await this.mainService.findByBJName(search);
-        console.log(findValue)
+        console.log(findValue);
         return { title: 'Search Page', path: '/search', findValue };
     }
 }

@@ -16,7 +16,7 @@
         </div>
 
         <div class="userBtnWrap">
-            <div class="logoutBtn userBtn" hidden>로그아웃</div>
+            <div class="logoutBtn userBtn">로그아웃</div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
             <!-- 알림버튼 토글 -->
             <div class="dropdown myNotificationBtn userBtn">
@@ -70,9 +70,32 @@
 </header>
 
 <script>
-    document.querySelector('.myInfoBtn').addEventListener('click', function () {
-        window.location.href = '/my-page/:channelId';
-    });
+
+    const myInfoBtn = document.querySelector('.myInfoBtn');
+    const myNotificationBtn = document.querySelector('.myNotificationBtn');
+    const kakaoLoginBtn = document.querySelector('#kakao');
+    const logoutBtn = document.querySelector('.logoutBtn');
+
+    console.log(document.cookie)
+
+    if(!document.cookie) {
+        myInfoBtn.hidden = true;
+        myNotificationBtn.hidden = true;
+        logoutBtn.hidden = true;
+    } else {
+        kakaoLoginBtn.hidden = true;
+        logoutBtn.hidden = false;
+
+    //    myInfoBtn.addEventListener('click', async function () {
+    //         await axios
+    //         .get('/my-page')
+    //     }).then(function(response) {
+    //         const channelId = response.data.channel.channelId;
+    //     }).catch(function(error) {
+    //         console.log(error)
+    //     });
+
+    }
 
     document.querySelector('.logo').addEventListener('click', function () {
         window.location.href = '/';

@@ -11,20 +11,16 @@ import cookieParser from 'cookie-parser';
 import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
 import * as winston from 'winston';
 
-async function bootstrap()
-{
+async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
             transports: [
                 new winston.transports.Console({
                     level: 'info',
-                    format: winston.format.combine(
-                        winston.format.timestamp(),
-                        utilities.format.nestLike('La-it', { prettyPrint: true }),
-                    )
-                })
-            ]
-        })
+                    format: winston.format.combine(winston.format.timestamp(), utilities.format.nestLike('La-it', { prettyPrint: true })),
+                }),
+            ],
+        }),
     });
 
     const corsOptions: CorsOptions = {
@@ -57,12 +53,9 @@ async function bootstrap()
     app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setViewEngine('ejs');
 
-
     app.enableCors();
 
-
     await app.listen(3002);
-    Logger.log(`STAGE: ${process.env.STAGE}`);
     Logger.log(`listening on ${3002}`);
 }
 bootstrap();

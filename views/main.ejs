@@ -32,15 +32,14 @@
 
         <div class="mainBox">
             <header class="headerBox"><%- include('./modules/header.ejs') %></header>
-            <main>
-                <% if(path==='/my-page' ) { %>
-                    <div><%- include('./channelInfo.ejs') %></div>
-                    <% } else if(path==='/live' ) { %>
-                        <div><%- include('./live.ejs', {live: live}) %></div>
-                        <% } else if(path==='/streaming' ) { %>
-                            <div><%- include('./streaming.ejs', {channel: channel}, {live: live}) %></div>
-                            <% } else if(path==='/search' ) { %>
-                                <div><%- include('./search.ejs', {findValue: findValue}) %></div>
+           <main>
+                <div class="main__inner">
+                    <% if(path==='/my-page' ) { %>
+                        <div><%- include('./channelInfo.ejs') %></div>
+                        <% } else if(path==='/live' ) { %>
+                            <div><%- include('./live.ejs', {live: live}) %></div>
+                            <% } else if(path==='/streaming' ) { %>
+                                <div><%- include('./streaming.ejs', {channel: channel}) %></div>
                                 <% } else { %>
                                     <div class="videoBoxWrap">
                                         <% lives.forEach(live=> { %>
@@ -48,6 +47,7 @@
                                             <% }) %>
                                     </div>
                                     <% } %>
+                </div>
             </main>
             <!-- FOOTER -->
             <footer class="footerBox"><%- include('./modules/footer.ejs') %></footer>

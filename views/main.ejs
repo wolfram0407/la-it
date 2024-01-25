@@ -38,7 +38,7 @@
                     <% } else if(path==='/live' ) { %>
                         <div><%- include('./live.ejs', {live: live}) %></div>
                         <% } else if(path==='/streaming' ) { %>
-                            <div><%- include('./streaming.ejs', {channel: channel}, {live: live}) %></div>
+                            <div><%- include('./streaming.ejs', {channel: channel}) %></div>
                             <% } else { %>
                                 <div class="videoBoxWrap">
                                     <% lives.forEach(live=> { %>

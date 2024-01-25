@@ -15,6 +15,7 @@ export class AppController
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
+
     ) { }
 
 
@@ -40,11 +41,13 @@ export class AppController
 
     @UseGuards(JwtAuthGuard)
     @Get('/my-page')
-    userInfo(
+    async userInfo(
         @UserInfo() user: UserAfterAuth,
     )
     {
-        return user.id
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.findChannelIdByUserId(user.id)
+        return channel.channelId;
     }
 
     @Get('my-page/:channelId')

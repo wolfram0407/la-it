@@ -8,6 +8,7 @@ import { UserModule } from 'src/user/user.module';
     UserModule,
   ],
   controllers: [MainController],
-  providers: [MainService]
+  providers: [MainService],
+  exports: [MainService]
 })
 export class MainModule { }

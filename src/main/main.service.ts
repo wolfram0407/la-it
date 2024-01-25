@@ -18,8 +18,6 @@ export class MainService
 
     // 해당검색값을 타이틀로 검색해서 출력
 
-
-    console.log(findNickname);
     return {
       findNickname
     }

@@ -197,6 +197,11 @@ table {
     color: #ffe062;
 }
 
+.main__inner {
+    max-width: 1400px;
+    min-width: 1000px;
+}
+
 /* MAIN */
 
 .videoBoxWrap {

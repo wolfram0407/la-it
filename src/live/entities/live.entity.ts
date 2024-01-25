@@ -32,9 +32,13 @@ export class Live {
     @Column({ type: 'varchar', name: 'hls_url' })
     hlsUrl: string;
 
+    @Column({ type: 'boolean', default: true })
+    status: boolean;
+
     @ManyToOne(() => Channel, (channel) => channel.channelId, { cascade: true })
     @JoinColumn({ name: 'channel_id' })
-    channel: Channel[];
+    channel: Channel;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

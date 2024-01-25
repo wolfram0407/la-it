@@ -1,4 +1,5 @@
-import {
+import
+{
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -13,11 +14,12 @@ import { User } from './user.entity';
 import { Live } from 'src/live/entities/live.entity';
 
 @Entity('channels')
-export class Channel {
+export class Channel
+{
     @PrimaryGeneratedColumn({ name: 'channel_id', unsigned: true })
     channelId: number;
 
-    @Column({ name: 'channel_name', nullable: true })
+    @Column({ name: 'channel_name', nullable: true, default: ' ' })
     channelName: string;
 
     @Column({ nullable: true })
@@ -41,5 +43,5 @@ export class Channel {
     user: User;
 
     @OneToMany(() => Live, (live) => live.live_id, { cascade: true })
-    live: Live;
+    live: Live[];
 }

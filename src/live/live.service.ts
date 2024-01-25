@@ -22,25 +22,39 @@ export class LiveService {
         const streamKey = channelColumn.streamKey;
         console.log('streamKey: ', streamKey);
         hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
+
         const createLive = await this.liveRepository.save({
             title,
             thumbnail,
             channelName,
             category,
             hlsUrl,
+            channel: channelColumn,
         });
 
         return createLive;
     }
 
+    async end(liveId: number) {
+        const endLive = await this.liveRepository.update(liveId, {
+            status: false,
+        });
+        return endLive;
+    }
+
     async findAll(): Promise<Live[]> {
-        const allLive: Live[] = await this.liveRepository.find();
+        const allLive: Live[] = await this.liveRepository.find({ relations: ['channel'] });
         return allLive;
     }
 
     async findOne(liveId: number) {
-        const live = await this.liveRepository.findOne({ where: { live_id: liveId } });
+        const live = await this.liveRepository.findOne({ relations: ['channel'], where: { live_id: liveId } });
         return live;
+    }
+
+    async findOneByChannelId(channelId: number) {
+        const channel = await this.liveRepository.findOne({ where: { channel: { channelId } } });
+        return channel;
     }
 
     async update(liveId: number, title: string, thumbnail: string) {

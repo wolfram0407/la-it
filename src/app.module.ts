@@ -1,5 +1,5 @@
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { Module } from '@nestjs/common';
+
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmModuleOptions } from 'config/database.config';
@@ -11,13 +11,22 @@ import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { join } from 'path';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import sentryConfig from './common/config/sentry.config';
+
 
 @Module({
     imports: [
+        ThrottlerModule.forRoot([{
+            ttl: 60000,
+            limit: 3
+        }]),
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
+            load: [sentryConfig]
         }),
         MongooseModule.forRootAsync({
             inject: [ConfigService],
@@ -27,7 +36,14 @@ import { join } from 'path';
                 useUnifiedTopology: true,
             }),
         }),
-
+        JwtModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                global: true,
+                secret: config.get<string>('JWT_SECRET_KEY'),
+                signOptions: { expiresIn: '1d' },
+            })
+        }),
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,
@@ -36,6 +52,13 @@ import { join } from 'path';
         ChatModule,
     ],
     controllers: [AppController],
-    providers: [],
+    providers: [Logger],
+
 })
-export class AppModule {}
+export class AppModule implements NestModule
+{
+    configure(consumer: MiddlewareConsumer)
+    {
+        consumer.apply(LoggerMiddleware).forRoutes('*')
+    }
+}

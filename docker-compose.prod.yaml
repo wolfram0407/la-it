@@ -2,16 +2,6 @@ version: '3.7'
 
 #켬퓨터들
 services:
-    # mysql
-    lait-database-mysql:
-        image: mysql:8.0
-        environment:
-            MYSQL_DATABASE: ${DOCKER_DB_NAME}
-            MYSQL_ROOT_PASSWORD: ${DOCKER_DB_PASSWORD}
-        ports:
-            - 3306:3306
-
-
     # nginx
     lait-backend-nginx:
         build:
@@ -25,12 +15,11 @@ services:
 
     # nest
     lait-backend-computer:
-        depends_on:
-            - lait-database-mysql
         build:
             context: .
             dockerfile: Dockerfile.nest
         ports:
             - 3002:3002
         env_file:
-            - ./.env.docker
+            - ./.env.prod
+

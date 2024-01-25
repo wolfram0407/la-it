@@ -1,5 +1,4 @@
 import { Controller } from '@nestjs/common';
-import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/chat.dto';
 import { UpdateChatDto } from './dto/response.chat.dto';
 

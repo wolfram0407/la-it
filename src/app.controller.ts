@@ -20,11 +20,10 @@ export class AppController
 
     @Get()
     @Render('main') // Render the 'main' EJS template
-    async main(
-        @Req() req,
-    )
+    async main(@Req() req)
     {
         const lives = await this.liveService.findAll();
+        console.log('lives', lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
@@ -38,12 +37,10 @@ export class AppController
 
     @UseGuards(JwtAuthGuard)
     @Get('/my-page')
-    async userInfo(
-        @UserInfo() user: UserAfterAuth,
-    )
+    async userInfo(@UserInfo() user: UserAfterAuth)
     {
         // 내채널 클릭 시 Id값 필요
-        const channel = await this.userService.findChannelIdByUserId(user.id)
+        const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
     }
 
@@ -54,25 +51,27 @@ export class AppController
         return { title: 'My Page', path: '/my-page' };
     }
 
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard)
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
     async provideLive(@Param('channelId') channelId: string, @Req() req)
     {
 
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
+        // console.log('ch ==> ', channel);
+        // const live = await this.liveService.findOneByChannelId(+channelId);
+        // console.log('live: ', live);
 
-        const live = await this.liveService.findOneByChannelId(+channelId);
-
-        return { title: 'Streaming Page', path: '/streaming', channel, live };
+        return { title: 'Streaming Page', path: '/streaming', channel };
     }
+
     @Render('main') // Render the 'main' EJS template
     @Get('search/:value')
     async searchPage(@Param('value') search: string)
     {
         const findValue = await this.mainService.findByBJName(search);
-        console.log(findValue)
+        console.log(findValue);
         return { title: 'Search Page', path: '/search', findValue };
     }
 }

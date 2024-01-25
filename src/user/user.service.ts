@@ -6,7 +6,6 @@ import { Like, Repository } from 'typeorm';
 import { ReqCreateUserDto } from 'src/auth/dto/req.auth.dto';
 import crypto from 'crypto';
 
-
 @Injectable()
 export class UserService
 {
@@ -30,15 +29,14 @@ export class UserService
         profileImage,
         provider,
       });
-
       // user channel create
       const userChannel = await this.channelRepository.save({
         description: '',
         channelImage: profileImage,
         streamKey: randomId(),
-        user: user
+        user: user,
       });
-      console.log(userChannel);
+
       return user;
     } catch (error)
     {
@@ -55,6 +53,15 @@ export class UserService
     return user;
   }
 
+  async findByUserIdGetUserName(id: number)
+  {
+    const user = this.userRepository.findOne({
+      where: { userId: id },
+      select: ['userId', 'nickname'],
+    });
+    return user;
+  }
+
   async updateUserInfo(userId: number, nickname: string, profileImage: string, email: string)
   {
     try
@@ -67,7 +74,6 @@ export class UserService
       user.profileImage = profileImage ? profileImage : user.profileImage;
       user.email = email ? email : user.email;
       return await this.userRepository.save(user);
-
     } catch (error)
     {
       console.log(error);
@@ -106,19 +112,16 @@ export class UserService
   }
 
   /*
-  채널 정보
-  */
+채널 정보
+*/
   // channel 전체 조회
   async getChannelImageByChannelId(id: number)
   {
     try
     {
       const channel = await this.channelRepository.findBy({ channelId: id });
-      return channel
-    } catch (error)
-    {
-
-    }
+      return channel;
+    } catch (error) { }
   }
   async findChannelIdByUserId(userId: number)
   {
@@ -126,25 +129,19 @@ export class UserService
     {
       const channel = await this.channelRepository.findOne({
         where: {
-          user: { userId }
-        }
+          user: { userId },
+        },
       });
-      return channel
-    } catch (error)
-    {
-
-    }
+      return channel;
+    } catch (error) { }
   }
   async FindChannelIdByChannel(id: number)
   {
     try
     {
       const channel = await this.channelRepository.findOne({ where: { channelId: id } });
-      return channel
-    } catch (error)
-    {
-
-    }
+      return channel;
+    } catch (error) { }
   }
   // channel information update
   async updateChannelInfo(id: number, description: string, channelImage: string)
@@ -157,7 +154,7 @@ export class UserService
       return await this.channelRepository.save(channel);
     } catch (error)
     {
-      console.log(error)
+      console.log(error);
     }
   }
   // channel Image update
@@ -170,7 +167,7 @@ export class UserService
       return await this.channelRepository.save(channel);
     } catch (error)
     {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -181,11 +178,11 @@ export class UserService
     try
     {
       const channel = await this.channelRepository.findOne({ where: { channelId: id } });
-      channel.streamKey = randomId()
+      channel.streamKey = randomId();
       return await this.channelRepository.save(channel);
     } catch (error)
     {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -198,7 +195,7 @@ export class UserService
       return await this.channelRepository.save(channel);
     } catch (error)
     {
-      console.log(error)
+      console.log(error);
     }
   }
 }

@@ -11,9 +11,34 @@
                 <div class="infoEtc"><span class="spacelLeft">프로필수정 ></span></div>
             </div>
         </div>
+
         <div class="myChannelInfoDetail">
             <div class="startLiveBtn"><button id="goToStudioBtn">방송하기</button></div>
-            <div class="channelSettingBtn spacelLeft">채널관리</div>
+            <div class="channelSettingBtn spacelLeft btn" id="channelManagement">채널관리</div>
+        </div>
+    </div>
+
+    <div class="channelInfoSettingContainer" hidden>
+        <div id="channelInfoSettingWrap">
+            <form id = "channelSettingForm" enctype="multipart/form-data" >
+                <h2 id="s">채널 정보</h2>
+                <div class="input-group mb-3 channelInfoSettingInput">
+                    <span class="input-group-text" id="inputGroup-sizing-default-name">채널명</span>
+                    <input type="text" name="channelName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                </div>
+                <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingImage">
+                    <input type="file"  name="file"  class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Upload</button>
+                </div>
+                <div class="input-group mb-3 channelInfoSettingInput">
+                    <span class="input-group-text" id="inputGroup-sizing-default-streamKey">스트림키</span>
+                    <div id = "streamKeyValue" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />dlfkdww232sldkf0</div>
+                </div>
+                <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingTextWrap">
+                    <textarea   name="channelDescription"  id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"></textarea>
+                </div>
+                <button type="submit" id="channelSettingSaveBtn">저장</button>
+            </form>
         </div>
     </div>
 
@@ -45,5 +70,9 @@
         </div>
         <!-- 비디오박스 끝 -->
     </div>
+
     <script defer src="/script/channelInfo.js"></script>
+    <script defer src="/script/channelSetting.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
 </div>

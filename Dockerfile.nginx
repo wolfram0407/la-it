@@ -1,8 +1,5 @@
 FROM alpine:latest
 
-
-LABEL maintainer="NGINX-MEDIA_SERVER maintainer <woonizzooni@gmail.com>"
-
 # versions of nginx and nginx-rtmp-module to use
 ENV NGINX_VERSION 1.18.0
 ENV RTMP_MODULE_VERSION 1.2.1

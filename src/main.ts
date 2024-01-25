@@ -10,8 +10,12 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import cookieParser from 'cookie-parser';
 import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
 import * as winston from 'winston';
+import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 
-async function bootstrap() {
+import * as Sentry from "@sentry/node"
+import { ConfigService } from '@nestjs/config';
+async function bootstrap()
+{
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
             transports: [
@@ -22,7 +26,7 @@ async function bootstrap() {
             ],
         }),
     });
-
+    const configService = app.get(ConfigService);
     const corsOptions: CorsOptions = {
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -54,7 +58,8 @@ async function bootstrap() {
     app.setViewEngine('ejs');
 
     app.enableCors();
-
+    Sentry.init({ dsn: configService.get('SENTRY_DSN') })
+    app.useGlobalInterceptors(new SentryInterceptor)
     await app.listen(3002);
     Logger.log(`listening on ${3002}`);
 }

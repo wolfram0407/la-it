@@ -14,6 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import sentryConfig from './common/config/sentry.config';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
+            load: [sentryConfig]
         }),
         MongooseModule.forRootAsync({
             inject: [ConfigService],

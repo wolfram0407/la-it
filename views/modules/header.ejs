@@ -9,7 +9,7 @@
                 <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
             </div>
             <div class="searchBtnBox">
-                <button class="searchBtn">
+                <button class="searchBtn" id="searchBtn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
@@ -35,6 +35,8 @@
         const kakaoLoginBtn = document.querySelector('#kakao');
         const logoutBtn = document.querySelector('.logoutBtn');
 
+        const searchBtn = document.querySelector('#searchBtn');
+        const searchValue = document.querySelector('.searchInput');
         const getAccessToken = getCookie('Authorization');
         const AccessToken = `Bearer ${getAccessToken}`;
         if (!getAccessToken)
@@ -63,18 +65,21 @@
                 window.location.href = url
             })
 
-
-
-            //    myInfoBtn.addEventListener('click', async function () {
-            //         await axios
-            //         .get('/my-page') 
-            //     }).then(function(response) {
-            //         const channelId = response.data.channel.channelId;
-            //     }).catch(function(error) {
-            //         console.log(error)
-            //     });
-
         }
+
+        searchBtn.addEventListener('click', async () =>
+        {
+            const value = searchValue.value
+
+            if (!value)
+            {
+                alert("Please enter a value!");
+            } else
+            {
+                const url = `http://localhost:3002/search/${value}`
+                window.location.href = url
+            }
+        })
 
         function getCookie(name)
         {

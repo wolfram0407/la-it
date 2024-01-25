@@ -39,13 +39,15 @@
                         <div><%- include('./live.ejs', {live: live}) %></div>
                         <% } else if(path==='/streaming' ) { %>
                             <div><%- include('./streaming.ejs', {channel: channel}, {live: live}) %></div>
-                            <% } else { %>
-                                <div class="videoBoxWrap">
-                                    <% lives.forEach(live=> { %>
-                                        <div><%- include('./modules/section.ejs', {live:live}) %></div>
-                                        <% }) %>
-                                </div>
-                                <% } %>
+                            <% } else if(path==='/search' ) { %>
+                                <div><%- include('./search.ejs', {findValue: findValue}) %></div>
+                                <% } else { %>
+                                    <div class="videoBoxWrap">
+                                        <% lives.forEach(live=> { %>
+                                            <div><%- include('./modules/section.ejs', {live:live}) %></div>
+                                            <% }) %>
+                                    </div>
+                                    <% } %>
             </main>
             <!-- FOOTER -->
             <footer class="footerBox"><%- include('./modules/footer.ejs') %></footer>

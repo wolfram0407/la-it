@@ -23,7 +23,7 @@
                 <h2 id="s">채널 정보</h2>
                 <div class="input-group mb-3 channelInfoSettingInput">
                     <span class="input-group-text" id="inputGroup-sizing-default-name">채널명</span>
-                    <input type="text" name="channelName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+                    <input type="text" name="channelName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="<%=  channel.channelName %>"/>
                 </div>
                 <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingImage">
                     <input type="file"  name="file"  class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
@@ -31,10 +31,11 @@
                 </div>
                 <div class="input-group mb-3 channelInfoSettingInput">
                     <span class="input-group-text" id="inputGroup-sizing-default-streamKey">스트림키</span>
-                    <div id = "streamKeyValue" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />dlfkdww232sldkf0</div>
+                    <div id = "streamKeyValue" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" /><%= channel.streamKey %></div>
+                    <button class="btn btn-outline-secondary" type="button" id="streamKeyGetNew">재발급</button>
                 </div>
                 <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingTextWrap">
-                    <textarea   name="channelDescription"  id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"></textarea>
+                    <textarea   name="channelDescription"  id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"> <%=  channel.description %></textarea>
                 </div>
                 <button type="submit" id="channelSettingSaveBtn">저장</button>
             </form>

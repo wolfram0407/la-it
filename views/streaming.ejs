@@ -1,5 +1,4 @@
 <div class="liveMasterWrap">
-    <!-- <div class="liveId" style="display: none"><%= live.live_id %></div> -->
     <div class="channelId" style="display: none"><%= channel.channelId %></div>
     <div class="liveMasterMainBox">
         <div class="liveMasterVideoBox">
@@ -35,26 +34,29 @@
         </div> -->
         <div class="liveMasterSettingBox">
             <div class="masterSettingBoxLeft">
-                <div class="masterSettingTitle"><input type="text" placeholder="TEST 방송입니다" /> <img src="/imgs/edit.png" /></div>
-                <div class="masterSettingCatecory">
-                    <div class="selectBox">
-                        <select name="lineCategory" class="select">
-                            <option disabled selected>카테고리</option>
-                            <option value="토크/게임">토크/게임</option>
-                            <option value="그랑프리">그랑프리</option>
-                            <option value="먹방">먹방</option>
-                            <option value="잡담">잡담</option>
-                        </select>
-                    </div>
-                    <div class="streamkeyBox">
-                        <p class="streamkey">fslfsdjfj3rj3pjd9sf</p>
-                    </div>
+                <div class="masterSettingTitle">
+                    <span>제목</span>
+                    <input type="text" placeholder="TEST 방송입니다" />
+                </div>
+                <div class="masterSettingDesc">
+                    <span>내용</span>
+                    <input type="text" placeholder="TEST 방송입니다" />
                 </div>
             </div>
             <div class="MasterSettingBoxRight">
-                <div class="broadcastBtn"><img src="/imgs/facetime-button (1).png" /><button id="liveStartBtn">방송시작</button></div>
+                <div class="broadcastBtn">
+                    <div class="broadcastBtnImg">
+                        <img src="/imgs/facetime-button (1).png" />
+                    </div>
+                    <div class="broadcastBtnDesc">
+                        <button id="liveStartBtn">방송시작</button>
+                    </div>
+                </div>
                 <div class="broadcastCloseBtn" hidden>
-                    <img src="/imgs/facetime-button (1).png" /><button id="liveEndBtn">방송종료</button>
+                    <div class="broadcastBtnImg"><img src="/imgs/facetime-button (1).png" /></div>
+                    <div class="broadcastCloseBtnDesc">
+                        <button id="liveEndBtn">방송종료</button>
+                    </div>
                 </div>
                 <!-- <div class="masterSettingBtn">
                     <img src="/imgs/settings-cogwheel-button.png" />
@@ -67,6 +69,14 @@
         <div class="chatTitle">채팅</div>
         <div class="chatMain">
             <div class="chatBox">
+                <div class="chatList">
+                    <div class="chatNickname">방정맞은 라이언</div>
+                    <div class="chatText">대박이네요!!</div>
+                </div>
+                <div class="chatList">
+                    <div class="chatNickname">방정맞은 라이언</div>
+                    <div class="chatText">대박이네요!!</div>
+                </div>
                 <div class="chatList">
                     <div class="chatNickname">방정맞은 라이언</div>
                     <div class="chatText">대박이네요!!</div>

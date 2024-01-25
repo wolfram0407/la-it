@@ -13,8 +13,8 @@ export class LiveController {
         description: '라이브 등록',
     })
     @Post('create')
-    create(@Body() { title, thumbnail, category }: ReqCreateLiveDto, channelName: string, hlsUrl: string) {
-        return this.liveService.create(title, thumbnail, category, channelName, hlsUrl);
+    create(@Body() { title, thumbnail, description }: ReqCreateLiveDto, channelName: string, hlsUrl: string) {
+        return this.liveService.create(title, thumbnail, description, channelName, hlsUrl);
     }
 
     @ApiOperation({

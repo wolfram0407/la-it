@@ -27,7 +27,7 @@ export class Live {
     channelName: string;
 
     @Column({ type: 'varchar' })
-    category: string;
+    description: string;
 
     @Column({ type: 'varchar', name: 'hls_url' })
     hlsUrl: string;

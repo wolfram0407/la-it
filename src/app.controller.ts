@@ -43,6 +43,14 @@ export class AppController {
         return { title: 'My Page', path: '/my-page' };
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('/streaming')
+    async streamingInfo(@UserInfo() user: UserAfterAuth) {
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.findChannelIdByUserId(user.id);
+        return channel.channelId;
+    }
+
     // @ApiBearerAuth()
     // @UseGuards(JwtAuthGuard)
     @Get('streaming/:channelId')

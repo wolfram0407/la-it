@@ -2,7 +2,6 @@ const liveStartBtn = document.getElementById('liveStartBtn');
 const liveEndBtn = document.getElementById('liveEndBtn');
 const broadcastBtn = document.querySelector('.broadcastBtn');
 const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
-const liveId = document.querySelector('.liveId').textContent;
 const channelId = document.querySelector('.channelId').textContent;
 console.log(channelId);
 

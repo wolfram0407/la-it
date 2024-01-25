@@ -1,5 +1,4 @@
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmModuleOptions } from 'config/database.config';
@@ -11,10 +10,20 @@ import { MainModule } from './main/main.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { ImageModule } from './image/image.module';
 
 @Module({
     imports: [
+        ThrottlerModule.forRoot([
+            {
+                ttl: 60000,
+                limit: 3,
+            },
+        ]),
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
@@ -35,8 +44,13 @@ import { RedisModule } from '@nestjs-modules/ioredis';
         MainModule,
         ChatModule,
         RedisModule,
+        ImageModule,
     ],
     controllers: [AppController],
-    //providers: [ChatService],
+    providers: [Logger],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
+    }
+}

@@ -1,14 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
+import cookieParser from 'cookie-parser';
+import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
+import * as winston from 'winston';
+import express from 'express';
+
 async function bootstrap() {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+        logger: WinstonModule.createLogger({
+            transports: [
+                new winston.transports.Console({
+                    level: 'info',
+                    format: winston.format.combine(winston.format.timestamp(), utilities.format.nestLike('La-it', { prettyPrint: true })),
+                }),
+            ],
+        }),
+    });
 
     const corsOptions: CorsOptions = {
         origin: '*',
@@ -16,9 +30,10 @@ async function bootstrap() {
         credentials: true,
     };
     app.enableCors(corsOptions);
-
+    app.use(cookieParser());
     //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
     app.useWebSocketAdapter(new IoAdapter(app));
+    app.use(express.urlencoded({ extended: true }));
 
     const config = new DocumentBuilder().setTitle('NestJS project').setDescription('').setVersion('1.0').addBearerAuth().build();
     const customOptions: SwaggerCustomOptions = {
@@ -43,5 +58,7 @@ async function bootstrap() {
     app.enableCors();
 
     await app.listen(3002);
+    Logger.log(`STAGE: ${process.env.STAGE}`);
+    Logger.log(`listening on ${3002}`);
 }
 bootstrap();

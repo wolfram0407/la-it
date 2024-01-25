@@ -33,12 +33,15 @@
         <div class="mainBox">
             <header class="headerBox"><%- include('./modules/header.ejs') %></header>
             <main>
+                <%  if(path==='/setting' ) { %>
+                    <div><%- include('./channelSetting.ejs') %></div>
+                <% } %>
                 <% if(path==='/my-page' ) { %>
                     <div><%- include('./channelInfo.ejs') %></div>
-                    <% } else if(path==='/live' ) { %>
-                        <div><%- include('./livePage.ejs', {live: live}) %></div>
-                        <% } else if(path==='/live-master' ) { %>
-                            <div><%- include('./live-provide-page.ejs') %></div>
+                <% } else if(path==='/live' ) { %>
+                        <div><%- include('./live.ejs', {live: live}) %></div>
+                        <% } else if(path==='/streaming' ) { %>
+                            <div><%- include('./streaming.ejs', {channel: channel}, {live: live}) %></div>
                             <% } else { %>
                                 <div class="videoBoxWrap">
                                     <% lives.forEach(live=> { %>

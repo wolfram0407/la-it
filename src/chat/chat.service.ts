@@ -21,6 +21,9 @@ export class ChatService {
     async enterLiveRoomChat(liveId: string, socket: Socket) {
         try {
             const joinTheChatRoom = socket.join(liveId);
+            const chats = await this.ChatModel.find({ liveId }).sort({ _id: -1 }).limit(50).select(' nickname content');
+            console.log('chats', chats);
+            return chats;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }
@@ -47,15 +50,6 @@ export class ChatService {
             return false;
         }
         //return waitToSaveMongoDB;
-
-        //setTimeout(function moveToMongoDB() {
-        //    console.log('타임아웃');
-        //    //waitToSaveMongoDB.forEach(async (data) => {
-        //    //    const { userId, nickname, liveId, content } = data;
-        //    //    const saveChat = await new this.ChatModel({ userId, nickname, liveId, content });
-        //    //    return saveChat.save();
-        //    //});
-        //}, 10000);
 
         //const getAllCacheByKey = await this.redis.hGetAll(key);// key에 해당한느 모든 데이터 가져오기
         //const getCacheByHashKey = await this.redis.hGet(inputData.liveId, '1706086717934'); //필드에 해당하는 모든 값 가져오기
@@ -110,6 +104,7 @@ export class ChatService {
             //    //    return saveChat.save();
             //    //});
             //}, 10000);
+            return;
             console.log('saveChatInCache', saveChatInCache);
             //console.log('길이', saveChatInCache.length);
             //const saveChat = new this.ChatModel({ userId, nickname, liveId, content });

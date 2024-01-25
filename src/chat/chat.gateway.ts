@@ -22,7 +22,12 @@ export class ChatGateway {
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, liveId: string): Promise<EnterRoomSuccessDto> {
         //@Param('liveId') liveId: string,
-        const chat = await this.chatService.enterLiveRoomChat(liveId, client);
+        const chats = await this.chatService.enterLiveRoomChat(liveId, client);
+        console.log('게이트웨이', chats);
+        for (let i = 0; i < chats.length; i++) {
+            //this.server.to(liveId).emit('sending_message', chats[content], chats[nickname]);
+        }
+
         return {
             statusCode: 200,
             message: '채팅방 입장 성공',

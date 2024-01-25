@@ -88,7 +88,7 @@
             logoutBtn.hidden = false;
             myInfoBtn.addEventListener('click', async () =>
             {
-                const temp = await axios.get('/my-page',
+                const myId = await axios.get('/my-page',
                     {
                         withCredentials: true,
                         headers: {
@@ -97,13 +97,10 @@
                     })
                     .then((respones) =>
                     {
-                        console.log(respones.data)
                         return respones.data
                     })
-                const url = `http://localhost:3002/my-page/${temp}`
-
+                const url = `http://localhost:3002/my-page/${myId}`
                 window.location.href = url
-
             })
 
 

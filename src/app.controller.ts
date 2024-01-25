@@ -25,12 +25,7 @@ export class AppController
         @UserInfo() user: User,
     )
     {
-        const accessToken = req.cookies.authorization
-        console.log(accessToken)
-        if (accessToken)
-        {
-
-        }
+        // 토큰 확인해서 프론트를 나누면 어떨까요?
         const lives = await this.liveService.findAll();
         return { title: 'Home Page', path: req.url, lives: lives };
     }
@@ -54,9 +49,7 @@ export class AppController
 
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
-    myInfo(
-        @UserInfo() user: UserAfterAuth,
-    )
+    myInfo()
     {
         return { title: 'My Page', path: '/my-page' };
     }

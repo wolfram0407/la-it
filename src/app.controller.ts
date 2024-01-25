@@ -3,7 +3,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
-import { User } from './user/entities/user.entity';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
@@ -18,8 +17,7 @@ export class AppController {
 
     @Get()
     @Render('main') // Render the 'main' EJS template
-    async main(@Req() req, @UserInfo() user: User) {
-        // 토큰 확인해서 프론트를 나누면 어떨까요?
+    async main(@Req() req) {
         const lives = await this.liveService.findAll();
         return { title: 'Home Page', path: req.url, lives: lives };
     }
@@ -33,14 +31,10 @@ export class AppController {
 
     @UseGuards(JwtAuthGuard)
     @Get('/my-page')
-    userInfo(@UserInfo() user: UserAfterAuth) {
-        return user.id;
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('/streaming')
-    channelInfo(@UserInfo() user: UserAfterAuth) {
-        return user.id;
+    async userInfo(@UserInfo() user: UserAfterAuth) {
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.findChannelIdByUserId(user.id);
+        return channel.channelId;
     }
 
     @Get('my-page/:channelId')

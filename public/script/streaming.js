@@ -11,6 +11,9 @@ const video = document.getElementById('video');
 liveStartBtn.addEventListener('click', createLive);
 liveEndBtn.addEventListener('click', endLive);
 
+// 방송 페이지 벗어나면 방송 종료
+window.addEventListener('beforeunload', endLive);
+
 async function createLive() {
     let streamingTitle = document.getElementById('streamingTitle').value;
     let streamingDesc = document.getElementById('streamingDesc').value;
@@ -18,16 +21,16 @@ async function createLive() {
     console.log('streamingDesc: ', streamingDesc);
 
     await axios
-        .post('/api/live/create', {
+        .post(`/api/live/create/${channelId}`, {
             title: streamingTitle,
             thumbnail: 'test image',
             description: streamingDesc,
-            channelId: channelId,
         })
         .then(function (response) {
+            console.log('response: ', response);
+
             const streamKey = response.data.channel.streamKey;
             console.log('streamKey: ', streamKey);
-
             broadcastBtn.hidden = true;
             broadcastCloseBtn.hidden = false;
 
@@ -53,7 +56,7 @@ async function createLive() {
 
 async function endLive() {
     await axios
-        .post(`/api/live/end/${liveId}`)
+        .post(`/api/live/end/${channelId}`)
         .then(function (response) {
             window.location.href = `/my-page/${channelId}`;
         })

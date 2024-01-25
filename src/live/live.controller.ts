@@ -16,8 +16,8 @@ export class LiveController {
         summary: '라이브 등록',
         description: '라이브 등록',
     })
-    @Post('create')
-    create(@Body() { title, thumbnail, description }: ReqCreateLiveDto, hlsUrl: string, channelId: string) {
+    @Post('create/:channelId')
+    create(@Body() { title, thumbnail, description }: ReqCreateLiveDto, hlsUrl: string, @Param('channelId') channelId: string) {
         return this.liveService.create(title, thumbnail, description, hlsUrl, +channelId);
     }
 
@@ -25,9 +25,9 @@ export class LiveController {
         summary: '라이브 종료',
         description: '라이브 종료',
     })
-    @Post('end/:liveId')
-    end(@Param('liveId') liveId: string) {
-        return this.liveService.end(+liveId);
+    @Post('end/:channelId')
+    end(@Param('channelId') channelId: string) {
+        return this.liveService.end(+channelId);
     }
 
     @Get()

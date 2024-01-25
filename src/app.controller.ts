@@ -62,11 +62,12 @@ export class AppController {
     async provideLive(@Param('channelId') channelId: string) {
         console.log('ch ID =====> ', channelId);
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
-        // console.log('ch ==> ', channel);
-        // const live = await this.liveService.findOneByChannelId(+channelId);
-        // console.log('live: ', live);
-
-        return { title: 'Streaming Page', path: '/streaming', channel };
+        const live = await this.liveService.findOneByChannelId(+channelId);
+        const liveStatusValue = live.status;
+        // if (liveStatusValue === true) {
+        //     await this.liveService.end(+channelId);
+        // }
+        return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
     }
 
     @Render('main') // Render the 'main' EJS template

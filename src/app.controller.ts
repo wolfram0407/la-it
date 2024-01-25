@@ -42,8 +42,13 @@ export class AppController {
 
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
-    myInfo() {
-        return { title: 'My Page', path: '/my-page' };
+    async myInfo(@Param('channelId') channelId: number) {
+        console.log('_________');
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.FindChannelIdByChannel(channelId);
+        console.log('channel가져옴', channel);
+        return { title: 'My Page', path: '/my-page', channel: { ...channel, channelId: channelId } };
+        //return { title: 'User - channel info view page', path: '/my-page', live: live };
     }
 
     // @ApiBearerAuth()

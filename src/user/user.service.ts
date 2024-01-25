@@ -99,13 +99,6 @@ export class UserService {
     /*
   채널 정보
   */
-    // channel 전체 조회
-    async getChannelImageByChannelId(id: number) {
-        try {
-            const channel = await this.channelRepository.findBy({ channelId: id });
-            return channel;
-        } catch (error) {}
-    }
     async findChannelIdByUserId(userId: number) {
         try {
             const channel = await this.channelRepository.findOne({

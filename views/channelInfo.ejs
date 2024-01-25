@@ -2,13 +2,12 @@
     <div class="channelInfoContainer">
         <div class="nickNameBox">
             <div class="channelInfoImg">
-                <img
-                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340"
-                />
+
+                <img src="<%= channel.channelImage %>"/>
             </div>
             <div class="infoContentWrap">
-                <div class="myChannelNickname">즐겜중인 저승사자</div>
-                <div class="infoEtc"><span class="spacelLeft">프로필수정 ></span></div>
+                <div class="myChannelNickname"><%= channel.channelName %></div>
+                <div class="infoEtc"><span class="spacelLeft"><%= channel.description %> </span></div>
             </div>
         </div>
 

@@ -108,6 +108,7 @@ table {
     height: 150px;
 }
 .menuAndLogoWrap {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -209,6 +210,7 @@ table {
 }
 
 .videoBox {
+    height: 250px;
     cursor: pointer;
     margin: 40px;
     display: flex;

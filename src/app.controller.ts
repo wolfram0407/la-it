@@ -3,7 +3,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
-import { User } from './user/entities/user.entity';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
@@ -15,18 +14,14 @@ export class AppController
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
-
     ) { }
-
 
     @Get()
     @Render('main') // Render the 'main' EJS template
     async main(
         @Req() req,
-        @UserInfo() user: User,
     )
     {
-        // 토큰 확인해서 프론트를 나누면 어떨까요?
         const lives = await this.liveService.findAll();
         return { title: 'Home Page', path: req.url, lives: lives };
     }

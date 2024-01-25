@@ -26,7 +26,9 @@
                     <li>
                         <div>
                             <div>
-                                <div><라이브 시작 알림></div>
+                                <div>
+                                    <라이브 시작 알림>
+                                </div>
                                 <div>✖️</div>
                             </div>
                             <div><span>레커</span> 님의 라이브가 시작되었습니다!</div>
@@ -36,7 +38,9 @@
                     <li>
                         <div>
                             <div>
-                                <div><라이브 시작 알림></div>
+                                <div>
+                                    <라이브 시작 알림>
+                                </div>
                                 <div>✖️</div>
                             </div>
                             <div><span>응디</span> 님의 라이브가 시작되었습니다!</div>
@@ -45,7 +49,9 @@
                     <li>
                         <div>
                             <div>
-                                <div><라이브 시작 알림></div>
+                                <div>
+                                    <라이브 시작 알림>
+                                </div>
                                 <div>✖️</div>
                             </div>
                             <div><span>soo</span> 님의 라이브가 시작되었습니다!</div>
@@ -53,51 +59,75 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div class="myNotificationBtn" hidden>알림</div> -->
-            <!-- <div id="naver" >
-                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/naverlogo.jpeg" /></a>
-            </div> -->
-            <div id="kakao" >
+            <div id="kakao">
                 <a href="http://localhost:3002/api/auth/login/kakao">
                     <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
                 </a>
             </div>
-            <!-- <div id="google" >
-                <a href="http://localhost:3002/api/auth/login/kakao"><img class="loginBtn" src="/imgs/googlelogo.png" /></a>
-            </div> -->
         </div>
     </div>
-</header>
+    </header>
 
-<script>
+    <script>
+        axios.defaults.withCredentials = true;
+        const myInfoBtn = document.querySelector('.myInfoBtn');
+        const myNotificationBtn = document.querySelector('.myNotificationBtn');
+        const kakaoLoginBtn = document.querySelector('#kakao');
+        const logoutBtn = document.querySelector('.logoutBtn');
 
-    const myInfoBtn = document.querySelector('.myInfoBtn');
-    const myNotificationBtn = document.querySelector('.myNotificationBtn');
-    const kakaoLoginBtn = document.querySelector('#kakao');
-    const logoutBtn = document.querySelector('.logoutBtn');
+        const getAccessToken = getCookie('Authorization');
+        const AccessToken = `Bearer ${getAccessToken}`;
+        if (!getAccessToken)
+        {
+            myInfoBtn.hidden = true;
+            myNotificationBtn.hidden = true;
+            logoutBtn.hidden = true;
+        } else
+        {
+            kakaoLoginBtn.hidden = true;
+            logoutBtn.hidden = false;
+            myInfoBtn.addEventListener('click', async () =>
+            {
+                const temp = await axios.get('/my-page',
+                    {
+                        withCredentials: true,
+                        headers: {
+                            authorization: AccessToken
+                        }
+                    })
+                    .then((respones) =>
+                    {
+                        console.log(respones.data)
+                        return respones.data
+                    })
+                const url = `http://localhost:3002/my-page/${temp}`
 
-    console.log(document.cookie)
+                window.location.href = url
 
-    if(!document.cookie) {
-        myInfoBtn.hidden = true;
-        myNotificationBtn.hidden = true;
-        logoutBtn.hidden = true;
-    } else {
-        kakaoLoginBtn.hidden = true;
-        logoutBtn.hidden = false;
+            })
 
-    //    myInfoBtn.addEventListener('click', async function () {
-    //         await axios
-    //         .get('/my-page')
-    //     }).then(function(response) {
-    //         const channelId = response.data.channel.channelId;
-    //     }).catch(function(error) {
-    //         console.log(error)
-    //     });
 
-    }
 
-    document.querySelector('.logo').addEventListener('click', function () {
-        window.location.href = '/';
-    });
-</script>
+            //    myInfoBtn.addEventListener('click', async function () {
+            //         await axios
+            //         .get('/my-page') 
+            //     }).then(function(response) {
+            //         const channelId = response.data.channel.channelId;
+            //     }).catch(function(error) {
+            //         console.log(error)
+            //     });
+
+        }
+
+        function getCookie(name)
+        {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+        document.querySelector('.logo').addEventListener('click', function ()
+        {
+            window.location.href = '/';
+        });
+    </script>

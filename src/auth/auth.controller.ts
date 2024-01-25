@@ -21,6 +21,6 @@ export class AuthController
     @Get('/login/kakao/callback')
     async callbacks(@Req() req, @Res({ passthrough: true }) res)
     {
-        res.cookie('accessToken', req.user.access_token);
+        res.cookie('Authorization', req.user.access_token);
     }
 }

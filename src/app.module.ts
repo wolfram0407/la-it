@@ -13,6 +13,7 @@ import { ChatModule } from './chat/chat.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 
 @Module({
@@ -33,7 +34,14 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
                 useUnifiedTopology: true,
             }),
         }),
-
+        JwtModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                global: true,
+                secret: config.get<string>('JWT_SECRET_KEY'),
+                signOptions: { expiresIn: '1d' },
+            })
+        }),
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,
@@ -43,6 +51,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     ],
     controllers: [AppController],
     providers: [Logger],
+
 })
 export class AppModule implements NestModule
 {

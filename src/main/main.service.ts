@@ -12,7 +12,7 @@ export class MainService
 
   async findByBJName(search: string) 
   {
-    const findNickname = await this.userService.findByNickname(search);
+    const findNickname = await this.userService.findChannelBySearch(search);
 
     // 해당검색값의 BJ의 동영상 중 최신 검색
 

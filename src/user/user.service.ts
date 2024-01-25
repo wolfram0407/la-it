@@ -30,7 +30,7 @@ export class UserService
         profileImage,
         provider,
       });
-      console.log(user)
+
       // user channel create
       const userChannel = await this.channelRepository.save({
         description: '',
@@ -81,17 +81,18 @@ export class UserService
     return user;
   }
 
-  async findByNickname(search: string)
+  async findChannelBySearch(search: string)
   {
     try
     {
-      const user = this.userRepository.findOne({
-        where: { nickname: Like(`%${search}%`) },
+      const channel = this.channelRepository.findOne({
+        where: { channelName: Like(`%${search}%`) },
       });
-      return user;
+      console.log(channel);
+      return channel;
     } catch (error)
     {
-      throw new NotAcceptableException('닉네임검색');
+      throw new NotAcceptableException('채널검색');
     }
   }
 

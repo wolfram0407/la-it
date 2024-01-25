@@ -38,27 +38,29 @@ async function sendChannelInfoData(e) {
                 authorization: AccessToken,
             },
         })
-        .then((response) => {
+        .then(async (response) => {
             console.log('response', response.data.data);
             return (saveImageUrlData = response.data.data);
         });
 
     //데이터 channelRepository에 올리기
     await axios
-        .put(`http://localhost:3002/api/channel/info/${channelId}`, {
-            withCredentials: true,
-            headers: {
-                authorization: AccessToken,
-            },
-            data: {
+        .put(
+            `http://localhost:3002/api/channel/info/${channelId}`,
+            {
                 channelImage: saveImageUrlData,
                 channelName: formDataObj.channelName,
                 description: formDataObj.channelDescription,
             },
-        })
+            {
+                withCredentials: true,
+                headers: {
+                    authorization: AccessToken,
+                },
+            },
+        )
         .then((response) => {
             console.log('response', response);
-            //saveImageUrlData = response.data.data;
         });
     document.querySelector('.channelInfoContainer').removeAttribute('hidden');
     document.querySelector('.homeBox').removeAttribute('hidden');

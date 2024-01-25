@@ -122,6 +122,7 @@ export class UserService {
             return channel;
         } catch (error) {}
     }
+
     // channel information update
     async updateChannelInfo(id: number, channelName: string, description: string, channelImage: string) {
         try {

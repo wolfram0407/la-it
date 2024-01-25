@@ -42,10 +42,10 @@ export class UserController {
     //    return await this.userService.updateChannelInfo(+id, description, channelImage);
     //}
 
-    //@UseGuards(JwtAuthGuard)
     @Put('/channel/info/:id')
-    async updateChannelInfo(@Param('id') id: number, @Body('data') data: ReqUpdateChannelInfoDto) {
-        //console.log('컨트롤러', id, data);
+    @UseGuards(JwtAuthGuard)
+    async updateChannelInfo(@Param('id') id: number, @Body() data: ReqUpdateChannelInfoDto) {
+        console.log('컨트롤러', id, data);
         return await this.userService.updateChannelInfo(+id, data.channelName, data.description, data.channelImage);
     }
 

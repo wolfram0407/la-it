@@ -123,9 +123,11 @@ export class UserService {
         } catch (error) {}
     }
     // channel information update
-    async updateChannelInfo(id: number, description: string, channelImage: string) {
+    async updateChannelInfo(id: number, channelName: string, description: string, channelImage: string) {
         try {
+            console.log('서비스', id, channelName, description, channelImage);
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
+            channel.channelName = channelName ? channelName : channel.channelName;
             channel.description = description ? description : channel.description;
             channel.channelImage = channelImage ? channelImage : channel.channelImage;
             return await this.channelRepository.save(channel);

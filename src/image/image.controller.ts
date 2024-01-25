@@ -10,23 +10,23 @@ export class ImageController {
     constructor(private readonly imageService: ImageService) {}
 
     @Post('/:channelId')
-    //@UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('file'))
     async saveImage(@UploadedFile() file: Express.Multer.File, @Param() channelId: number) {
         try {
-            console.log(channelId); //{ channelId: '1' }
-            console.log(channelId['channelId']); //undefind
-
+            console.log('들어오나요?', file);
             //const channelIdValue = channelId;
             const exp = file.mimetype.slice(6);
             const fileName = channelId['channelId'] + '_' + Date.now();
 
             console.log('filename', typeof fileName);
             const saveImageToS3 = await this.imageService.saveImage(fileName, file, exp);
+            console.log('saveImageToS3', saveImageToS3);
             if (saveImageToS3) {
                 return {
                     success: true,
                     message: '성공적으로 채널 정보 이미지를 업데이트 했습니다.',
+                    data: saveImageToS3,
                 };
             } else {
                 return {

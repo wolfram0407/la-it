@@ -6,18 +6,13 @@ import { ThrottlerBehindProxyGuard } from 'src/common/guard/throttler-behind-pro
 
 @ApiTags('Main')
 @Controller('/api/main')
-export class MainController
-{
-  constructor(private readonly mainService: MainService) { }
+export class MainController {
+    constructor(private readonly mainService: MainService) {}
 
-  @UseGuards(ThrottlerBehindProxyGuard)
-  @Get('search/:search')
-  async search(
-    @Param() { search }: ReqSearchDto
-  )
-  {
-    //1111throw new Error('테스트 에러')
-    return await this.mainService.findByBJName(search)
-  }
+    @UseGuards(ThrottlerBehindProxyGuard)
+    @Get('search/:search')
+    async search(@Param() { search }: ReqSearchDto) {
+        throw new Error('테스트에러');
+        return await this.mainService.findByBJName(search);
+    }
 }
-

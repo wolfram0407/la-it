@@ -16,7 +16,7 @@
         </div>
 
         <div class="userBtnWrap">
-            <div class="logoutBtn userBtn">로그아웃</div>
+            <div class="logoutBtn userBtn"><button id="logoutBtn">로그아웃</button></div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
 
             <div id="kakao">
@@ -31,7 +31,7 @@
     <script>
         axios.defaults.withCredentials = true;
         const myInfoBtn = document.querySelector('.myInfoBtn');
-        const myNotificationBtn = document.querySelector('.myNotificationBtn');
+        //const myNotificationBtn = document.querySelector('.myNotificationBtn');
         const kakaoLoginBtn = document.querySelector('#kakao');
         const logoutBtn = document.querySelector('.logoutBtn');
 
@@ -42,7 +42,7 @@
         if (!getAccessToken)
         {
             myInfoBtn.hidden = true;
-            myNotificationBtn.hidden = true;
+            //myNotificationBtn.hidden = true;
             logoutBtn.hidden = true;
         } else
         {

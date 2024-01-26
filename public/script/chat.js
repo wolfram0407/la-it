@@ -65,7 +65,7 @@ function getAllChatByLiveId(e) {
 //메세지 그리기
 function addMessage(msg, nickname) {
     console.log('==>', msg, nickname);
-    const temp = `<div><span class="chatNickname">${nickname}</span> ${msg}</div>`;
+    const temp = `<div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
     return (chatInput.value = '');
 }

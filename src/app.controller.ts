@@ -80,8 +80,14 @@ export class AppController
     @Get('search/:value')
     async searchPage(@Param('value') search: string)
     {
-        const findValue = await this.mainService.findByBJName(search);
-        console.log(findValue);
-        return { title: 'Search Page', path: '/search', findValue };
+        const searchs = await this.mainService.findByBJName(search);
+        let searchState = true;
+        if (!searchs.channelSearch)
+        {
+            searchState = false;
+        }
+
+        return { title: 'Search Page', path: '/search', searchs, searchState, search };
+
     }
 }

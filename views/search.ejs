@@ -1,78 +1,34 @@
-<div class="container">
-  <h3>채널</h3>
-  <div class="card mb-5">
-    <div class="card-body">
-      <div style="display: flex;">
-        <div class="card-title channelInfoImg">
-          <img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340" />
-        </div>
-        <div>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.channelName %>
-          </p>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.description %>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <h3>라이브</h3>
-  <div class="card mb-5">
-    <div class="card-body">
-      <div style="display: flex;">
-        <div class="card-title channelInfoImg">
-          <img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340" />
-        </div>
-        <div>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.channelName %>
-          </p>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.description %>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <h3>'<%= findValue.findNickname.channelName %>' 의 최신 영상</h3>
-  <div class="card mb-5">
-    <div class="card-body">
-      <div style="display: flex;">
-        <div class="card-title channelInfoImg">
-          <img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340" />
-        </div>
-        <div>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.channelName %>
-          </p>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.description %>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <h3>동영상</h3>
-  <div class="card mb-5">
-    <div class="card-body">
-      <div style="display: flex;">
-        <div class="card-title channelInfoImg">
-          <img
-            src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340" />
-        </div>
-        <div>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.channelName %>
-          </p>
-          <p class="ms-3 text-start card-text display-center">
-            <%= findValue.findNickname.description %>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container mb-5">
+  <h3 class="w-100 text-start">
+    채널
+  </h3>
+  <% if(searchs.channelSearch.length){ %>
+
+    <% searchs.channelSearch.forEach((channel,index)=> { %>
+      <% if (index===0){%>
+
+        <div class="col-12"><%- include('./modules/first-channel-card.ejs',{channel:channel}) %></div>
+        <% } else {%>
+          <div class="col-4 mt-3" style="height: 120px;">
+            <%- include('./modules/channel-card.ejs',{channel:channel})%>
+          </div>
+          <% } %>
+            <% }) %>
+              <% }else { %>
+
+                <div class="card mb-5">
+                  <div class="card-body">
+                    <div style="display: flex;">
+                      <div>
+                        <p class="ms-3 text-center card-text ">
+                          검색 값이 없습니다
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <% } %>
+
+
 </div>

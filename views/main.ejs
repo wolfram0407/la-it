@@ -41,7 +41,10 @@
                             <% } else if(path==='/streaming' ) { %>
                                 <div><%- include('./streaming.ejs', {channel: channel}) %></div>
                                 <% } else if(path==='/search' ) { %>
-                                    <div><%- include('./search.ejs', {findValue: findValue}) %></div>
+                                    <div>
+                                        <%- include('./search.ejs', {searchs: searchs, searchState:searchState,search })
+                                            %>
+                                    </div>
                                     <% } else { %>
                                         <div class="videoBoxWrap">
                                             <% lives.forEach(live=> { %>

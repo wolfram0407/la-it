@@ -2,7 +2,7 @@ import { Channel } from 'src/user/entities/channel.entity';
 import { HttpException, Injectable, NotAcceptableException, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { DataSource, Like, Repository } from 'typeorm';
 import { ReqCreateUserDto } from 'src/auth/dto/req.auth.dto';
 import crypto from 'crypto';
 
@@ -14,6 +14,8 @@ export class UserService
     private readonly userRepository: Repository<User>,
     @InjectRepository(Channel)
     private readonly channelRepository: Repository<Channel>,
+    private dataSource: DataSource,
+
   ) { }
 
   async createUserAndChannel(reqCreateUserDto: ReqCreateUserDto)
@@ -91,9 +93,15 @@ export class UserService
   {
     try
     {
-      const channel = await this.channelRepository.findOne({
-        where: { channelName: Like(`%${search}%`) },
-      });
+      const channel = await this.dataSource
+        .getRepository(Channel)
+        .query(
+          `select * from channels 
+          left join lives 
+          on channels.channel_id = lives.channel_id
+          where lives.status = true 
+          and channels.channel_name LIKE '%${search}%';`
+        )
 
       return channel;
     } catch (error)

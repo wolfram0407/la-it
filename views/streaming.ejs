@@ -65,26 +65,26 @@
             </div>
         </div>
     </div>
-    <div class="liveMasterChatBox">
+    <div class="liveChatBox" id="liveChatBoxContainer">
         <div class="chatTitle">채팅</div>
-        <div class="chatMain">
-            <div class="chatBox">
-                <div class="chatList">
-                    <div class="chatNickname">방정맞은 라이언</div>
-                    <div class="chatText">대박이네요!!</div>
+        <div class="chatMain" id="chatBoxWrapStreaming">
+            <div class="chatBox" id="chatBox">
+                <div class="chatList" id="oneChat">
+                    <div class="chatNickname" id="chatNickname">방정맞은 라이언</div>
+                    <div class="chatText" id="chatText">대박이네요!!</div>
                 </div>
-                <div class="chatList">
-                    <div class="chatNickname">방정맞은 라이언</div>
-                    <div class="chatText">대박이네요!!</div>
-                </div>
-                <div class="chatList">
-                    <div class="chatNickname">방정맞은 라이언</div>
-                    <div class="chatText">대박이네요!!</div>
-                </div>
+            </div>
+            <div class="chatInput streamingChatInputWrap">
+                <input
+                    type="text"
+                    id="chatInputStreamerPage"
+                    class="chatInputText"
+                    style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px"
+                />
+                <button id="sendChatBtnStreamerPage">전송</button>
             </div>
         </div>
     </div>
 </div>
 <script defer src="/script/streaming.js"></script>
-<!-- <script defer src="/script/chat.js"></script>
-<script defer src="/script/chatRecord.js"></script> -->
+<script defer src="/script/chat.js"></script>

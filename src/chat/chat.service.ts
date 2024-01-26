@@ -18,33 +18,35 @@ export class ChatService {
         @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
 
-    async enterLiveRoomChat(liveId: string, socket: Socket) {
+    async enterLiveRoomChat(channelId: string, socket: Socket) {
         try {
-            const joinTheChatRoom = socket.join(liveId);
-            const chats = await this.ChatModel.find({ liveId }).sort({ _id: -1 }).limit(50).select(' nickname content');
-            console.log('chats', chats);
-            return chats;
+            const joinTheChatRoom = socket.join(channelId);
+            return joinTheChatRoom;
+            //const chats = await this.ChatModel.find({ channelId });
+            //console.log('chats', chats);
+            //return chats;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }
     }
 
     //캐시 저장.
-    async setHashCache(hashKey: string | number, cacheData: string, waitToSaveMongoDB: object[]) {
+    async setHashCache(hashKey: string | number, cacheData: string) {
         console.log('+++++캐시저장중', cacheData);
         const inputData = cacheData.split('_');
-        console.log('inputData', inputData);
-        const hsetData = await this.redis.hSet(`liveId: ${inputData[3]}`, hashKey, cacheData); //데이터가 들어오는 순간 캐시 저장,
-        console.log('hsetData', hsetData);
+        console.log('inputData', inputData); //inputData [ '2', '테스트유은지', '123', '6' ]
+        console.log('레디스 확인', this.redis);
+        const hsetData = await this.redis.hSet(`channelId: ${inputData[3]}`, hashKey, cacheData); //데이터가 들어오는 순간 캐시 저장,
+        console.log('hsetData', hsetData); //hsetData 1//추가
 
         //waitToSaveMongoDB = [];
-        //waitToSaveMongoDB.push({ userId: +inputData[0], nickname: inputData[1], content: inputData[2], liveId: inputData[3] });
+        //waitToSaveMongoDB.push({ userId: +inputData[0], nickname: inputData[1], content: inputData[2], channelId: inputData[3] });
         //console.log('waitToSaveMongoDB', waitToSaveMongoDB);
 
-        const liveIdDataSize = await this.redis.hLen(`liveId: ${inputData[3]}`);
-        console.log('liveIdDataSize 길이캐쉬', liveIdDataSize);
+        const channelIdDataSize = await this.redis.hLen(`channelId: ${inputData[3]}`);
+        console.log('channelIdDataSize 길이캐쉬', channelIdDataSize);
 
-        if (liveIdDataSize > 20) {
+        if (channelIdDataSize > 20) {
             return true;
         } else {
             return false;
@@ -52,25 +54,32 @@ export class ChatService {
         //return waitToSaveMongoDB;
 
         //const getAllCacheByKey = await this.redis.hGetAll(key);// key에 해당한느 모든 데이터 가져오기
-        //const getCacheByHashKey = await this.redis.hGet(inputData.liveId, '1706086717934'); //필드에 해당하는 모든 값 가져오기
+        //const getCacheByHashKey = await this.redis.hGet(inputData.channelId, '1706086717934'); //필드에 해당하는 모든 값 가져오기
 
         //return getCacheByHashKey;
     }
 
     //채팅
-    async createChat(socket: Socket, content: string, liveId: string, userId: number, nickname: string, waitToSaveMongoDB: object[]) {
+    async createChat(socket: Socket, content: string, channelId: string, userId: number, nickname: string) {
         try {
-            const cacheData = `${userId}_${nickname}_${content}_${liveId}`;
-
-            const saveChatInCache = await this.setHashCache(Date.now(), cacheData, waitToSaveMongoDB);
+            const cacheData = `${userId}_${nickname}_${content}_${channelId}`;
+            console.log('cacheData', cacheData);
+            const saveChatInCache = await this.setHashCache(Date.now(), cacheData);
 
             console.log('saveChatInCache', saveChatInCache);
 
             if (!saveChatInCache) {
+                //console.log('어딘가 알수없는 캐시디비에 저장.');
+                //const findCacheData = await this.redis.hGetAll(`channelId: ${channelId}`);
+                //console.log('다뽑음321', findCacheData);
+
                 return;
             }
             if (saveChatInCache) {
-                const findCacheData = await this.redis.hGetAll(`liveId: ${liveId}`);
+                console.log('다뽑음1');
+
+                const findCacheData = await this.redis.hGetAll(`channelId: ${channelId}`);
+                console.log('다뽑음', findCacheData);
                 for (let eachData in findCacheData) {
                     console.log('eachData', eachData, findCacheData[eachData]);
                     const getDataArr = findCacheData[eachData].split('_');
@@ -79,46 +88,30 @@ export class ChatService {
                     const saveChat = new this.ChatModel({
                         userId: +getDataArr[0],
                         nickname: getDataArr[1],
-                        liveId: getDataArr[3],
+                        channelId: getDataArr[3],
                         content: getDataArr[2],
                     });
                     saveChat.save();
                 }
                 //캐시에서 해당 데이터들 지우기
-                const deleteCacheData = await this.redis.del(`liveId: ${liveId}`);
+                const deleteCacheData = await this.redis.del(`channelId: ${channelId}`);
 
+                //TODO
                 //이미 몽고db에 저장되었다면, 다시 저장 안되도록 하기
-                //const checkMongoDBSave = new this.ChatModel.findOne({ where: { liveId: `liveId :${liveId}`, content: getDataArr[2] } });
-
-                console.log('findCacheData', typeof findCacheData, findCacheData);
+                //const checkMongoDBSave = new this.ChatModel.findOne({ where: { channelId: `channelId :${channelId}`, content: getDataArr[2] } });
             }
 
-            //waitToSaveMongoDB.push({ userId, nickname, liveId, content });
-            //console.log('waitToSaveMongoDB', waitToSaveMongoDB);
-
-            //setTimeout(function moveToMongoDB() {
-            //    console.log('타임아웃');
-            //    //waitToSaveMongoDB.forEach(async (data) => {
-            //    //    const { userId, nickname, liveId, content } = data;
-            //    //    const saveChat = await new this.ChatModel({ userId, nickname, liveId, content });
-            //    //    return saveChat.save();
-            //    //});
-            //}, 10000);
             return;
-            console.log('saveChatInCache', saveChatInCache);
-            //console.log('길이', saveChatInCache.length);
-            //const saveChat = new this.ChatModel({ userId, nickname, liveId, content });
-            //return saveChat.save();
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
             //throw new WsException('Invalid credentials.');
         }
     }
 
-    async getAllChatByLiveId(liveId: string) {
+    async getAllChatByChannelId(channelId: string) {
         try {
-            console.log(liveId);
-            //const chats = await this.ChatModel.find({ liveId }).select('userId nickname liveId content createdAt');
+            console.log(channelId);
+            //const chats = await this.ChatModel.find({ channelId }).select('userId nickname channelId content createdAt');
             //console.log('chats', chats);
             //return chats;
         } catch (err) {
@@ -126,9 +119,9 @@ export class ChatService {
         }
     }
 
-    async getSearchChatMessage(searchValue: string, liveId: string) {
+    async getSearchChatMessage(searchValue: string, channelId: string) {
         try {
-            //const searchMessage = await this.ChatModel.findOne({ where: { liveId, content: Like(`%{searchValue}%`) } });
+            //const searchMessage = await this.ChatModel.findOne({ where: { channelId, content: Like(`%{searchValue}%`) } });
             //return searchMessage;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');

@@ -1,0 +1,1 @@
+SELECT * FROM `LaIt`.`lives` LIMIT 1000;

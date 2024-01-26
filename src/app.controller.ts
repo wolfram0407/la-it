@@ -85,8 +85,6 @@ export class AppController
         {
             searchState = false;
         }
-
         return { title: 'Search Page', path: '/search', searchs, searchState, search };
-
     }
 }

@@ -78,6 +78,23 @@ export class UserService {
         return user;
     }
 
+    async findChannelBySearch(search: string) {
+        try {
+            const channel = await this.dataSource.getRepository(Channel).query(
+                `select * from channels 
+            left join lives 
+            on channels.channel_id = lives.channel_id
+            where lives.status = ? 
+            and channels.channel_name LIKE ?;`,
+                [true, `%${search}%`],
+            );
+
+            return channel;
+        } catch (error) {
+            throw new NotAcceptableException('채널검색');
+        }
+    }
+
     async findByNickname(search: string) {
         try {
             const user = this.userRepository.findOne({

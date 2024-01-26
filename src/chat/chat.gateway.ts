@@ -10,7 +10,7 @@ import { searchProhibitedWords } from './forbidden.words';
 
 @WebSocketGateway({
     cors: {
-        //origin: ['ws://localhost:3002/live'],
+        //origin: ['ws://${URL}/live'],
         origin: '*',
     },
 })

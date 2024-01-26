@@ -36,7 +36,7 @@ async function sendChannelInfoData(e) {
 
     //location.reload();
 
-    const url = `http://localhost:3002/my-page/${channelId}`;
+    const url = `${URL}/my-page/${channelId}`;
     window.location.href = url;
     location.reload();
 
@@ -48,7 +48,7 @@ async function sendChannelInfoData(e) {
 //s3에 이미지 저장함수
 async function saveImageS3(channelId, formData, AccessToken) {
     return await axios
-        .post(`http://localhost:3002/api/setting/${channelId}`, formData, {
+        .post(`${URL}/api/setting/${channelId}`, formData, {
             withCredentials: true,
             headers: {
                 authorization: AccessToken,
@@ -64,7 +64,7 @@ async function saveImageS3(channelId, formData, AccessToken) {
 async function saveChannelInfoData(channelId, saveImageUrlData, formDataObj, AccessToken) {
     return await axios
         .put(
-            `http://localhost:3002/api/channel/info/${channelId}`,
+            `${URL}/api/channel/info/${channelId}`,
             {
                 channelImage: saveImageUrlData,
                 channelName: formDataObj.channelName,
@@ -87,7 +87,7 @@ async function changeStreamKey(e) {
     e.preventDefault();
     console.log('스트림키 바꿀예정이에유');
     return await axios
-        .put(`http://localhost:3002/api/channel/change-key/${channelId}`, {
+        .put(`${URL}/api/channel/change-key/${channelId}`, {
             withCredentials: true,
             headers: {
                 authorization: AccessToken,

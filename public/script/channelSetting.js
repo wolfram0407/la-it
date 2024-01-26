@@ -23,7 +23,7 @@ async function sendChannelInfoData(e) {
     const channelId = 1; // 임시용
 
     //s3저장소에 이미지 넣기
-    const saveImage = await axios.post(`http://localhost:3002/api/setting/${channelId}`, formData);
+    const saveImage = await axios.post(`${URL}/api/setting/${channelId}`, formData);
     //const responseData = await saveImage.json();
 
     document.querySelector('.channelInfoContainer').removeAttribute('hidden');

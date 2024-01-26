@@ -31,7 +31,7 @@
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
 
             <div id="kakao">
-                <a href="http://localhost:3002/api/auth/login/kakao">
+                <a id="kakaoLink" href=''>
                     <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
                 </a>
             </div>
@@ -45,11 +45,15 @@
         //const myNotificationBtn = document.querySelector('.myNotificationBtn');
         const kakaoLoginBtn = document.querySelector('#kakao');
         const logoutBtn = document.querySelector('.logoutBtn');
-
+        const kakaoLink = document.getElementById('kakaoLink')
+        const kakaoUrl = `${URL}/api/auth/login/kakao`;
         const searchBtn = document.querySelector('#searchBtn');
         const searchValue = document.querySelector('.searchInput');
         const getAccessToken = getCookie('Authorization');
         const AccessToken = `Bearer ${getAccessToken}`;
+
+        kakaoLink.href = kakaoUrl;
+
         if (!getAccessToken)
         {
             myInfoBtn.hidden = true;
@@ -72,7 +76,7 @@
                     {
                         return respones.data
                     })
-                const url = `http://localhost:3002/my-page/${myId}`
+                const url = `${URL}/my-page/${myId}`
                 window.location.href = url
             })
 
@@ -87,7 +91,7 @@
                 alert("Please enter a value!");
             } else
             {
-                const url = `http://localhost:3002/search/${value}`
+                const url = `${URL}/search/${value}`
                 window.location.href = url
             }
         })

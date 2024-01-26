@@ -2,7 +2,7 @@ axios.defaults.withCredentials = true;
 // const getAccessToken = getCookie('Authorization');
 // const AccessToken = `Bearer ${getAccessToken}`;
 if (!getAccessToken) {
-    window.location.href = `http://localhost:3002`;
+    window.location.href = `${URL}`;
 } else {
     document.querySelector('.startLiveBtn').addEventListener('click', async function () {
         const myChannelId = await axios
@@ -15,7 +15,7 @@ if (!getAccessToken) {
             .then((respones) => {
                 return respones.data;
             });
-        const url = `http://localhost:3002/streaming/${myChannelId}`;
+        const url = `${URL}/streaming/${myChannelId}`;
         window.location.href = url;
     });
 }

@@ -31,10 +31,8 @@ export class LiveService {
         return createLive;
     }
 
-    async end(liveId: number) {
-        const endLive = await this.liveRepository.update(liveId, {
-            status: false,
-        });
+    async end(channelId: number) {
+        const endLive = await this.liveRepository.update({ channel: { channelId } }, { status: false });
         return endLive;
     }
 

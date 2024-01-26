@@ -23,7 +23,6 @@ export class AppController
     async main(@Req() req)
     {
         const lives = await this.liveService.findAll();
-        console.log('lives', lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 

@@ -16,7 +16,7 @@ export class MainController
     @Param() { search }: ReqSearchDto
   )
   {
-    //1111throw new Error('테스트 에러')
+    //throw new Error('테스트 에러')
     return await this.mainService.findByBJName(search)
   }
 }

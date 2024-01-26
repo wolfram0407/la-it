@@ -91,10 +91,10 @@ export class UserService
   {
     try
     {
-      const channel = this.channelRepository.findOne({
+      const channel = await this.channelRepository.findOne({
         where: { channelName: Like(`%${search}%`) },
       });
-      console.log(channel);
+
       return channel;
     } catch (error)
     {

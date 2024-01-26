@@ -2,7 +2,7 @@ import { Channel } from 'src/user/entities/channel.entity';
 import { HttpException, Injectable, NotAcceptableException, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { DataSource, Like, Repository } from 'typeorm';
 import { ReqCreateUserDto } from 'src/auth/dto/req.auth.dto';
 import crypto from 'crypto';
 
@@ -13,6 +13,7 @@ export class UserService {
         private readonly userRepository: Repository<User>,
         @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
+        private dataSource: DataSource,
     ) {}
 
     async createUserAndChannel(reqCreateUserDto: ReqCreateUserDto) {
@@ -99,6 +100,15 @@ export class UserService {
     /*
   채널 정보
   */
+
+    // channel 전체 조회
+    async getChannelImageByChannelId(id: number) {
+        try {
+            const channel = await this.channelRepository.findBy({ channelId: id });
+            return channel;
+        } catch (error) {}
+    }
+
     async findChannelIdByUserId(userId: number) {
         try {
             const channel = await this.channelRepository.findOne({

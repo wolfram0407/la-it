@@ -29,8 +29,8 @@
         <div class="liveStreamerInfo">
             <div class="liveTitle spacelLeft">
                 <span> <%= live.title %> </span>
-                <span class="channelIdInLive"><%= live.channel.channelId %></span>
-                <span class="liveIdInLive"><%= live.live_id %></span>
+                <span style="display: none" class="channelIdInLive"><%= live.channel.channelId %></span>
+                <span style="display: none" class="liveIdInLive"><%= live.live_id %></span>
             </div>
             <div class="streamerInfo spacelLeft">
                 <div class="streamerImg">
@@ -55,10 +55,10 @@
         <div class="chatTitle">채팅</div>
         <div class="chatMain" id="chatBoxWrap">
             <div class="chatBox" id="chatBox">
-                <div class="chatList" id="oneChat">
+                <!-- <div class="chatList" id="oneChat">
                     <div class="chatNickname" id="chatNickname">방정맞은 라이언</div>
                     <div class="chatText" id="chatText">대박이네요!!</div>
-                </div>
+                </div> -->
             </div>
             <div class="chatInput">
                 <input type="text" id="chatInput" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke" />
@@ -87,8 +87,8 @@
                         debug: false,
                     });
 
-                    //console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
-                    hls.loadSource(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
+                    console.log(`${HLS_URL}}/hls/${streamKey}/index.m3u8`);
+                    hls.loadSource(`${HLS_URL}}/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
                         video.muted = true;

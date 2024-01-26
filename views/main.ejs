@@ -24,7 +24,10 @@
         <%= title %>
     </title>
     <link rel="stylesheet" href="/styles/common.css" />
-  
+    <script defer>
+        const URL = 'http://localhost:3002';
+        const HLS_URL = 'http://localhost:8080'
+    </script>
 </head>
 
 <body>
@@ -32,7 +35,7 @@
 
         <div class="mainBox">
             <header class="headerBox"><%- include('./modules/header.ejs') %></header>
-           <main>
+            <main>
                 <div class="main__inner">
                     <% if(path==='/my-page' ) { %>
                         <div><%- include('./channelInfo.ejs') %></div>
@@ -40,13 +43,18 @@
                             <div><%- include('./live.ejs', {live: live}) %></div>
                             <% } else if(path==='/streaming' ) { %>
                                 <div><%- include('./streaming.ejs', {channel: channel}) %></div>
-                                <% } else { %>
-                                    <div class="videoBoxWrap">
-                                        <% lives.forEach(live=> { %>
-                                            <div><%- include('./modules/section.ejs', {live:live}) %></div>
-                                            <% }) %>
+                                <% } else if(path==='/search' ) { %>
+                                    <div>
+                                        <%- include('./search.ejs', {searchs: searchs, searchState:searchState,search })
+                                            %>
                                     </div>
-                                    <% } %>
+                                    <% } else { %>
+                                        <div class="videoBoxWrap">
+                                            <% lives.forEach(live=> { %>
+                                                <div><%- include('./modules/section.ejs', {live:live}) %></div>
+                                                <% }) %>
+                                        </div>
+                                        <% } %>
                 </div>
             </main>
             <!-- FOOTER -->

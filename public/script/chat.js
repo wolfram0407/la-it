@@ -108,6 +108,7 @@ function getAllChatByChannelId(e) {
 function addMessage(msg, nickname) {
     console.log('==>', msg, nickname);
     const temp = ` <div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
+    const temp = `<div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
     return (chatInputText.value = '');
 }

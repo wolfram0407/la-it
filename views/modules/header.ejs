@@ -5,22 +5,33 @@
             <div class="logo">Li iT</div>
         </div>
         <div class="searchWrap">
-            <div class="searchInputBox">
-                <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
-            </div>
-            <div class="searchBtnBox">
-                <button class="searchBtn" id="searchBtn">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
+            <%if(path=== '/search' ){ %>
+                <div class="searchInputBox">
+                    <input class="searchInput" type="text" value=<%=search %> />
+                </div>
+                <%}else{ %>
+
+                    <div class="searchInputBox">
+                        <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
+                    </div>
+
+                    <%} %>
+                        <div class="searchBtnBox">
+                            <button class="searchBtn" id="searchBtn">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+
+
+
         </div>
 
         <div class="userBtnWrap">
-            <div class="logoutBtn userBtn">로그아웃</div>
+            <div class="logoutBtn userBtn"><button id="logoutBtn">로그아웃</button></div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
 
             <div id="kakao">
-                <a href="http://localhost:3002/api/auth/login/kakao">
+                <a id="kakaoLink" href=''>
                     <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
                 </a>
             </div>
@@ -31,18 +42,22 @@
     <script>
         axios.defaults.withCredentials = true;
         const myInfoBtn = document.querySelector('.myInfoBtn');
-        const myNotificationBtn = document.querySelector('.myNotificationBtn');
+        //const myNotificationBtn = document.querySelector('.myNotificationBtn');
         const kakaoLoginBtn = document.querySelector('#kakao');
         const logoutBtn = document.querySelector('.logoutBtn');
-
+        const kakaoLink = document.getElementById('kakaoLink')
+        const kakaoUrl = `${URL}/api/auth/login/kakao`;
         const searchBtn = document.querySelector('#searchBtn');
         const searchValue = document.querySelector('.searchInput');
         const getAccessToken = getCookie('Authorization');
         const AccessToken = `Bearer ${getAccessToken}`;
+
+        kakaoLink.href = kakaoUrl;
+
         if (!getAccessToken)
         {
             myInfoBtn.hidden = true;
-            myNotificationBtn.hidden = true;
+            //myNotificationBtn.hidden = true;
             logoutBtn.hidden = true;
         } else
         {
@@ -61,7 +76,7 @@
                     {
                         return respones.data
                     })
-                const url = `http://localhost:3002/my-page/${myId}`
+                const url = `${URL}/my-page/${myId}`
                 window.location.href = url
             })
 
@@ -76,11 +91,16 @@
                 alert("Please enter a value!");
             } else
             {
-                const url = `http://localhost:3002/search/${value}`
+                const url = `${URL}/search/${value}`
                 window.location.href = url
             }
         })
 
+        logoutBtn.addEventListener('click', () =>
+        {
+            document.cookie = 'Authorization' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+            window.location.href = '/'
+        })
         function getCookie(name)
         {
             let matches = document.cookie.match(new RegExp(

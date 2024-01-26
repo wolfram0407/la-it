@@ -24,7 +24,6 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
-        console.log(lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
@@ -42,7 +41,6 @@ export class AppController {
         const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
     }
-
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
     async myInfo(@Param('channelId') channelId: number) {
@@ -64,8 +62,7 @@ export class AppController {
 
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
-    async provideLive(@Param('channelId') channelId: string) {
-        console.log('ch ID =====> ', channelId);
+    async provideLive(@Param('channelId') channelId: string, @Req() req) {
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
         const live = await this.liveService.findOneByChannelId(+channelId);
         //const liveStatusValue = live.status;
@@ -80,8 +77,11 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     @Get('search/:value')
     async searchPage(@Param('value') search: string) {
-        const findValue = await this.mainService.findByBJName(search);
-        console.log(findValue);
-        return { title: 'Search Page', path: '/search', findValue };
+        const searchs = await this.mainService.findByBJName(search);
+        let searchState = true;
+        if (!searchs.channelSearch) {
+            searchState = false;
+        }
+        return { title: 'Search Page', path: '/search', searchs, searchState, search };
     }
 }

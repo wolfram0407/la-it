@@ -17,4 +17,4 @@ import { ChatModule } from 'src/chat/chat.module';
     providers: [LiveService],
     exports: [LiveService],
 })
-export class LiveModule {}
+export class LiveModule { }

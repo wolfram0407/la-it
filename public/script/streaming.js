@@ -39,8 +39,8 @@ async function createLive() {
                     debug: false,
                 });
 
-                //console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
-                hls.loadSource(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
+                console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MEDIA_ATTACHED, function () {
                     video.muted = true;

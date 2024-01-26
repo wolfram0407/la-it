@@ -23,6 +23,7 @@ export class ImageService {
         file: Express.Multer.File, //파일 데이터 포함.
         ext: string, //파일확장자
     ) {
+        console.log('----- 이미지 서비스 시작 ------');
         const command = new PutObjectCommand({
             //PutObjectCommand는 s3객체 업로드 할때 사용.
             Bucket: this.configService.get('AWS_BUCKET_NAME'),

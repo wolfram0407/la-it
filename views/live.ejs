@@ -67,6 +67,7 @@
         </div>
     </div>
 </div>
+<script defer src="/script/chat.js"></script>
 
 <script defer>
     const channelId = document.querySelector('.channelIdInLive').textContent;
@@ -75,18 +76,18 @@
         await axios
             .get(`/api/live/${liveId}`)
             .then(function (response) {
-                console.log('response: ', response);
+                //console.log('response: ', response);
 
                 const streamKey = response.data.channel.streamKey;
-                console.log('streamKey: ', streamKey);
+                //console.log('streamKey: ', streamKey);
 
                 if (Hls.isSupported()) {
                     1;
                     const hls = new Hls({
-                        debug: true,
+                        debug: false,
                     });
 
-                    console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
+                    //console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
                     hls.loadSource(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
@@ -96,9 +97,7 @@
                 }
             })
             .catch(function (error) {
-                console.log(error);
+                //console.log(error);
             });
     });
 </script>
-<script defer src="/script/chat.js"></script>
-<script defer src="/script/chatRecord.js"></script>

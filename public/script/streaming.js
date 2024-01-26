@@ -12,13 +12,12 @@ liveStartBtn.addEventListener('click', createLive);
 liveEndBtn.addEventListener('click', endLive);
 
 // 방송 페이지 벗어나면 방송 종료
-window.addEventListener('beforeunload', endLive);
 
 async function createLive() {
     let streamingTitle = document.getElementById('streamingTitle').value;
     let streamingDesc = document.getElementById('streamingDesc').value;
-    console.log('streamingTitle: ', streamingTitle);
-    console.log('streamingDesc: ', streamingDesc);
+    //console.log('streamingTitle: ', streamingTitle);
+    //console.log('streamingDesc: ', streamingDesc);
 
     await axios
         .post(`/api/live/create/${channelId}`, {
@@ -27,20 +26,20 @@ async function createLive() {
             description: streamingDesc,
         })
         .then(function (response) {
-            console.log('response: ', response);
+            //console.log('response: ', response);
 
             const streamKey = response.data.channel.streamKey;
-            console.log('streamKey: ', streamKey);
+            //console.log('streamKey: ', streamKey);
             broadcastBtn.hidden = true;
             broadcastCloseBtn.hidden = false;
 
             if (Hls.isSupported()) {
                 1;
                 const hls = new Hls({
-                    debug: true,
+                    debug: false,
                 });
 
-                console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
+                //console.log(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
                 hls.loadSource(`http://localhost:8080/hls/${streamKey}/index.m3u8`);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MEDIA_ATTACHED, function () {
@@ -50,7 +49,7 @@ async function createLive() {
             }
         })
         .catch(function (error) {
-            console.log(error);
+            //console.log(error);
         });
 }
 

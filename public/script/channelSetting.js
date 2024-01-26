@@ -29,12 +29,17 @@ async function sendChannelInfoData(e) {
     }
 
     //s3저장소에 이미지 넣기
-    await saveImageS3(channelId, formData, AccessToken);
+    saveImageUrlData = await saveImageS3(channelId, formData, AccessToken);
 
     //channel info 데이터 넣기
     await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, AccessToken);
 
+    //location.reload();
+
+    const url = `http://localhost:3002/my-page/${channelId}`;
+    window.location.href = url;
     location.reload();
+
     document.querySelector('.channelInfoContainer').removeAttribute('hidden');
     document.querySelector('.homeBox').removeAttribute('hidden');
     document.querySelector('.channelInfoSettingContainer').setAttribute('hidden', true);
@@ -49,9 +54,9 @@ async function saveImageS3(channelId, formData, AccessToken) {
                 authorization: AccessToken,
             },
         })
-        .then(async (response) => {
+        .then((response) => {
             console.log('response', response.data.data);
-            return (saveImageUrlData = response.data.data);
+            return response.data.data;
         });
 }
 

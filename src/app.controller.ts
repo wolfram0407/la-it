@@ -68,11 +68,13 @@ export class AppController {
         console.log('ch ID =====> ', channelId);
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
         const live = await this.liveService.findOneByChannelId(+channelId);
-        const liveStatusValue = live.status;
+        //const liveStatusValue = live.status;
         // if (liveStatusValue === true) {
         //     await this.liveService.end(+channelId);
         // }
-        return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
+        //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
+
+        return { title: 'Streaming Page', path: '/streaming', channel };
     }
 
     @Render('main') // Render the 'main' EJS template

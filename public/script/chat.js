@@ -1,6 +1,6 @@
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA2MDUxNDM4LCJleHAiOjE3MDYxMzc4Mzh9.fQJHMzuJUC-LrMs-Kg0sRJb8E4X1WUPTb-ZV7fvzpYg',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI2LCJ0b2tlbiI6IkFjY2VzcyIsImlhdCI6MTcwNjE2OTk5NCwiZXhwIjoxNzA2MjU2Mzk0fQ.sfN1VDhTAY8LmxQJi9IOnxXg6RaCVL0eGt1q4iDHlYU',
         //token: '//토큰 넣으면 됩니당',
         //token: getCookie(access_token),
     },

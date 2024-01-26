@@ -13,12 +13,9 @@ export class LiveService {
         private channelRepository: Repository<Channel>,
     ) {}
 
-    async create(title: string, thumbnail: string, category: string, channelName: string, hlsUrl: string) {
-        const userId = 1;
-        const channelColumn = await this.channelRepository.findOne({ where: { user: { userId } } });
+    async create(title: string, thumbnail: string, description: string, hlsUrl: string, channelId: number) {
+        const channelColumn = await this.channelRepository.findOneBy({ channelId });
         console.log('channelColumn: ', channelColumn);
-        channelName = channelColumn.channelName;
-        console.log('channelName: ', channelName);
         const streamKey = channelColumn.streamKey;
         console.log('streamKey: ', streamKey);
         hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
@@ -26,8 +23,7 @@ export class LiveService {
         const createLive = await this.liveRepository.save({
             title,
             thumbnail,
-            channelName,
-            category,
+            description,
             hlsUrl,
             channel: channelColumn,
         });
@@ -35,15 +31,13 @@ export class LiveService {
         return createLive;
     }
 
-    async end(liveId: number) {
-        const endLive = await this.liveRepository.update(liveId, {
-            status: false,
-        });
+    async end(channelId: number) {
+        const endLive = await this.liveRepository.update({ channel: { channelId } }, { status: false });
         return endLive;
     }
 
     async findAll(): Promise<Live[]> {
-        const allLive: Live[] = await this.liveRepository.find({ relations: ['channel'] });
+        const allLive: Live[] = await this.liveRepository.find({ relations: ['channel'], where: { status: true } });
         return allLive;
     }
 

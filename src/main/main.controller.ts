@@ -12,12 +12,9 @@ export class MainController
 
   @UseGuards(ThrottlerBehindProxyGuard)
   @Get('search/:search')
-  async search(
-    @Param() { search }: ReqSearchDto
-  )
+  async search(@Param() { search }: ReqSearchDto)
   {
-    //throw new Error('테스트 에러')
-    return await this.mainService.findByBJName(search)
+    // throw new Error('테스트 에러');
+    return await this.mainService.findByBJName(search);
   }
 }
-

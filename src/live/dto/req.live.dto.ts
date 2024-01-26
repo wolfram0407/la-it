@@ -22,12 +22,12 @@ export class ReqCreateLiveDto {
 
     @ApiProperty({
         required: true,
-        example: '먹방',
-        description: '카테고리',
+        example: '먹방합니다.',
+        description: '설명',
     })
     @IsString()
     @IsNotEmpty()
-    category: string;
+    description: string;
 }
 
 export class ReqUpdateLiveDto extends PartialType(ReqCreateLiveDto) {

@@ -1,7 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { LiveService } from './live.service';
 import { ReqCreateLiveDto, ReqUpdateLiveDto } from './dto/req.live.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/common/types/userRoles.type';
+import { Roles } from 'src/common/decorator/role.decorator';
 
 @ApiTags('Live')
 @Controller('/api/live')
@@ -12,18 +16,18 @@ export class LiveController {
         summary: '라이브 등록',
         description: '라이브 등록',
     })
-    @Post('create')
-    create(@Body() { title, thumbnail, category }: ReqCreateLiveDto, channelName: string, hlsUrl: string) {
-        return this.liveService.create(title, thumbnail, category, channelName, hlsUrl);
+    @Post('create/:channelId')
+    create(@Body() { title, thumbnail, description }: ReqCreateLiveDto, hlsUrl: string, @Param('channelId') channelId: string) {
+        return this.liveService.create(title, thumbnail, description, hlsUrl, +channelId);
     }
 
     @ApiOperation({
         summary: '라이브 종료',
         description: '라이브 종료',
     })
-    @Post('end/:liveId')
-    end(@Param('liveId') liveId: string) {
-        return this.liveService.end(+liveId);
+    @Post('end/:channelId')
+    end(@Param('channelId') channelId: string) {
+        return this.liveService.end(+channelId);
     }
 
     @Get()

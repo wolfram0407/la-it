@@ -42,7 +42,6 @@ export class AppController {
         const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
     }
-
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
     myInfo() {

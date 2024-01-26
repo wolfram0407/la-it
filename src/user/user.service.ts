@@ -99,9 +99,9 @@ export class UserService
           `select * from channels 
           left join lives 
           on channels.channel_id = lives.channel_id
-          where lives.status = true 
-          and channels.channel_name LIKE '%${search}%';`
-        )
+          where lives.status = ? 
+          and channels.channel_name LIKE ?;`
+          , [true, `%${search}%`])
 
       return channel;
     } catch (error)

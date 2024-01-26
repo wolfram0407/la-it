@@ -14,7 +14,9 @@ import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 
 import * as Sentry from '@sentry/node';
 import { ConfigService } from '@nestjs/config';
-async function bootstrap() {
+async function bootstrap()
+{
+
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
             transports: [
@@ -26,6 +28,7 @@ async function bootstrap() {
         }),
     });
     const configService = app.get(ConfigService);
+
     const corsOptions: CorsOptions = {
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

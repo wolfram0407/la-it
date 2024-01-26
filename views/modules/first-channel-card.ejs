@@ -1,0 +1,21 @@
+<div class="w-100 card mb-3 d-flex justify-content-center">
+  <div class="row g-0 d-flex p-2 ">
+    <div class="col-10 d-flex">
+      <div class="col-3  d-flex justify-content-center">
+        <img src="<%= channel.profile_image %>" style="object-fit: cover;" />
+      </div>
+      <div class="row col-9 p-2 text-start">
+        <h3 class="card-title">
+          <%= channel.channel_name %>
+        </h3>
+        <div class="card-title">
+          <%= channel.description %>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 d-flex d-flex  align-items-center justify-content-center">
+      <div type="button" class="btn btn-success d-flex align-items-center ">구독
+      </div>
+    </div>
+  </div>
+</div>

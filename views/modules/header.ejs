@@ -5,14 +5,25 @@
             <div class="logo">Li iT</div>
         </div>
         <div class="searchWrap">
-            <div class="searchInputBox">
-                <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
-            </div>
-            <div class="searchBtnBox">
-                <button class="searchBtn" id="searchBtn">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
+            <%if(path=== '/search' ){ %>
+                <div class="searchInputBox">
+                    <input class="searchInput" type="text" value=<%=search %> />
+                </div>
+                <%}else{ %>
+
+                    <div class="searchInputBox">
+                        <input class="searchInput" type="text" placeholder="스트리머, 게임 영상 검색" />
+                    </div>
+
+                    <%} %>
+                        <div class="searchBtnBox">
+                            <button class="searchBtn" id="searchBtn">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+
+
+
         </div>
 
         <div class="userBtnWrap">
@@ -81,6 +92,10 @@
             }
         })
 
+        logoutBtn.addEventListener('click', () =>
+        {
+            document.cookie = 'Authorization' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+        })
         function getCookie(name)
         {
             let matches = document.cookie.match(new RegExp(

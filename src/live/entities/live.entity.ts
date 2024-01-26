@@ -23,11 +23,8 @@ export class Live {
     @Column({ type: 'varchar', nullable: false })
     title: string;
 
-    @Column({ type: 'varchar', name: 'channel_name', nullable: false })
-    channelName: string;
-
     @Column({ type: 'varchar' })
-    category: string;
+    description: string;
 
     @Column({ type: 'varchar', name: 'hls_url' })
     hlsUrl: string;

@@ -7,6 +7,9 @@ import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
+import { Roles } from './common/decorator/role.decorator';
+import { Role } from './common/types/userRoles.type';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @ApiTags('Frontend')
 @Controller()
@@ -21,7 +24,7 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
-        console.log('lives', lives);
+        console.log(lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
@@ -51,8 +54,14 @@ export class AppController {
         //return { title: 'User - channel info view page', path: '/my-page', live: live };
     }
 
-    // @ApiBearerAuth()
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
+    @Get('/streaming')
+    async streamingInfo(@UserInfo() user: UserAfterAuth) {
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.findChannelIdByUserId(user.id);
+        return channel.channelId;
+    }
+
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
     async provideLive(@Param('channelId') channelId: string) {

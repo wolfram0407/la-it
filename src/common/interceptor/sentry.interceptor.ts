@@ -1,20 +1,17 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
-import { Observable, catchError } from "rxjs";
-import { Request as ExpressRequest } from 'express'
+import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
+import {Observable, catchError} from "rxjs";
+import {Request as ExpressRequest} from 'express'
 import * as Sentry from '@sentry/node';
-import { IncomingWebhook } from "@slack/webhook";
+import {IncomingWebhook} from "@slack/webhook";
 @Injectable()
-export class SentryInterceptor implements NestInterceptor
-{
-  intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>>
-  {
+export class SentryInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
     const http = context.switchToHttp();
     const request = http.getRequest<ExpressRequest>();
-    const { url } = request
+    const {url} = request
 
     return next.handle().pipe(
-      catchError((error) =>
-      {
+      catchError((error) => {
         Sentry.captureException(error)
         const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK)
         webhook.send({

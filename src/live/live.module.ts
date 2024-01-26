@@ -16,4 +16,4 @@ import { UserModule } from 'src/user/user.module';
     providers: [LiveService],
     exports: [LiveService],
 })
-export class LiveModule {}
+export class LiveModule { }

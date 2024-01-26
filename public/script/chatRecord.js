@@ -1,7 +1,8 @@
+const getAccessToken = getCookie('Authorization');
+
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA1OTA0MjUyLCJleHAiOjE3MDU5OTA2NTJ9.348kV0iSreQLY30UXVuLSnO2BnNpvWGTdGs0LmbzH3c',
-        //token: getCookie(access_token),
+        token: `Bearer ${getAccessToken}`,
     },
 });
 

@@ -1,8 +1,8 @@
+const getAccessToken = getCookie('Authorization');
+
 const socket = io({
     auth: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA2MDUxNDM4LCJleHAiOjE3MDYxMzc4Mzh9.fQJHMzuJUC-LrMs-Kg0sRJb8E4X1WUPTb-ZV7fvzpYg',
-        //token: '//토큰 넣으면 됩니당',
-        //token: getCookie(access_token),
+        token: `Bearer ${getAccessToken}`,
     },
 });
 
@@ -70,13 +70,13 @@ function addMessage(msg, nickname) {
     return (chatInput.value = '');
 }
 
-//토큰 가져오는 함수
-function getCookie(access_token) {
-    const cookieArr = document.cookie.split(';');
-    const getToken = cookieArr.filter((e) => {
-        if (e.split('=')[0] === 'access_token') {
-            return e.split('=')[1];
-        }
-    });
-    return getToken;
-}
+////토큰 가져오는 함수
+//function getCookie(access_token) {
+//    const cookieArr = document.cookie.split(';');
+//    const getToken = cookieArr.filter((e) => {
+//        if (e.split('=')[0] === 'access_token') {
+//            return e.split('=')[1];
+//        }
+//    });
+//    return getToken;
+//}

@@ -849,7 +849,7 @@ table {
 
 #channelInfoSettingWrap {
     width: 65vw;
-    height: 65vh;
+    height: 110%;
     border-radius: 20px;
     background-color: #1e1e1e;
     display: flex;
@@ -894,12 +894,50 @@ table {
 #inputGroupFileAddon04 {
     color: black;
     border-left: transparent;
+    border: 1px solid #f8f9fa;
+
     /*border-left: #eef1f3;*/
 }
 
 #inputGroupFileAddon04:hover {
     color: black;
     background-color: #f8f9fa;
-    margin: 1px;
+    margin: 2px;
+    border: transparent;
+}
+
+#streamKeyGetNew {
+    color: black;
     border-left: transparent;
+    background-color: #f8f9fa;
+    width: 80px;
+}
+
+#streamKeyGetNew:hover {
+    color: #f8f9fa;
+    background-color: black;
+    margin: 2px;
+    border: transparent;
+}
+
+.streamingChatInputWrap {
+    position: relative;
+    top: -20px;
+}
+#chatBoxWrapStreaming {
+    height: 800px;
+}
+
+.streamingChatInputWrap {
+    width: 90%;
+    height: 8%;
+    justify-content: center;
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+}
+#chatInputStreamerPage {
+    width: 10px;
+    background-color: #1b1b1d;
 }

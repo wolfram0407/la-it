@@ -37,9 +37,16 @@ export class UserController {
 
     //
     // update channel information
+    //@Put('/channel/info/:id')
+    //async updateChannelInfo(@Param('id') id: string, @Body() { description, channelImage }: ReqUpdateChannelInfoDto) {
+    //    return await this.userService.updateChannelInfo(+id, description, channelImage);
+    //}
+
     @Put('/channel/info/:id')
-    async updateChannelInfo(@Param('id') id: string, @Body() { description, channelImage }: ReqUpdateChannelInfoDto) {
-        return await this.userService.updateChannelInfo(+id, description, channelImage);
+    @UseGuards(JwtAuthGuard)
+    async updateChannelInfo(@Param('id') id: number, @Body() data: ReqUpdateChannelInfoDto) {
+        console.log('컨트롤러', id, data);
+        return await this.userService.updateChannelInfo(+id, data.channelName, data.description, data.channelImage);
     }
 
     // channel profile update
@@ -48,12 +55,13 @@ export class UserController {
         if (reset) {
             return await this.userService.updateChannelImage(+id, imageUrl);
         }
-        const defaultUrl = 'http://localhost:3000/testUrl';
+        const defaultUrl = `${URL}/testUrl`;
         return await this.userService.updateChannelImage(+id, defaultUrl);
     }
 
     @Put('/channel/change-key/:id')
     async changeStreamKey(@Param('id') id: string) {
+        console.log('유저 컨트롤러 체인지', id);
         return await this.userService.changeStreamKey(+id);
     }
 

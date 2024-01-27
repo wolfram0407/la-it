@@ -23,6 +23,7 @@ export class ImageService {
         file: Express.Multer.File, //파일 데이터 포함.
         ext: string, //파일확장자
     ) {
+        console.log('----- 이미지 서비스 시작 ------');
         const command = new PutObjectCommand({
             //PutObjectCommand는 s3객체 업로드 할때 사용.
             Bucket: this.configService.get('AWS_BUCKET_NAME'),
@@ -32,8 +33,7 @@ export class ImageService {
             ContentType: `image/${ext}`,
         });
 
-        await this.s3Client.send(command); //이렇게 하면 aws s3저장소에 저장이 되는건가?
-        console.log('s3저장된 주소', `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${fileName}`);
+        await this.s3Client.send(command);
         return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${fileName}`;
     }
 }

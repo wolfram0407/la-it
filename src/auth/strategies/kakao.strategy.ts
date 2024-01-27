@@ -14,22 +14,21 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         private readonly configService: ConfigService,
         private readonly authService: AuthService,
         private readonly userService: UserService,
-    )
-    {
+    ) {
         super({
             clientID: configService.get<string>('KAKAO_KEY'),
             callbackURL: '/api/auth/login/kakao/callback',
         });
     }
-    async validate(accessToken: string, refreshToken: string, profile: Profile, done: any, @Res() res: Response): Promise<any>
-    {
+    async validate(accessToken: string, refreshToken: string, profile: Profile, done: any, @Res() res: Response): Promise<any> {
+        console.log('kakaoStrategy', accessToken);
+
         const kakaoId = profile.id;
         const nickname = profile._json.properties.nickname;
         const profileImage = profile._json.properties.profile_image;
         const provider = profile.provider;
         let user = await this.authService.validateUser(kakaoId);
-        if (!user)
-        {
+        if (!user) {
             // 회원가입 진행
             user = await this.userService.createUserAndChannel({ kakaoId, nickname, profileImage, provider });
             console.log(user);

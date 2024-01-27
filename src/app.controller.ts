@@ -41,9 +41,13 @@ export class AppController {
 
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
-    async myInfo(@Param('channelId') channelId: string) {
-        const channel = await this.userService.FindChannelIdByChannel(+channelId);
-        return { title: 'My Page', path: '/my-page', channel };
+    async myInfo(@Param('channelId') channelId: number) {
+        console.log('_________');
+        // 내채널 클릭 시 Id값 필요
+        const channel = await this.userService.FindChannelIdByChannel(channelId);
+        console.log('channel가져옴', channel);
+        return { title: 'My Page', path: '/my-page', channel: { ...channel, channelId: channelId } };
+        //return { title: 'User - channel info view page', path: '/my-page', live: live };
     }
 
     @UseGuards(JwtAuthGuard)
@@ -59,6 +63,11 @@ export class AppController {
     async provideLive(@Param('channelId') channelId: string, @Req() req) {
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
         const live = await this.liveService.findOneByChannelId(+channelId);
+        //const liveStatusValue = live.status;
+        // if (liveStatusValue === true) {
+        //     await this.liveService.end(+channelId);
+        // }
+        //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
 
         return { title: 'Streaming Page', path: '/streaming', channel };
     }

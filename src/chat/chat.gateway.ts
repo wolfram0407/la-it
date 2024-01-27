@@ -10,7 +10,7 @@ import { searchProhibitedWords } from './forbidden.words';
 
 @WebSocketGateway({
     cors: {
-        //origin: ['ws://localhost:3002/api/live'],
+        //origin: ['ws://${URL}/live'],
         origin: '*',
     },
 })
@@ -20,13 +20,16 @@ export class ChatGateway {
     constructor(private readonly chatService: ChatService) {}
 
     @SubscribeMessage('enter_room')
-    async enterLiveRoomChat(client: Socket, liveId: string): Promise<EnterRoomSuccessDto> {
+    async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
         //@Param('liveId') liveId: string,
-        const chats = await this.chatService.enterLiveRoomChat(liveId, client);
-        console.log('게이트웨이', chats);
-        for (let i = 0; i < chats.length; i++) {
-            //this.server.to(liveId).emit('sending_message', chats[content], chats[nickname]);
-        }
+        console.log('게이트웨이');
+
+        //TODO 유저가 들어오면 기존 채팅 50개 보여주기 추후 구현 예정.
+        const chats = await this.chatService.enterLiveRoomChat(channelId, client);
+        //console.log('게이트웨이', chats);
+        //for (let i = 0; i < chats.length; i++) {
+        //    //this.server.to(liveId).emit('sending_message', chats[content], chats[nickname]);
+        //}
 
         return {
             statusCode: 200,
@@ -34,8 +37,14 @@ export class ChatGateway {
         };
     }
 
+    //TODO 방송 종료하면 나가기
+    @SubscribeMessage('exit_room')
+    async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
+        return this.server.to(channelId).emit('bye');
+    }
+
     @SubscribeMessage('new_message')
-    async createChat(client: Socket, [value, liveId]: [value: string, liveId: string], waitToSaveMongoDB: object[]) {
+    async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         console.log(client.handshake, 'client.id', client.id);
 
         const { userId, nickname } = client.handshake.auth.user;
@@ -47,33 +56,33 @@ export class ChatGateway {
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
         }
-        const saveChat = await this.chatService.createChat(client, value, liveId, userId, nickname, waitToSaveMongoDB);
+        const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
         console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
 
-        return this.server.to(liveId).emit('sending_message', value, nickname);
+        return this.server.to(channelId).emit('sending_message', value, nickname);
     }
 
-    @SubscribeMessage('get_all_chat_by_liveId')
-    async getAllChatByLiveId(client: Socket, liveId: string) {
+    @SubscribeMessage('get_all_chat_by_channelId')
+    async getAllChatByChannelId(client: Socket, channelId: string) {
         console.log('--');
         const socketId = client.id;
-        const messages = await this.chatService.getAllChatByLiveId(liveId);
+        const messages = await this.chatService.getAllChatByChannelId(channelId);
         console.log('messages', messages);
         return this.server.emit('receive_all_chat', messages);
     }
 
     @SubscribeMessage('getSearchChatMessage')
-    async getSearchChatMessage(@MessageBody() searchDto: SearchDto, payload: { liveId: string }) {
-        const { liveId } = payload;
-        const findMessage = this.chatService.getSearchChatMessage(searchDto.searchValue, liveId);
+    async getSearchChatMessage(@MessageBody() searchDto: SearchDto, payload: { channelId: string }) {
+        const { channelId } = payload;
+        const findMessage = this.chatService.getSearchChatMessage(searchDto.searchValue, channelId);
         return this.server.emit('receiveGetSearchChatMessage', findMessage);
     }
 
     //수정 기능 고민중
     //@SubscribeMessage('updateChat')
-    //async updateChat(@MessageBody() updateChatDto: UpdateChatDto, payload: { userId: number; liveId: string }) {
-    //  const {userId, liveId} = payload;
-    //  const updateChat = await this.chatService.updateChat(userId, liveId);
+    //async updateChat(@MessageBody() updateChatDto: UpdateChatDto, payload: { userId: number; channelId: string }) {
+    //  const {userId, channelId} = payload;
+    //  const updateChat = await this.chatService.updateChat(userId, channelId);
 
     //  return this.server.emit('receiveUpdateChat')
     //}

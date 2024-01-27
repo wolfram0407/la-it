@@ -1,8 +1,6 @@
 axios.defaults.withCredentials = true;
-// const getAccessToken = getCookie('Authorization');
-// const AccessToken = `Bearer ${getAccessToken}`;
 if (!getAccessToken) {
-    window.location.href = `${URL}`;
+    window.location.href = '/';
 } else {
     document.querySelector('.startLiveBtn').addEventListener('click', async function () {
         const myChannelId = await axios
@@ -15,7 +13,7 @@ if (!getAccessToken) {
             .then((response) => {
                 return response.data;
             });
-        const url = `${URL}/streaming/${myChannelId}`;
+        const url = `/streaming/${myChannelId}`;
         window.location.href = url;
     });
 }

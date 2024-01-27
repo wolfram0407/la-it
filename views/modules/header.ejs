@@ -46,7 +46,7 @@
         const kakaoLoginBtn = document.querySelector('#kakao');
         const logoutBtn = document.querySelector('.logoutBtn');
         const kakaoLink = document.getElementById('kakaoLink')
-        const kakaoUrl = `${URL}/api/auth/login/kakao`;
+        const kakaoUrl = '/api/auth/login/kakao';
         const searchBtn = document.querySelector('#searchBtn');
         const searchValue = document.querySelector('.searchInput');
         const getAccessToken = getCookie('Authorization');
@@ -76,7 +76,7 @@
                     {
                         return respones.data
                     })
-                const url = `${URL}/my-page/${myId}`
+                const url = `/my-page/${myId}`
                 window.location.href = url
             })
 
@@ -91,7 +91,7 @@
                 alert("Please enter a value!");
             } else
             {
-                const url = `${URL}/search/${value}`
+                const url = `/search/${value}`
                 window.location.href = url
             }
         })

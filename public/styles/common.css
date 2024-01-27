@@ -90,6 +90,10 @@ table {
     border-spacing: 0;
 }
 
+input {
+    border: none;
+}
+
 .laitBox {
     width: 100vw;
     text-align: center;

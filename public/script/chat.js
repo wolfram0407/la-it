@@ -2,7 +2,7 @@ const path = window.location.pathname;
 
 const socket = io({
     auth: {
-        token: `Bearer ${getCookie('Authorization')}`,
+        token: `${getCookie('Authorization')}`,
     },
 });
 

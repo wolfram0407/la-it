@@ -55,7 +55,7 @@ export class UserController {
         if (reset) {
             return await this.userService.updateChannelImage(+id, imageUrl);
         }
-        const defaultUrl = `${URL}/testUrl`;
+        const defaultUrl = '/testUrl';
         return await this.userService.updateChannelImage(+id, defaultUrl);
     }
 

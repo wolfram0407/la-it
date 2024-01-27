@@ -9,9 +9,10 @@ import { ImageModule } from 'src/image/image.module';
 import { PassportModule } from '@nestjs/passport';
 import { User } from 'src/user/entities/user.entity';
 import { UserModule } from 'src/user/user.module';
+import { ChatModule } from 'src/chat/chat.module';
 
 @Module({
-    imports: [JwtModule, PassportModule, ImageModule, UserModule, TypeOrmModule.forFeature([Live, Channel, User])],
+    imports: [JwtModule, PassportModule, ImageModule, UserModule, ChatModule, TypeOrmModule.forFeature([Live, Channel, User])],
     controllers: [LiveController],
     providers: [LiveService],
     exports: [LiveService],

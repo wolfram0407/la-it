@@ -40,11 +40,11 @@
     </header>
 
     <script>
-        axios.defaults.withCredentials = true;
-        const myInfoBtn = document.querySelector('.myInfoBtn');
+        axios.defaults.withCredentials = true
+        const myInfoBtn = document.querySelector('.myInfoBtn')
         //const myNotificationBtn = document.querySelector('.myNotificationBtn');
-        const kakaoLoginBtn = document.querySelector('#kakao');
-        const logoutBtn = document.querySelector('.logoutBtn');
+        const kakaoLoginBtn = document.querySelector('#kakao')
+        const logoutBtn = document.querySelector('.logoutBtn')
         const kakaoLink = document.getElementById('kakaoLink')
         const kakaoUrl = '/api/auth/login/kakao';
         const searchBtn = document.querySelector('#searchBtn');
@@ -52,28 +52,25 @@
         const getAccessToken = getCookie('Authorization');
         const AccessToken = `Bearer ${getAccessToken}`;
 
-        kakaoLink.href = kakaoUrl;
 
-        if (!getAccessToken)
-        {
-            myInfoBtn.hidden = true;
+        kakaoLink.href = kakaoUrl
+
+        if (!getAccessToken) {
+            myInfoBtn.hidden = true
             //myNotificationBtn.hidden = true;
-            logoutBtn.hidden = true;
-        } else
-        {
-            kakaoLoginBtn.hidden = true;
-            logoutBtn.hidden = false;
-            myInfoBtn.addEventListener('click', async () =>
-            {
+            logoutBtn.hidden = true
+        } else {
+            kakaoLoginBtn.hidden = true
+            logoutBtn.hidden = false
+            myInfoBtn.addEventListener('click', async () => {
                 const myId = await axios.get('/my-page',
                     {
                         withCredentials: true,
                         headers: {
-                            authorization: AccessToken
+                            authorization: getAccessToken
                         }
                     })
-                    .then((respones) =>
-                    {
+                    .then((respones) => {
                         return respones.data
                     })
                 const url = `/my-page/${myId}`
@@ -82,8 +79,7 @@
 
         }
 
-        searchBtn.addEventListener('click', async () =>
-        {
+        searchBtn.addEventListener('click', async () => {
             const value = searchValue.value
 
             if (!value)
@@ -92,24 +88,22 @@
             } else
             {
                 const url = `/search/${value}`
+
                 window.location.href = url
             }
         })
 
-        logoutBtn.addEventListener('click', () =>
-        {
-            document.cookie = 'Authorization' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+        logoutBtn.addEventListener('click', () => {
+            document.cookie = 'Authorization' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;'
             window.location.href = '/'
         })
-        function getCookie(name)
-        {
+        function getCookie(name) {
             let matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-            ));
-            return matches ? decodeURIComponent(matches[1]) : undefined;
+            ))
+            return matches ? decodeURIComponent(matches[1]) : undefined
         }
-        document.querySelector('.logo').addEventListener('click', function ()
-        {
-            window.location.href = '/';
+        document.querySelector('.logo').addEventListener('click', function () {
+            window.location.href = '/'
         });
     </script>

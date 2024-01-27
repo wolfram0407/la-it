@@ -1,4 +1,5 @@
 axios.defaults.withCredentials = true;
+const channelId = window.location.pathname.slice(9);
 // const getAccessToken = getCookie('Authorization');
 // const AccessToken = `Bearer ${getAccessToken}`;
 if (!getAccessToken) {
@@ -26,5 +27,5 @@ function getCookie(name) {
 }
 
 document.querySelector('.startLiveBtn').addEventListener('click', function () {
-    window.location.href = '/streaming/:channelId';
+    window.location.href = `/streaming/${channelId}`;
 });

@@ -7,55 +7,48 @@ import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
-import { Roles } from './common/decorator/role.decorator';
-import { Role } from './common/types/userRoles.type';
-import { RolesGuard } from './auth/guards/roles.guard';
 
 @ApiTags('Frontend')
 @Controller()
-export class AppController
-{
+export class AppController {
     constructor(
         private readonly userService: UserService,
         private readonly liveService: LiveService,
         private readonly mainService: MainService,
-    ) { }
+    ) {}
 
     @Get()
     @Render('main') // Render the 'main' EJS template
-    async main(@Req() req)
-    {
+    async main(@Req() req) {
         const lives = await this.liveService.findAll();
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
     @Get('live/:liveId')
     @Render('main') // Render the 'main' EJS template
-    async live(@Param('liveId') liveId: string, @Res() res: Response)
-    {
+    async live(@Param('liveId') liveId: string, @Res() res: Response) {
         const live = await this.liveService.findOne(+liveId);
         return { title: 'Live - User view page', path: '/live', live: live };
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('/my-page')
-    async userInfo(@UserInfo() user: UserAfterAuth)
-    {
+    async userInfo(@UserInfo() user: UserAfterAuth) {
         // 내채널 클릭 시 Id값 필요
         const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
     }
+
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
-    myInfo()
-    {
-        return { title: 'My Page', path: '/my-page' };
+    async myInfo(@Param('channelId') channelId: string) {
+        const channel = await this.userService.FindChannelIdByChannel(+channelId);
+        return { title: 'My Page', path: '/my-page', channel };
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('/streaming')
-    async streamingInfo(@UserInfo() user: UserAfterAuth)
-    {
+    async streamingInfo(@UserInfo() user: UserAfterAuth) {
         // 내채널 클릭 시 Id값 필요
         const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
@@ -63,26 +56,19 @@ export class AppController
 
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
-    async provideLive(@Param('channelId') channelId: string, @Req() req)
-    {
-
+    async provideLive(@Param('channelId') channelId: string, @Req() req) {
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
         const live = await this.liveService.findOneByChannelId(+channelId);
-        const liveStatusValue = live.status;
-        // if (liveStatusValue === true) {
-        //     await this.liveService.end(+channelId);
-        // }
-        return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
+
+        return { title: 'Streaming Page', path: '/streaming', channel };
     }
 
     @Render('main') // Render the 'main' EJS template
     @Get('search/:value')
-    async searchPage(@Param('value') search: string)
-    {
+    async searchPage(@Param('value') search: string) {
         const searchs = await this.mainService.findByBJName(search);
         let searchState = true;
-        if (!searchs.channelSearch)
-        {
+        if (!searchs.channelSearch) {
             searchState = false;
         }
         return { title: 'Search Page', path: '/search', searchs, searchState, search };

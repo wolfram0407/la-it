@@ -12,8 +12,8 @@ if (!getAccessToken) {
                     authorization: AccessToken,
                 },
             })
-            .then((respones) => {
-                return respones.data;
+            .then((response) => {
+                return response.data;
             });
         const url = `${URL}/streaming/${myChannelId}`;
         window.location.href = url;

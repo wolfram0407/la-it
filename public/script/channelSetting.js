@@ -19,8 +19,9 @@ async function sendChannelInfoData(e) {
     const formData = new FormData(this);
 
     //채널아이디 값 가져오기
-    //const channelId = window.location.pathname.slice(9);
-    const channelId = 1; // 임시용
+    const channelId = window.location.pathname.slice(9);
+    console.log('channelId: ', channelId);
+    // const channelId = 1; // 임시용
 
     //s3저장소에 이미지 넣기
     const saveImage = await axios.post(`${URL}/api/setting/${channelId}`, formData);

@@ -19,8 +19,7 @@ async function sendChannelInfoData(e) {
     e.preventDefault();
 
     const getAccessToken = getCookie('Authorization');
-    //const AccessToken = ` ${getAccessToken}`;
-    console.log(getAccessToken);
+
     let saveImageUrlData;
     const formData = new FormData(this);
 

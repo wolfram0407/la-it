@@ -2,7 +2,7 @@
 
 //const socket = io({
 //    auth: {
-//        token: `Bearer ${getAccessToken}`,
+//        token: `${getAccessToken}`,
 //    },
 //});
 

@@ -7,7 +7,7 @@ if (!getAccessToken) {
             .get('/streaming', {
                 withCredentials: true,
                 headers: {
-                    authorization: AccessToken,
+                    authorization: getAccessToken,
                 },
             })
             .then((response) => {

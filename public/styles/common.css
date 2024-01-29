@@ -640,6 +640,14 @@ input {
     margin-bottom: 50px;
 }
 
+.myChannelInfoSubDetail {
+    color: #dfe2ea;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .myChannelNickname {
     font-size: 28px;
     font-weight: 900;
@@ -652,8 +660,7 @@ input {
     align-items: center;
     font-size: 1.2rem;
 }
-
-.startLiveBtn,
+.startLiveSubBtn .startLiveBtn,
 .channelSettingBtn {
     width: 120px;
     height: 43px;

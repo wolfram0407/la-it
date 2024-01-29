@@ -38,11 +38,6 @@ if (path.includes('streaming')) {
 
         endChat.addEventListener('click', function (e) {
             console.log('방송 끝');
-            //해당 방에 있는 전체 유저한테 방송 끝났다고 알러트 보내기.
-
-            //addMessage('해당 방송이 종료되었습니다.', '시스템');
-            //const url = `${URL}/`;
-            //window.location.href = url;
             return socket.emit('exit_room', channelId);
         });
     });
@@ -93,7 +88,7 @@ socket.on('alert', (msg) => {
 socket.on('bye', () => {
     console.log('종료 bye 실행중');
     alert('방송이 종료되었습니다.');
-    const url = `${URL}/`;
+    const url = '/';
     return (window.location.href = url);
 });
 

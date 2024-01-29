@@ -19,16 +19,18 @@
   height: 30px;
   width: 100px;
 }
+*/
 
-#outChat,
-#sendChat {
-  border-radius: 3px;
-  border: transparent;
-  background-color: black;
-  color: white;
-  height: 30px;
-  width: 80px;
-}*/
+.sendChat {
+    border-radius: 3px;
+    border: transparent;
+    color: white;
+    height: 30px;
+    width: 80px;
+    position: relative;
+    bottom: 10px;
+    right: 5px;
+}
 * {
     margin: 0;
     padding: 0;
@@ -90,6 +92,10 @@ table {
     border-spacing: 0;
 }
 
+input {
+    border: none;
+}
+
 .laitBox {
     width: 100vw;
     text-align: center;
@@ -97,6 +103,8 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+/* SEARCH */
 
 /* HEADER */
 
@@ -198,8 +206,9 @@ table {
 }
 
 .main__inner {
+    width: 1800px;
     max-width: 1800px;
-    min-width: 1000px;
+    min-width: 1800px;
 }
 
 /* MAIN */
@@ -269,11 +278,11 @@ table {
 }
 
 /* FOOTER */
-.footerBox {
-    border-top: 1px solid #9da5b6;
-}
+/* .footerBox {
+    border-top: 1px solid #dfe2ea5e;
+} */
 .memberWrap {
-    border-top: 1px solid #9da5b6;
+    border-top: 1px solid #dfe2ea5e;
     height: 200px;
     font-size: 10px;
     display: flex;
@@ -304,7 +313,8 @@ table {
 }
 
 .liveVideoBox {
-    width: 100%;
+    width: 80%;
+    height: 65%;
     display: flex;
     flex-direction: column;
 }
@@ -376,77 +386,95 @@ table {
 .liveStreamerInfo {
     background-color: #191b1d;
     width: 100%;
-    height: 320px;
+    /* height: 50%; */
 }
 
 .liveTitle {
     font-size: 35px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding-top: 40px;
+    margin-top: 20px;
     width: 100%;
     height: 50px;
 }
+
 .streamerInfo {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    height: 230px;
+    height: 200px;
 }
 
 .streamerImg {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18%;
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
 }
 
 .streamerImg > img {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     border: 2px solid #ffe062;
 }
+
 .streamerInfoDetail {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 82%;
-    height: 230px;
+    align-items: center;
+    width: 100%;
+    /* height: 150px; */
+    margin-left: 100px;
 }
+
+.streamerInfoDetail {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100px;
+}
+
 .streamerNickname {
-    width: 82%;
+    width: 100%;
     height: 40%;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    margin-right: 100px;
     font-size: 35px;
     font-weight: 700;
 }
-.streamerTheme {
-    width: 82%;
-    height: 20%;
-    font-size: 25px;
-    font-weight: 600;
-    color: #ffe062;
-}
+
 .streamInfo {
     display: flex;
     flex-direction: row;
-    width: 82%;
+    width: 100%;
     height: 30%;
     color: rgba(255, 255, 255, 0.727);
     font-size: 25px;
     font-weight: 400;
 }
+
+.streamerDescription {
+    width: 100%;
+}
+
 .liveChatBox {
     background-color: #292a2e;
     width: 30%;
+    height: 90vh;
     display: flex;
     flex-direction: column;
+    border-left: 1px solid #9da5b662;
 }
 
-#sendChatBtn {
+.sendChat {
     width: 90px;
     height: 65%;
-    border: 2px solid white;
+    /* border: 2px solid white; */
     border-radius: 15px;
     font-size: 18px;
     line-height: 2.5;
@@ -454,6 +482,7 @@ table {
     margin-left: 20px;
     margin-top: 5px;
 }
+
 .record {
     width: 250px;
     height: 43px;
@@ -468,29 +497,34 @@ table {
 
 .chatTitle {
     border: 0.2px solid #9da5b631;
-    height: 5%;
+    height: 6%;
     text-align: center;
     font-weight: 600;
     font-size: 32px;
     color: rgba(255, 255, 255, 0.857);
+    margin-bottom: 10px;
 }
 
 .chatMain {
     border: 0.2px solid #9da5b631;
-    height: 95%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: none;
+    /* height: 800px; */
 }
 
 .chatBox {
     margin-top: 10px;
     /* border: 0.2px solid #9da5b631; */
     width: 90%;
-    height: 90%;
+    height: 30%;
 }
 
-.chatInput {
+.chatInputWrap {
     width: 90%;
     height: 8%;
     justify-content: center;
@@ -499,28 +533,27 @@ table {
     display: flex;
     flex-direction: row;
 }
-#chatInputText {
-    width: 10px;
-}
 
-.chatInput > input {
+.chatInputWrap > input {
     padding-left: 20px;
 }
 
-#chatInput {
+.chatInputText {
     width: 100%;
-    height: 62px;
     background-color: #1b1b1d;
     border: none;
     border-radius: 20px;
+    height: 60%;
+    margin-left: 20px;
 }
 
 .chatList {
     width: 100%;
-    height: 50px;
+    /* height: 150px; */
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 .chatNickname {
@@ -532,13 +565,14 @@ table {
 /* myPage */
 
 .InfoMainBox {
-    width: 80vw;
-    height: 80vh;
+    /* width: 90%;
+    height: 80vh; */
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 80px 0 80px 0;
 }
 
 .nickNameBox {
@@ -559,15 +593,18 @@ table {
 
 .channelInfoContainer {
     /* background-color: #dfe2ea; */
-    width: 75vw;
+    border-bottom: 1px solid #dfe2ea5e;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
 }
 
 .channelInfoImg {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     align-items: center;
     text-align: center;
     border-radius: 50%;
@@ -578,6 +615,7 @@ table {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .infoEtc {
@@ -603,7 +641,7 @@ table {
 }
 
 .myChannelNickname {
-    font-size: 2.5rem;
+    font-size: 28px;
     font-weight: 900;
     color: #dfe2ea;
 }
@@ -633,19 +671,19 @@ table {
 }
 
 .homeBox {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin: 50px 0 50px 0;
     padding-bottom: 50px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.428);
+    /* border: 1px solid rgba(255, 255, 255, 0.428); */
 }
 
 /* 라이브 생성화면 */
 .liveMasterWrap {
-    background-color: rgb(41, 41, 41);
+    background-color: #292a2e;
     width: 100%;
     height: 100%;
     display: flex;
@@ -665,26 +703,23 @@ table {
 .liveMasterVideoBox {
     background-color: rgb(11, 11, 11);
     width: 100%;
-    height: 70%;
+    height: 100%;
 }
 
-.liveMasterVideoBoxSetting {
+/* .liveMasterVideoBoxSetting {
     background-color: rgb(55, 55, 55);
     width: 100%;
-    height: 7%;
+    height: 200px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-}
+} */
 
-.liveMasterSettingBox {
-    width: 100%;
-}
 .masterSettingLeft {
     align-items: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     width: 50%;
     height: 100%;
@@ -713,23 +748,26 @@ table {
 }
 
 .liveMasterSettingBox {
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    background-color: rgb(55, 55, 55);
+    /* border-top: 2px solid black;
+    border-bottom: 2px solid black; */
+    background-color: #292a2e;
     width: 100%;
-    height: 23%;
+    height: 200px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
-    padding-top: 20px;
+    align-items: center;
 }
 
-.masterSettingTitle {
+/* .masterSettingTitle {
     font-size: 2rem;
     margin-left: 20px;
     display: flex;
     flex-direction: row;
+} */
+
+.masterSettingBoxLeft {
+    width: 50%;
 }
 
 .masterSettingTitle > img {
@@ -740,11 +778,11 @@ table {
 }
 
 .MasterSettingBoxRight {
-    width: 18%;
-    height: 70%;
     display: flex;
-    flex-direction: column;
-    justify-content: start;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
 }
 
 .broadcastBtn,
@@ -758,8 +796,9 @@ table {
     color: black;
     text-align: center;
     font-weight: 700;
-    width: 80%;
+    width: 150px;
     height: 70px;
+    padding: 10px;
 }
 
 .broadcastBtnImg {
@@ -813,11 +852,6 @@ table {
     padding: 10px 0 10px 0;
 }
 
-.chatMain {
-    width: 100%;
-    border: none;
-}
-
 .chatList {
     border: none;
 }
@@ -828,7 +862,7 @@ table {
 }
 
 /*채널셋팅*/
-#channelSettingSaveBtn {
+.channelSettingSaveBtn {
     width: 120px;
     height: 43px;
     text-align: center;
@@ -842,85 +876,134 @@ table {
     margin-top: 20px;
 }
 
-#channelInfoSettingWrap {
-    width: 65vw;
+.channelInfoSettingWrap {
+    width: 800px;
     height: 110%;
     border-radius: 20px;
     background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.channelInfoSettingForm {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.channelInfoSettingInput {
-    margin: 20px;
-    width: 50vw;
-    background-color: rgb(85, 85, 85);
+.channelInfoTitle {
+    margin-bottom: 20px;
 }
-#streamKeyValue {
+
+.channelInfoSettingInput {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.channelTitleHeader {
+    padding-right: 20px;
+    width: 30%;
+}
+
+.channelTitleInput {
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.streamkeyVal {
     display: flex;
     text-align: left;
 }
-.input-group-text {
-    width: 90px;
-}
 
-#channelInfoTitle {
-    margin: 20px auto 0px auto;
-}
-#channelInfoSettingText {
-    width: 50vw;
+.channelInfoText {
+    width: 100%;
     height: 200px;
     max-height: 200px;
     min-height: 200px;
 
     border-radius: 10px;
-    padding: 15px;
+
     color: black;
     font-size: 18px;
 }
 
-#channelInfoSettingImage {
+.channelImageWrap {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.channelImageINputWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     background-color: #f8f9fa;
+    align-items: center;
     border-radius: 10px;
+    padding: 7px;
 }
 
-#inputGroupFileAddon04 {
+.getNewStreamkeyBtn {
+    background-color: #f8f9fa;
     color: black;
-    border-left: transparent;
-    border: 1px solid #f8f9fa;
-
-    /*border-left: #eef1f3;*/
 }
 
-#inputGroupFileAddon04:hover {
+.uploadBtn {
+    border: none;
+}
+
+.uploadBtn,
+.getNewStreamkeyBtn {
+    border: none;
+    color: black;
+}
+
+.uploadBtn:hover,
+.getNewStreamkeyBtn:hover {
     color: black;
     background-color: #f8f9fa;
     margin: 2px;
-    border: transparent;
 }
 
-#streamKeyGetNew {
-    color: black;
-    border-left: transparent;
+.settingStreamkeyInputWrap {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.channelTitleKeyHeader {
+    width: 30%;
+    padding-right: 5px;
+}
+
+.getNewKeyWrap {
+    display: flex;
     background-color: #f8f9fa;
-    width: 80px;
-}
-
-#streamKeyGetNew:hover {
-    color: #f8f9fa;
-    background-color: black;
-    margin: 2px;
-    border: transparent;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
 }
 
 .streamingChatInputWrap {
     position: relative;
     top: -20px;
-}
-#chatBoxWrapStreaming {
-    height: 800px;
 }
 
 .streamingChatInputWrap {
@@ -931,8 +1014,4 @@ table {
     margin-top: 30px;
     display: flex;
     flex-direction: row;
-}
-#chatInputStreamerPage {
-    width: 10px;
-    background-color: #1b1b1d;
 }

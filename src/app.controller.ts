@@ -7,9 +7,6 @@ import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
-import { Roles } from './common/decorator/role.decorator';
-import { Role } from './common/types/userRoles.type';
-import { RolesGuard } from './auth/guards/roles.guard';
 
 @ApiTags('Frontend')
 @Controller()
@@ -31,6 +28,7 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async live(@Param('liveId') liveId: string, @Res() res: Response) {
         const live = await this.liveService.findOne(+liveId);
+        console.log(live);
         return { title: 'Live - User view page', path: '/live', live: live };
     }
 
@@ -41,6 +39,7 @@ export class AppController {
         const channel = await this.userService.findChannelIdByUserId(user.id);
         return channel.channelId;
     }
+
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
     async myInfo(@Param('channelId') channelId: number) {

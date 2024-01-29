@@ -25,7 +25,6 @@
     </title>
     <link rel="stylesheet" href="/styles/common.css" />
     <script defer>
-        const URL = 'http://localhost:3002';
         const HLS_URL = 'http://localhost:8080'
     </script>
 </head>
@@ -38,7 +37,7 @@
             <main>
                 <div class="main__inner">
                     <% if(path==='/my-page' ) { %>
-                        <div><%- include('./channelInfo.ejs') %></div>
+                        <div><%- include('./channelInfo.ejs', {channel: channel}) %></div>
                         <% } else if(path==='/live' ) { %>
                             <div><%- include('./live.ejs', {live: live}) %></div>
                             <% } else if(path==='/streaming' ) { %>

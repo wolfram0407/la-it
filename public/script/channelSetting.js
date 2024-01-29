@@ -19,7 +19,7 @@ async function sendChannelInfoData(e) {
     e.preventDefault();
 
     const getAccessToken = getCookie('Authorization');
-    const AccessToken = `${getAccessToken}`;
+
     let saveImageUrlData;
     const formData = new FormData(this);
 
@@ -29,10 +29,10 @@ async function sendChannelInfoData(e) {
     }
 
     //s3저장소에 이미지 넣기
-    saveImageUrlData = await saveImageS3(channelId, formData, AccessToken);
+    saveImageUrlData = await saveImageS3(channelId, formData, getAccessToken);
 
     //channel info 데이터 넣기
-    await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, AccessToken);
+    await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, getAccessToken);
 
     //location.reload();
 

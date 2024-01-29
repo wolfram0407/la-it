@@ -1,15 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
-import { UserService } from './user.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { UserInfo } from 'src/common/decorator/user.decorator';
-import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
-import { ReqUpdateChannelImageDto, ReqUpdateChannelInfoDto } from './dto/req.channel.dto';
-import { ResUpdateChannelImageDto } from './dto/res.channel.dto';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/common/decorator/role.decorator';
-import { Role } from 'src/common/types/userRoles.type';
-import { ReqUpdateUserInfoDto } from './dto/req.user.dto';
+import {Body, Controller, Delete, Get, Param, Put, UseGuards} from '@nestjs/common';
+import {UserService} from './user.service';
+import {JwtAuthGuard} from 'src/auth/guards/jwt-auth.guard';
+import {ApiBearerAuth, ApiExtraModels, ApiTags} from '@nestjs/swagger';
+import {UserInfo} from 'src/common/decorator/user.decorator';
+import {UserAfterAuth} from 'src/auth/interfaces/after-auth';
+import {ReqUpdateChannelImageDto, ReqUpdateChannelInfoDto} from './dto/req.channel.dto';
+import {ResUpdateChannelImageDto} from './dto/res.channel.dto';
+import {RolesGuard} from 'src/auth/guards/roles.guard';
+import {Roles} from 'src/common/decorator/role.decorator';
+import {Role} from 'src/common/types/userRoles.type';
+import {ReqUpdateUserInfoDto} from './dto/req.user.dto';
 
 @ApiTags('UserInfo')
 @ApiExtraModels(ResUpdateChannelImageDto)
@@ -20,14 +20,14 @@ export class UserController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get('/user')
-    async temp(@UserInfo() { id }: UserAfterAuth) {
+    async temp(@UserInfo() {id}: UserAfterAuth) {
         return await this.userService.findUserIdByUser(+id);
     }
     /*
     유저 정보
   */
     @Put('/user/:id')
-    async userInfo(@Param('id') id: string, @Body() { nickname, profileImage, email }: ReqUpdateUserInfoDto) {
+    async userInfo(@Param('id') id: string, @Body() {nickname, profileImage, email}: ReqUpdateUserInfoDto) {
         return await this.userService.updateUserInfo(+id, nickname, profileImage, email);
     }
 
@@ -51,8 +51,9 @@ export class UserController {
 
     // channel profile update
     @Put('/channel/update/:id')
-    async updatImage(@Param('id') id: string, @Body() { imageUrl, reset }: ReqUpdateChannelImageDto): Promise<ResUpdateChannelImageDto> {
+    async updatImage(@Param('id') id: string, @Body() {imageUrl, reset}: ReqUpdateChannelImageDto): Promise<ResUpdateChannelImageDto> {
         if (reset) {
+            console.log("!!")
             return await this.userService.updateChannelImage(+id, imageUrl);
         }
         const defaultUrl = '/testUrl';

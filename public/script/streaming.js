@@ -14,24 +14,30 @@ liveEndBtn.addEventListener('click', endLive);
 // 방송 페이지 벗어나면 방송 종료
 
 async function createLive() {
+    const getAccessToken = getCookie('Authorization');
     let streamingTitle = document.getElementById('streamingTitle').value;
     let streamingDesc = document.getElementById('streamingDesc').value;
     //console.log('streamingTitle: ', streamingTitle);
     //console.log('streamingDesc: ', streamingDesc);
 
-    await axios.post(`/api/live/create/${channelId}`, {
-        title: streamingTitle,
-        thumbnail: 'test image',
-        description: streamingDesc,
-    }),
-        {
-            withCredentials: true,
-            headers: {
-                authorization: getAccessToken,
+
+    await axios
+        .post(
+            `/api/live/create/${channelId}`,
+            {
+                title: streamingTitle,
+                thumbnail: 'test image',
+                description: streamingDesc,
             },
-        }
-            .then(function (response) {
-                //console.log('response: ', response);
+            {
+                withCredentials: true,
+                headers: {
+                    authorization: getAccessToken,
+                },
+            },
+        )
+        .then(function (response) {
+            //console.log('response: ', response);
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);

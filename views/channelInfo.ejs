@@ -2,7 +2,7 @@
     <div class="channelInfoContainer">
         <div class="nickNameBox">
             <div class="channelInfoImg">
-                <img src="<%= channel.channelImage %>"/>
+                <img src="<%= channel.channelImage %>" />
             </div>
             <div class="infoContentWrap">
                 <div class="myChannelNickname"><%= channel.channelName %></div>
@@ -17,26 +17,32 @@
     </div>
 
     <div class="channelInfoSettingContainer" hidden>
-        <div id="channelInfoSettingWrap">
-            <form id = "channelSettingForm" enctype="multipart/form-data" >
-                <h2 id="s">채널 정보</h2>
-                <div class="input-group mb-3 channelInfoSettingInput">
-                    <span class="input-group-text" id="inputGroup-sizing-default-name">채널명</span>
-                    <input type="text" name="channelName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="<%=  channel.channelName %>"/>
+        <div class="channelInfoSettingWrap">
+            <form class="channelInfoSettingForm" id="channelSettingForm" enctype="multipart/form-data">
+                <h2 class="channelInfoTitle">채널 정보</h2>
+                <div class="channelInfoSettingInput">
+                    <span class="channelTitleHeader">채널명</span>
+                    <input type="text" name="channelName" class="channelTitleInput" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="<%=  channel.channelName %>" />
                 </div>
-                <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingImage">
-                    <input type="file"  name="file"  class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Upload</button>
+                <div class="channelImageWrap" id="channelInfoSettingImage">
+                    <span class="channelTitleHeader">썸네일</span>
+                    <div class="channelImageINputWrap">
+                        <input type="file" name="file" class="fileUploadForm" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
+                        <button class="uploadBtn" type="button">Upload</button>
+                    </div>
                 </div>
-                <div class="input-group mb-3 channelInfoSettingInput">
-                    <span class="input-group-text" id="inputGroup-sizing-default-streamKey">스트림키</span>
-                    <div id = "streamKeyValue" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" /><%= channel.streamKey %></div>
-                    <button class="btn btn-outline-secondary" type="button" id="streamKeyGetNew">재발급</button>
+                <div class="settingStreamkeyInputWrap">
+                    <span class="channelTitleKeyHeader" id="inputGroup-sizing-default-streamKey">스트림키</span>
+                    <div class="getNewKeyWrap">
+                        <span id="streamKeyValue" class="streamkeyVal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"><%= channel.streamKey %></span>
+                        <button class="getNewStreamkeyBtn" type="button" id="streamKeyGetNew">재발급</button>
+                    </div>
                 </div>
-                <div class="input-group mb-3 channelInfoSettingInput" id="channelInfoSettingTextWrap">
-                    <textarea   name="channelDescription"  id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"> <%=  channel.description %></textarea>
+                <div class="channelInfoSettingInput" id="channelInfoSettingTextWrap">
+                    <span class="channelTitleHeader">상세정보</span>
+                    <textarea name="channelDescription" class="channelInfoText" id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"> <%=  channel.description %></textarea>
                 </div>
-                <button type="submit" id="channelSettingSaveBtn">저장</button>
+                <button type="submit" class="channelSettingSaveBtn">저장</button>
             </form>
         </div>
     </div>

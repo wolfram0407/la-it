@@ -28,6 +28,7 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async live(@Param('liveId') liveId: string, @Res() res: Response) {
         const live = await this.liveService.findOne(+liveId);
+        console.log(live);
         return { title: 'Live - User view page', path: '/live', live: live };
     }
 

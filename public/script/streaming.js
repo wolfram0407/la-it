@@ -19,38 +19,43 @@ async function createLive() {
     //console.log('streamingTitle: ', streamingTitle);
     //console.log('streamingDesc: ', streamingDesc);
 
-    await axios
-        .post(`/api/live/create/${channelId}`, {
-            title: streamingTitle,
-            thumbnail: 'test image',
-            description: streamingDesc,
-        })
-        .then(function (response) {
-            //console.log('response: ', response);
+    await axios.post(`/api/live/create/${channelId}`, {
+        title: streamingTitle,
+        thumbnail: 'test image',
+        description: streamingDesc,
+    }),
+        {
+            withCredentials: true,
+            headers: {
+                authorization: getAccessToken,
+            },
+        }
+            .then(function (response) {
+                //console.log('response: ', response);
 
-            const streamKey = response.data.channel.streamKey;
-            //console.log('streamKey: ', streamKey);
-            broadcastBtn.hidden = true;
-            broadcastCloseBtn.hidden = false;
+                const streamKey = response.data.channel.streamKey;
+                //console.log('streamKey: ', streamKey);
+                broadcastBtn.hidden = true;
+                broadcastCloseBtn.hidden = false;
 
-            if (Hls.isSupported()) {
-                1;
-                const hls = new Hls({
-                    debug: false,
-                });
+                if (Hls.isSupported()) {
+                    1;
+                    const hls = new Hls({
+                        debug: false,
+                    });
 
-                console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
-                hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-                    video.muted = true;
-                    video.play();
-                });
-            }
-        })
-        .catch(function (error) {
-            //console.log(error);
-        });
+                    console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                    hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                        video.muted = true;
+                        video.play();
+                    });
+                }
+            })
+            .catch(function (error) {
+                //console.log(error);
+            });
 }
 
 async function endLive() {

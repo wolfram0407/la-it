@@ -42,7 +42,7 @@ if (path.includes('streaming')) {
         });
     });
 } else if (path.includes('live')) {
-    const sendChatBtn = document.querySelector('#sendChatBtn');
+    const sendChatBtn = document.querySelector('#sendChat');
     //const chatRecord = document.querySelector('#record');
 
     //방 선택하면 서버에게 알려주는 애.

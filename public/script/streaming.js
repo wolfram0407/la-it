@@ -11,7 +11,8 @@ const video = document.getElementById('video');
 liveStartBtn.addEventListener('click', createLive);
 liveEndBtn.addEventListener('click', endLive);
 
-// 방송 페이지 벗어나면 방송 종료
+// 방송 페이지 벗어나면 방송 종료, 새로고침도 포함
+window.addEventListener('beforeunload', endLive);
 
 async function createLive() {
     const getAccessToken = getCookie('Authorization');
@@ -19,7 +20,6 @@ async function createLive() {
     let streamingDesc = document.getElementById('streamingDesc').value;
     //console.log('streamingTitle: ', streamingTitle);
     //console.log('streamingDesc: ', streamingDesc);
-
 
     await axios
         .post(
@@ -39,29 +39,29 @@ async function createLive() {
         .then(function (response) {
             //console.log('response: ', response);
 
-                const streamKey = response.data.channel.streamKey;
-                //console.log('streamKey: ', streamKey);
-                broadcastBtn.hidden = true;
-                broadcastCloseBtn.hidden = false;
+            const streamKey = response.data.channel.streamKey;
+            //console.log('streamKey: ', streamKey);
+            broadcastBtn.hidden = true;
+            broadcastCloseBtn.hidden = false;
 
-                if (Hls.isSupported()) {
-                    1;
-                    const hls = new Hls({
-                        debug: false,
-                    });
+            if (Hls.isSupported()) {
+                1;
+                const hls = new Hls({
+                    debug: false,
+                });
 
-                    console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
-                    hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
-                    hls.attachMedia(video);
-                    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-                        video.muted = true;
-                        video.play();
-                    });
-                }
-            })
-            .catch(function (error) {
-                //console.log(error);
-            });
+                console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                    video.muted = true;
+                    video.play();
+                });
+            }
+        })
+        .catch(function (error) {
+            //console.log(error);
+        });
 }
 
 async function endLive() {

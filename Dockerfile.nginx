@@ -5,6 +5,11 @@ ENV NGINX_VERSION 1.18.0
 ENV RTMP_MODULE_VERSION 1.2.1
 
 
+# 필요한 패키지 설치
+RUN apk update && \
+    apk add ffmpeg && \
+    apk add curl
+
 RUN set -x \
 # create nginx user/group 
     && addgroup -g 101 -S nginx \
@@ -13,8 +18,13 @@ RUN set -x \
     && apk --no-cache add gcc libc-dev linux-headers pcre-dev zlib-dev ca-certificates openssl libressl-dev make \
     && rm -rf /var/cache/apk/*
 
+
 # create working directory to build packages then go into.
 RUN mkdir -p /tmp/build && cd /tmp/build
+RUN mkdir -p /opt/data
+RUN mkdir -p /opt/data/thumb
+RUN mkdir -p /opt/flv
+RUN chmod 777 /opt/flv && chmod 777 /opt/data/thumb
 
 # download & decompress nginx & nginx-rtmp-module .tar.gz(gzipped tarball)
 RUN wget -O nginx-${NGINX_VERSION}.tar.gz https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \

@@ -18,6 +18,7 @@ import sentryConfig from './common/config/sentry.config';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ImageModule } from './image/image.module';
 import { HeartModule } from './heart/heart.module';
+import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
 
 @Module({
     imports: [
@@ -58,6 +59,7 @@ import { HeartModule } from './heart/heart.module';
         RedisModule,
         ImageModule,
         HeartModule,
+        ChannelNoticeModule,
     ],
     controllers: [AppController],
     providers: [Logger],

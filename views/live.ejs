@@ -28,20 +28,20 @@
         </div>
         <div class="liveStreamerInfo">
             <div class="liveTitle">
-                <span> <%= live.title %> </span>
-                <span style="display: none" class="channelIdInLive"><%= live.channel.channelId %></span>
-                <span style="display: none" class="liveIdInLive"><%= live.live_id %></span>
+                <span> <%= channelLive.title %> </span>
+                <span style="display: none" class="channelIdInLive"><%= channelLive.channelId %></span>
+                <span style="display: none" class="liveIdInLive"><%= channelLive.live_id %></span>
             </div>
             <div class="streamerInfo">
                 <div class="streamerInfoDetail">
                     <div class="streamerImg">
-                        <img src="<%= live.channel.channelImage %>" />
+                        <img src="<%= channelLive.channelImage %>" />
                     </div>
                     <div class="streamerTextWrap">
-                        <div class="streamerNickname"><span> <%= live.channel.channelName %> </span></div>
+                        <div class="streamerNickname"><span> <%= channelLive.channelName %> </span></div>
                         <div class="streamInfo">
                             <!-- <div>현재<span> 5,131 </span>시청중</div> -->
-                            <div class="streamerDescription"><%= live.description %></div>
+                            <div class="streamerDescription"><%= channelLive.description %></div>
                         </div>
                     </div>
                 </div>

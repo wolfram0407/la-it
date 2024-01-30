@@ -1,0 +1,13 @@
+version: '3.7'
+
+#켬퓨터들
+services:
+    # nest
+    lait-backend-computer:
+        build:
+            context: .
+            dockerfile: Dockerfile.nest
+        ports:
+            - 3002:3002
+        env_file:
+            - ./.env.docker

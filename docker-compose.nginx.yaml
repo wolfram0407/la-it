@@ -1,0 +1,13 @@
+version: '3.7'
+
+#켬퓨터들
+services:
+    # nginx
+    lait-backend-nginx:
+        build:
+            context: .
+            dockerfile: Dockerfile.nginx
+        ports:
+            - 1935:1935
+            - 8080:8080
+

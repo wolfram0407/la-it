@@ -35,8 +35,8 @@ import { ImageModule } from './image/image.module';
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
                 uri: configService.get<string>('MONGO_URL'),
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
+                // useNewUrlParser: true,
+                // useUnifiedTopology: true,
             }),
         }),
         JwtModule.registerAsync({
@@ -60,10 +60,8 @@ import { ImageModule } from './image/image.module';
     controllers: [AppController],
     providers: [Logger],
 })
-export class AppModule implements NestModule
-{
-    configure(consumer: MiddlewareConsumer)
-    {
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');
     }
 }

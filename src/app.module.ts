@@ -19,6 +19,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { ImageModule } from './image/image.module';
 import { HeartModule } from './heart/heart.module';
 import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
     imports: [
@@ -58,16 +59,13 @@ import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
         ChatModule,
         RedisModule,
         ImageModule,
-        HeartModule,
         ChannelNoticeModule,
     ],
     controllers: [AppController],
     providers: [Logger],
 })
-export class AppModule implements NestModule
-{
-    configure(consumer: MiddlewareConsumer)
-    {
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');
     }
 }

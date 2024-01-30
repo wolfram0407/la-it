@@ -1,0 +1,9 @@
+export enum PaymentType {
+    CARD = 'CARD',
+    VIRTUAL_ACCOUNT = 'VIRTUAL_ACCOUNT',
+    TRANSFER = 'TRANSFER',
+    MOBILE = 'MOBILE',
+    GIFT_CERTIFICATE = 'GIFT_CERTIFICATE',
+    EASY_PAY = 'EASY_PAY',
+    PAYPAL = 'PAYPAL',
+}

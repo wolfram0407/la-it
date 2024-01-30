@@ -9,19 +9,15 @@ export type ChatDocument = HydratedDocument<Chat>;
     timestamps: true,
 })
 export class Chat {
-    @ObjectIdColumn()
-    _id: ObjectId;
-
-    @Prop()
-    userId: number;
-
-    @Prop()
-    nickname: string;
-
-    @Prop()
-    liveId: string;
-
-    @Prop({ required: true })
-    content: string;
+    //@ObjectIdColumn()
+    //_id: ObjectId;
+    //@Prop()
+    //userId: number;
+    //@Prop()
+    //nickname: string;
+    //@Prop()
+    //liveId: string;
+    //@Prop({ required: true })
+    //content: string;
 }
 export const ChatSchema = SchemaFactory.createForClass(Chat);

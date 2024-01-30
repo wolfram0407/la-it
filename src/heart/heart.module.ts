@@ -3,7 +3,8 @@ import { HeartService } from './heart.service';
 import { HeartController } from './heart.controller';
 
 @Module({
-  controllers: [HeartController],
-  providers: [HeartService],
+    imports: [],
+    controllers: [HeartController],
+    providers: [HeartService],
 })
 export class HeartModule {}

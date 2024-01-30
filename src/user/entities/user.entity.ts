@@ -2,7 +2,7 @@ import { Role } from 'src/common/types/userRoles.type';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Channel } from './channel.entity';
 import { Heart } from 'src/heart/entities/heart.entity';
-import { Payment } from 'src/heart/entities/payment.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 @Entity('users')
 export class User {

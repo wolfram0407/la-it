@@ -26,3 +26,7 @@ function getCookie(name) {
 document.querySelector('.startLiveBtn').addEventListener('click', function () {
     window.location.href = `/streaming/${channelId}`;
 });
+
+document.querySelector('.chargeBtn').addEventListener('click', function (e) {
+    window.location.href = `/payments/charge`;
+});

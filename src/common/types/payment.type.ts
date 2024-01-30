@@ -1,5 +1,9 @@
 export enum PaymentType {
-    card = '카드',
-    account = '무통장 입금',
-    kakao = '카카오페이',
+    CARD = 'CARD',
+    VIRTUAL_ACCOUNT = 'VIRTUAL_ACCOUNT',
+    TRANSFER = 'TRANSFER',
+    MOBILE = 'MOBILE',
+    GIFT_CERTIFICATE = 'GIFT_CERTIFICATE',
+    EASY_PAY = 'EASY_PAY',
+    PAYPAL = 'PAYPAL',
 }

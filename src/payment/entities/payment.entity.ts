@@ -1,4 +1,3 @@
-import { Category } from 'src/common/types/heart.category.type';
 import { PaymentType } from 'src/common/types/payment.type';
 import { User } from 'src/user/entities/user.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
@@ -15,8 +14,8 @@ export class Payment {
     @Column({ name: 'payment_amount', unsigned: true })
     paymentAmount: number;
 
-    @Column({ name: 'account_for_refund' })
-    accountForRefund: string;
+    @Column({ name: 'refund_account' })
+    refundAccount: string;
 
     @Column({ name: 'refund_amount', unsigned: true })
     refundAmount: number;

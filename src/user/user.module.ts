@@ -8,7 +8,7 @@ import { Channel } from './entities/channel.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ImageModule } from 'src/image/image.module';
 import { Heart } from 'src/heart/entities/heart.entity';
-import { Payment } from 'src/heart/entities/payment.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 @Module({
     imports: [JwtModule, PassportModule, ImageModule, TypeOrmModule.forFeature([User, Channel, Heart, Payment])],

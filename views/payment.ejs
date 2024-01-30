@@ -31,31 +31,29 @@
                 <main>
                     <div class="chargeFormContainer">
                         <div class="chargeTitle">LaIt 💛 충전</div>
+                        <!--<div class="chargeTitle">LaIt 💛 환급</div>-->
+
                         <form class="chargeform" action="">
-                            <input class="chargeHeart" type="text" placeholder="10💛 부터 충전이 가능합니다." />
-                            <input class="paymentAmount" type="text" placeholder="결제금액" />
-                            <select class="form-select paymentType" aria-label="Default select example">
+                            <input name="chargeHeart" class="chargeHeart" type="text" placeholder="10💛 부터 충전이 가능합니다." />
+                            <input name="paymentAmount" class="paymentAmount" type="text" placeholder="결제금액" />
+                            <select name="paymentType" class="form-select paymentType" aria-label="Default select example">
                                 <option selected>결제 수단 선택</option>
                                 <option value="CARD">카드</option>
                                 <option value="VIRTUAL_ACCOUNT">가상계좌</option>
-                                <option value="TRANSFER">계좌이체</option>
-                                <option value="MOBILE">모바일</option>
-                                <option value="GIFT_CERTIFICATE">기프티콘</option>
                                 <option value="EASY_PAY">간편결제</option>
-                                <option value="PAYPAL">페이팔</option>
                             </select>
-                            <select class="form-select refundAccount" aria-label="Default select example">
+                            <select name="refundAccount" class="form-select refundAccount" aria-label="Default select example">
                                 <option selected>은행 선택</option>
-                                <option value="kb">국민은행</option>
-                                <option value="hana">하나은행</option>
-                                <option value="Woori">우리은행</option>
-                                <option value="sinhan">신한은행</option>
-                                <option value="kakao">카카오뱅크</option>
+                                <option value="kb">국민</option>
+                                <option value="hana">하나</option>
+                                <option value="Woori">우리</option>
+                                <option value="sinhan">신한</option>
+                                <option value="kakao">카카오</option>
                             </select>
-                            <input class="refundAccount onlyRefund" type="text" placeholder="입금받으실 계좌번호를 입력해 주세요." />
-                            <input class="refundAmount onlyRefund" type="text" placeholder="출금할 금액을 입력해 주세요." />
-                            <!--<button class="paymentDataSend chargeDataSend">결제하기</button>-->
-                            <button class="paymentDataSend refundDataSend">환급하기</button>
+                            <!--<input class="refundAccount onlyRefund" type="text" placeholder="입금받으실 계좌번호를 입력해 주세요." />
+                            <input class="refundAmount onlyRefund" type="text" placeholder="출금할 금액을 입력해 주세요." />-->
+                            <button class="paymentDataSend chargeDataSend">결제하기</button>
+                            <!--<button class="paymentDataSend refundDataSend">환급하기</button>-->
                         </form>
                     </div>
                 </main>
@@ -64,4 +62,6 @@
             </div>
         </div>
     </body>
+    <script defer src="/script/payment.js"></script>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 </html>

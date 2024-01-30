@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
 import { UserInfo } from 'src/common/decorator/user.decorator';
@@ -12,8 +12,8 @@ export class PaymentController {
 
     @UseGuards(JwtAuthGuard)
     @Post('/charge')
-    async chargePayment(@UserInfo() { id }: UserAfterAuth, @Body() chargePaymentStartDto: ChargePaymentStartDto): Promise<ResultPayment> {
-        const chargePaymentStart = this.paymentService.chargePaymentStart(+id, chargePaymentStartDto);
+    async chargePayment(@UserInfo() { id }: UserAfterAuth, @Body() { paymentAmount, paymentType }: { paymentAmount; paymentType }): Promise<ResultPayment> {
+        const chargePaymentStart = this.paymentService.chargePaymentStart(+id, paymentAmount, paymentType);
         if (!chargePaymentStart) {
             return {
                 statusCode: 500,
@@ -30,7 +30,7 @@ export class PaymentController {
 
     ////결제 완료 처리.
     //@UseGuards(JwtAuthGuard)
-    //@Post('complete')
+    //@Post('/complete')
     //async paymentConfirm(@Body() { paymentAmount, paymentId }: ConfirmPayment) {
     //    try {
     //        // 1. 포트원 API를 사용하기 위해 액세스 토큰을 발급
@@ -45,7 +45,6 @@ export class PaymentController {
 
     //        // 2. 포트원 결제내역 단건조회 API 호출
     //        const paymentResponse = await fetch(`https://api.portone.io/payments/${encodeURIComponent(paymentId)}`, {
-    //            // 1번에서 발급받은 액세스 토큰을 Bearer 형식에 맞게 넣어주세요.
     //            headers: { Authorization: 'Bearer ' + accessToken },
     //        });
     //        if (!paymentResponse.ok) throw new Error(`결제내역 조회 paymentResponse: ${paymentResponse.statusText}`);
@@ -73,14 +72,4 @@ export class PaymentController {
     //        console.log(err);
     //    }
     //}
-
-    @Get()
-    findAll() {
-        return this.paymentService.findAll();
-    }
-
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.paymentService.findOne(+id);
-    }
 }

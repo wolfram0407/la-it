@@ -58,8 +58,6 @@ import { PaymentModule } from './payment/payment.module';
         ChatModule,
         RedisModule,
         ImageModule,
-        HeartModule,
-        PaymentModule,
     ],
     controllers: [AppController],
     providers: [Logger],

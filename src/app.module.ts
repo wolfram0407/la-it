@@ -62,10 +62,8 @@ import { HeartModule } from './heart/heart.module';
     controllers: [AppController],
     providers: [Logger],
 })
-export class AppModule implements NestModule
-{
-    configure(consumer: MiddlewareConsumer)
-    {
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');
     }
 }

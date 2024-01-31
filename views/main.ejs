@@ -21,7 +21,7 @@
     <!-- 부트스트랩 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
-    <title>
+        <title>
         <%= title %>
     </title>
     <link rel="stylesheet" href="/styles/common.css" />
@@ -39,8 +39,8 @@
                 <div class="main__inner">
                     <% if(path==='/my-page' ) { %>
                         <div><%- include('./channelInfo.ejs', {channel: channel}) %></div>
-                        <% } else if(path==='/live' ) { %>
-                            <div><%- include('./live.ejs', {live: live}) %></div>
+                        <% } else if(path==='/channel' ) { %>
+                            <div><%- include('./live.ejs', {channelLive: channelLive}) %></div>
                             <% } else if(path==='/streaming' ) { %>
                                 <div><%- include('./streaming.ejs', {channel: channel}) %></div>
                                 <% } else if(path==='/search' ) { %>

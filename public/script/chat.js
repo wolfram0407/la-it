@@ -41,13 +41,13 @@ if (path.includes('streaming')) {
             return socket.emit('exit_room', channelId);
         });
     });
-} else if (path.includes('live')) {
+} else if (path.includes('channel')) {
     const sendChatBtn = document.querySelector('#sendChat');
     //const chatRecord = document.querySelector('#record');
 
     //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
-        const channelId = window.location.pathname.slice(6);
+        const channelId = window.location.pathname.slice(9);
         const enterRoom = socket.emit('enter_room', channelId);
         console.log('두둥', enterRoom, '---');
         roomNum = channelId;

@@ -1,34 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { HeartService } from './heart.service';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
 import { UserInfo } from 'src/common/decorator/user.decorator';
-import { ResultAddHeart } from './types/res.types';
+import { PaymentService } from './payment.service';
+import { ResultPayment } from './types/res.types';
+import { ChargePaymentStartDto } from './dto/charge-payment.dto';
 
-@Controller('payments')
-export class HeartController {
-    constructor(private readonly heartService: HeartService) {}
+@Controller('/api/payments')
+export class PaymentController {
+    constructor(private readonly paymentService: PaymentService) {}
 
-    //@UseGuards(JwtAuthGuard)
-    //@Post()
-    //async addHeartByCharge(@UserInfo() { id }: UserAfterAuth, @Body() addHeartDto: AddHeartDto): Promise<ResultAddHeart> {
-    //    const { chargeHeart, paymentAmount, paymentType, refundAmount, refundAccount } = addHeartDto;
-    //    const addHeartByChargeResult = this.heartService.addHeartByCharge(+id, chargeHeart, paymentAmount, paymentType, refundAmount, refundAccount);
-    //    if (!addHeartByChargeResult) {
-    //        return {
-    //            statusCode: 500,
-    //            message: '하트 충전에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-    //        };
-    //    }
-    //    return {
-    //        statusCode: 201,
-    //        message: '하트 충전 완료',
-    //    };
-    //}
+    @UseGuards(JwtAuthGuard)
+    @Post('/charge')
+    async chargePayment(@UserInfo() { id }: UserAfterAuth, @Body() { paymentAmount, paymentType }: { paymentAmount; paymentType }): Promise<ResultPayment> {
+        const chargePaymentStart = this.paymentService.chargePaymentStart(+id, paymentAmount, paymentType);
+        if (!chargePaymentStart) {
+            return {
+                statusCode: 500,
+                message: '하트 충전에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+                data: {},
+            };
+        }
+        return {
+            statusCode: 201,
+            message: '하트 충전 완료',
+            data: chargePaymentStart,
+        };
+    }
 
     ////결제 완료 처리.
     //@UseGuards(JwtAuthGuard)
-    //@Post('complete')
+    //@Post('/complete')
     //async paymentConfirm(@Body() { paymentAmount, paymentId }: ConfirmPayment) {
     //    try {
     //        // 1. 포트원 API를 사용하기 위해 액세스 토큰을 발급
@@ -43,7 +45,6 @@ export class HeartController {
 
     //        // 2. 포트원 결제내역 단건조회 API 호출
     //        const paymentResponse = await fetch(`https://api.portone.io/payments/${encodeURIComponent(paymentId)}`, {
-    //            // 1번에서 발급받은 액세스 토큰을 Bearer 형식에 맞게 넣어주세요.
     //            headers: { Authorization: 'Bearer ' + accessToken },
     //        });
     //        if (!paymentResponse.ok) throw new Error(`결제내역 조회 paymentResponse: ${paymentResponse.statusText}`);
@@ -70,20 +71,5 @@ export class HeartController {
     //    } catch (err) {
     //        console.log(err);
     //    }
-    //}
-
-    //@Get(':id')
-    //findOne(@Param('id') id: string) {
-    //    return this.heartService.findOne(+id);
-    //}
-
-    //@Patch(':id')
-    //update(@Param('id') id: string, @Body() updateHeartDto: UpdateHeartDto) {
-    //    return this.heartService.update(+id, updateHeartDto);
-    //}
-
-    //@Delete(':id')
-    //remove(@Param('id') id: string) {
-    //    return this.heartService.remove(+id);
     //}
 }

@@ -1,41 +1,45 @@
+import { Role } from 'src/common/types/userRoles.type';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Channel } from './channel.entity';
+import { Heart } from 'src/heart/entities/heart.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
-import { Role } from "src/common/types/userRoles.type";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Channel } from "./channel.entity";
+@Entity('users')
+export class User {
+    @PrimaryGeneratedColumn({ name: 'user_id' })
+    userId: number;
 
+    @Column({ name: 'kakao_id' })
+    kakaoId: string;
 
-@Entity("users")
-export class User
-{
+    @Column({ nullable: true })
+    email: string;
 
-  @PrimaryGeneratedColumn({ name: 'user_id' })
-  userId: number
+    @Column({ nullable: true })
+    provider: string;
 
-  @Column({ name: 'kakao_id' })
-  kakaoId: string
+    @Column({ nullable: true, unique: true })
+    nickname: string;
 
-  @Column({ nullable: true })
-  email: string
+    @Column({ name: 'profile_image', nullable: true })
+    profileImage: string;
 
-  @Column({ nullable: true })
-  provider: string
+    @Column({ type: 'enum', enum: Role, default: Role.User })
+    role: Role;
 
-  @Column({ nullable: true, unique: true })
-  nickname: string
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date;
 
-  @Column({ name: 'profile_image', nullable: true })
-  profileImage: string
+    @OneToOne(() => Channel, (channel) => channel.user)
+    channelId: number;
 
-  @Column({ type: 'enum', enum: Role, default: Role.User })
-  role: Role
+    @OneToMany(() => Heart, (heart) => heart.user, { cascade: true })
+    heart: Heart[];
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
-
-  @OneToOne(() => Channel, (channel) => channel.user)
-  channelId: number
+    @OneToMany(() => Payment, (payment) => payment.user, { cascade: true })
+    payment: Payment[];
 }

@@ -32,8 +32,9 @@ export class LiveService {
     }
 
     async end(channelId: number) {
-        const endLive = await this.liveRepository.update({ channel: { channelId } }, { status: false });
-        return endLive;
+        const endTargetLive = await this.findOneByChannelId(channelId);
+        const updateStatusLive = await this.liveRepository.update(endTargetLive, { status: false });
+        return updateStatusLive;
     }
 
     async findAll(): Promise<Live[]> {
@@ -47,7 +48,7 @@ export class LiveService {
     }
 
     async findOneByChannelId(channelId: number) {
-        const channel = await this.liveRepository.findOne({ where: { channel: { channelId } } });
+        const channel = await this.liveRepository.findOne({ where: { channel: { channelId }, status: true } });
         return channel;
     }
 

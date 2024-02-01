@@ -21,9 +21,6 @@ export class ChatGateway {
 
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
-        //@Param('liveId') liveId: string,
-        console.log('게이트웨이');
-
         //TODO 유저가 들어오면 기존 채팅 50개 보여주기 추후 구현 예정.
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
         //console.log('게이트웨이', chats);
@@ -45,29 +42,22 @@ export class ChatGateway {
 
     @SubscribeMessage('new_message')
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
-        console.log(client.handshake, 'client.id', client.id);
-
         const { userId, nickname } = client.handshake.auth.user;
-        console.log(userId, nickname);
-
         const filterWord = await searchProhibitedWords(value);
-        console.log('=====>', filterWord);
 
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
         }
         const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
-        console.log('saveChat', saveChat, client.handshake.auth.user.nickname);
+        console.log('메세지 확인', value);
 
         return this.server.to(channelId).emit('sending_message', value, nickname);
     }
 
     @SubscribeMessage('get_all_chat_by_channelId')
     async getAllChatByChannelId(client: Socket, channelId: string) {
-        console.log('--');
         const socketId = client.id;
         const messages = await this.chatService.getAllChatByChannelId(channelId);
-        console.log('messages', messages);
         return this.server.emit('receive_all_chat', messages);
     }
 

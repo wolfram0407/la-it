@@ -1,21 +1,11 @@
-import
-{
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    OneToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Live } from 'src/live/entities/live.entity';
+import { ChannelNotice } from 'src/channel-notice/entities/channel-board.entity';
+import { Heart } from 'src/heart/entities/heart.entity';
 
 @Entity('channels')
-export class Channel
-{
+export class Channel {
     @PrimaryGeneratedColumn({ name: 'channel_id', unsigned: true })
     channelId: number;
 
@@ -44,4 +34,10 @@ export class Channel
 
     @OneToMany(() => Live, (live) => live.live_id, { cascade: true })
     live: Live[];
+
+    @OneToMany(() => ChannelNotice, (channelNotice) => channelNotice.noticeId)
+    channelNotice: ChannelNotice[];
+
+    @OneToMany(() => Heart, (heart) => heart.heartId, { cascade: true })
+    heart: Heart[];
 }

@@ -2,7 +2,7 @@ const path = window.location.pathname;
 
 const socket = io({
     auth: {
-        token: `Bearer ${getCookie('Authorization')}`,
+        token: `${getCookie('Authorization')}`,
     },
 });
 
@@ -41,13 +41,13 @@ if (path.includes('streaming')) {
             return socket.emit('exit_room', channelId);
         });
     });
-} else if (path.includes('live')) {
-    const sendChatBtn = document.querySelector('#sendChatBtn');
+} else if (path.includes('channel')) {
+    const sendChatBtn = document.querySelector('#sendChat');
     //const chatRecord = document.querySelector('#record');
 
     //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
-        const channelId = window.location.pathname.slice(6);
+        const channelId = window.location.pathname.slice(9);
         const enterRoom = socket.emit('enter_room', channelId);
         console.log('두둥', enterRoom, '---');
         roomNum = channelId;
@@ -68,7 +68,12 @@ function chatSending(e) {
     console.log('채팅메세지');
     const chatInput = document.querySelector('.chatInputText');
     console.log('chatInput', chatInput.value, roomNum);
-    socket.emit('new_message', chatInput.value, roomNum);
+    console.log('~~~> ', chatInput.value.trim().length);
+    if (chatInput.value.trim().length < 1) {
+        return;
+    } else {
+        socket.emit('new_message', chatInput.value, roomNum);
+    }
 }
 
 //메세지 받아오기

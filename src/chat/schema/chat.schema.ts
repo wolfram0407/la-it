@@ -11,16 +11,12 @@ export type ChatDocument = HydratedDocument<Chat>;
 export class Chat {
     @ObjectIdColumn()
     _id: ObjectId;
-
     @Prop()
-    userId: number;
-
+    userId: string;
     @Prop()
     nickname: string;
-
     @Prop()
-    liveId: string;
-
+    channelId: string;
     @Prop({ required: true })
     content: string;
 }

@@ -1,9 +1,9 @@
-import { Body, Controller, HttpCode, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageService } from './image.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UserInfo } from 'src/common/decorator/user.decorator';
-import { UserAfterAuth } from 'src/auth/interfaces/after-auth';
+import {Body, Controller, HttpCode, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {FileInterceptor} from '@nestjs/platform-express';
+import {ImageService} from './image.service';
+import {JwtAuthGuard} from 'src/auth/guards/jwt-auth.guard';
+import {UserInfo} from 'src/common/decorator/user.decorator';
+import {UserAfterAuth} from 'src/auth/interfaces/after-auth';
 
 @Controller('api/setting')
 export class ImageController {
@@ -16,8 +16,9 @@ export class ImageController {
         @Body() data,
         @UploadedFile() file: Express.Multer.File,
         @Param() channelId: number,
-        @UserInfo() { id }: UserAfterAuth,
+        @UserInfo() {id}: UserAfterAuth,
     ) {
+        console.log("!")
         try {
             console.log('이미지 데이터', data);
             const exp = file.mimetype.slice(6);

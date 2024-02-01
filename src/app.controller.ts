@@ -1,12 +1,16 @@
 import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
+import { Roles } from './common/decorator/role.decorator';
+import { Role } from './common/types/userRoles.type';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Frontend')
 @Controller()
@@ -21,14 +25,25 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
+        console.log('lives', lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 
-    @Get('live/:liveId')
-    @Render('main') // Render the 'main' EJS template
-    async live(@Param('liveId') liveId: string, @Res() res: Response) {
-        const live = await this.liveService.findOne(+liveId);
-        return { title: 'Live - User view page', path: '/live', live: live };
+    //@Get('live/:liveId')
+    //@Render('main') // Render the 'main' EJS template
+    //async live(@Param('liveId') liveId: string, @Res() res: Response) {
+    //    const live = await this.liveService.findOne(+liveId);
+    //    return { title: 'Live - User view page', path: '/live', live: live };
+    //}
+
+    @Get('channel/:channelId')
+    @Render('main')
+    async live(@Param('channelId') channelId: string) {
+        const channel = await this.userService.FindChannelIdByChannel(+channelId);
+        const live = await this.liveService.findByChannelIdOnlyCurrentLive(+channelId);
+        const channelLive = { ...channel, ...live };
+        console.log('app controller channelLive', channelLive);
+        return { title: 'Live - User view page', path: '/channel', channelLive };
     }
 
     @UseGuards(JwtAuthGuard)
@@ -83,5 +98,12 @@ export class AppController {
             searchState = false;
         }
         return { title: 'Search Page', path: '/search', searchs, searchState, search };
+    }
+
+    @Render('payment') // Render the 'main' EJS template
+    @Get('payments/charge')
+    async paymentsCharge() {
+        console.log('ddd');
+        return { title: 'Payments Charge Page', path: '/payments/charge' };
     }
 }

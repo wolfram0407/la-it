@@ -27,42 +27,40 @@
             </div> -->
         </div>
         <div class="liveStreamerInfo">
-            <div class="liveTitle spacelLeft">
-                <span> <%= live.title %> </span>
-                <span style="display: none" class="channelIdInLive"><%= live.channel.channelId %></span>
-                <span style="display: none" class="liveIdInLive"><%= live.live_id %></span>
+            <div class="liveTitle">
+                <span> <%= channelLive.title %> </span>
+                <span style="display: none" class="channelIdInLive"><%= channelLive.channelId %></span>
+                <span style="display: none" class="liveIdInLive"><%= channelLive.live_id %></span>
             </div>
-            <div class="streamerInfo spacelLeft">
-                <div class="streamerImg">
-                    <img
-                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAyMDVfMTY0%2FMDAxNTQ5MzM4NjIwNjc1.mzkfCyxtLSjd30KwM03TnQKuK6R0_YN_fEgum6keu_Ag.DmJQJt0KI2F3vHtgysCcienO83ENBNLCJI5JFmPoE90g.JPEG.koega%2F%25B3%25C8.jpg&type=a340"
-                    />
-                </div>
-                <div class="streamerInfoDetail spacelLeft">
-                    <div class="streamerNickname"><span> <%= live.channelName %> </span></div>
-                    <div class="streamerTheme">
-                        <span> <%= live.title %> </span>
+            <div class="streamerInfo">
+                <div class="streamerInfoDetail">
+                    <div class="streamerImg">
+                        <img src="<%= channelLive.channelImage %>" />
                     </div>
-                    <div class="streamInfo">
-                        <!-- <div>현재<span> 5,131 </span>시청중</div> -->
-                        <div class="streamerDescription"><%= live.description %></div>
+                    <div class="streamerTextWrap">
+                        <div class="streamerNickname"><span> <%= channelLive.channelName %> </span></div>
+                        <div class="streamInfo">
+                            <!-- <div>현재<span> 5,131 </span>시청중</div> -->
+                            <div class="streamerDescription"><%= channelLive.description %></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="liveChatBox">
+
+    <div class="liveChatBox" id="liveChatBoxContainer">
         <div class="chatTitle">채팅</div>
-        <div class="chatMain" id="chatBoxWrap">
+        <div class="chatMain" id="chatBoxWrapStreaming">
             <div class="chatBox" id="chatBox">
-                <!-- <div class="chatList" id="oneChat">
+                <div class="chatList" id="oneChat">
                     <div class="chatNickname" id="chatNickname">방정맞은 라이언</div>
                     <div class="chatText" id="chatText">대박이네요!!</div>
-                </div> -->
+                </div>
             </div>
-            <div class="chatInput">
-                <input type="text" id="chatInput" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke" />
-                <button id="sendChatBtn">전송</button>
+            <div class="chatInputWrap streamingChatInputWrap">
+                <input type="text" id="chatInputStreamerPage" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px" />
+                <button class="sendChat" id="sendChat">전송</button>
             </div>
         </div>
     </div>
@@ -76,7 +74,7 @@
         await axios
             .get(`/api/live/${liveId}`)
             .then(function (response) {
-                //console.log('response: ', response);
+                console.log('response: ', response.data.channel.channelImage);
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);
@@ -97,7 +95,7 @@
                 }
             })
             .catch(function (error) {
-                //console.log(error);
+                //console.log(error );
             });
     });
 </script>

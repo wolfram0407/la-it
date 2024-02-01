@@ -7,7 +7,7 @@ if (!getAccessToken) {
             .get('/streaming', {
                 withCredentials: true,
                 headers: {
-                    authorization: AccessToken,
+                    authorization: getAccessToken,
                 },
             })
             .then((response) => {
@@ -24,5 +24,9 @@ function getCookie(name) {
 }
 
 document.querySelector('.startLiveBtn').addEventListener('click', function () {
-    window.location.href = '/streaming/:channelId';
+    window.location.href = `/streaming/${channelId}`;
+});
+
+document.querySelector('.chargeBtn').addEventListener('click', function (e) {
+    window.location.href = `/payments/charge`;
 });

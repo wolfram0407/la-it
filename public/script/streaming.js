@@ -11,20 +11,31 @@ const video = document.getElementById('video');
 liveStartBtn.addEventListener('click', createLive);
 liveEndBtn.addEventListener('click', endLive);
 
-// 방송 페이지 벗어나면 방송 종료
+// 방송 페이지 벗어나면 방송 종료, 새로고침도 포함
+window.addEventListener('beforeunload', endLive);
 
 async function createLive() {
+    const getAccessToken = getCookie('Authorization');
     let streamingTitle = document.getElementById('streamingTitle').value;
     let streamingDesc = document.getElementById('streamingDesc').value;
     //console.log('streamingTitle: ', streamingTitle);
     //console.log('streamingDesc: ', streamingDesc);
 
     await axios
-        .post(`/api/live/create/${channelId}`, {
-            title: streamingTitle,
-            thumbnail: 'test image',
-            description: streamingDesc,
-        })
+        .post(
+            `/api/live/create/${channelId}`,
+            {
+                title: streamingTitle,
+                thumbnail: 'test image',
+                description: streamingDesc,
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    authorization: getAccessToken,
+                },
+            },
+        )
         .then(function (response) {
             //console.log('response: ', response);
 

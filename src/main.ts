@@ -1,27 +1,26 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {DocumentBuilder, SwaggerCustomOptions, SwaggerModule} from '@nestjs/swagger';
-import {Logger, ValidationPipe} from '@nestjs/common';
-import {NestExpressApplication} from '@nestjs/platform-express';
-import {join} from 'path';
-import {CorsOptions} from '@nestjs/common/interfaces/external/cors-options.interface';
-import {IoAdapter} from '@nestjs/platform-socket.io';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 import cookieParser from 'cookie-parser';
-import {WinstonLogger, WinstonModule, utilities} from 'nest-winston';
+import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
 import * as winston from 'winston';
-import {SentryInterceptor} from './common/interceptor/sentry.interceptor';
+import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 
 import * as Sentry from '@sentry/node';
-import {ConfigService} from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
-
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
             transports: [
                 new winston.transports.Console({
                     level: 'info',
-                    format: winston.format.combine(winston.format.timestamp(), utilities.format.nestLike('La-it', {prettyPrint: true})),
+                    format: winston.format.combine(winston.format.timestamp(), utilities.format.nestLike('La-it', { prettyPrint: true })),
                 }),
             ],
         }),
@@ -58,7 +57,7 @@ async function bootstrap() {
     app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setViewEngine('ejs');
 
-    app.enableCors();
+    //app.enableCors(); //위와 중복되어 주석처리.
     //Sentry.init({ dsn: configService.get('SENTRY_DSN') });
     //app.useGlobalInterceptors(new SentryInterceptor());
     await app.listen(3002);

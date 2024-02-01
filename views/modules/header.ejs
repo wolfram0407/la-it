@@ -2,7 +2,7 @@
     <h1 style="display: none">HEADER</h1>
     <div class="headerWrap">
         <div class="menuAndLogoWrap">
-            <div class="logo">Li iT</div>
+            <div class="logo">라잇</div>
         </div>
         <div class="searchWrap">
             <%if(path=== '/search' ){ %>
@@ -46,11 +46,11 @@
         const kakaoLoginBtn = document.querySelector('#kakao')
         const logoutBtn = document.querySelector('.logoutBtn')
         const kakaoLink = document.getElementById('kakaoLink')
-        const kakaoUrl = '/api/auth/login/kakao';
-        const searchBtn = document.querySelector('#searchBtn');
-        const searchValue = document.querySelector('.searchInput');
-        const getAccessToken = getCookie('Authorization');
-        const AccessToken = `Bearer ${getAccessToken}`;
+        const kakaoUrl = '/api/auth/login/kakao'
+        const searchBtn = document.querySelector('#searchBtn')
+        const searchValue = document.querySelector('.searchInput')
+        const getAccessToken = getCookie('Authorization')
+        // const AccessToken = `Bearer ${getAccessToken}`;
 
 
         kakaoLink.href = kakaoUrl
@@ -82,11 +82,9 @@
         searchBtn.addEventListener('click', async () => {
             const value = searchValue.value
 
-            if (!value)
-            {
-                alert("Please enter a value!");
-            } else
-            {
+            if (!value) {
+                alert("Please enter a value!")
+            } else {
                 const url = `/search/${value}`
 
                 window.location.href = url

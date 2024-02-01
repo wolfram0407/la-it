@@ -2,9 +2,17 @@
 
 실시간 스트리밍 방송과 채팅을 제공하는 서비스 입니다.
 
-## ✨ 배포 링크
+<br>
+<br>
 
--   [lait](https://la-it.online/) <!-- 배포 링크 추가 -->
+## 🚀 배포 링크
+
+<div>
+    👉 <a href="https://la-it.online/">라잇 <span> https://la-it.online/ </span></a> 
+</div>
+
+<br>
+<br>
 
 ## 👋 팀 소개 - 🧟‍♂️ 성균관 좀비들
 
@@ -45,6 +53,9 @@
   </tr>
   </tbody>
 </table>
+
+<br>
+<br>
 
 ## ✅ 주요 기능
 
@@ -135,6 +146,110 @@
 <br>
 <br>
 
+## 🎯 기술적 의사결정
+
+### 1. 실시간 스트리밍 기능
+
+<table>
+    <thead>
+        <th>
+            NginX - RTMP Module
+        </th>
+         <th>
+            HLS Protocol
+        </th>
+    <thead>
+   <tbody>
+     <tr>
+        <td>OBS studio에서 송출한 영상  <br /> → rtmp 프로토콜로 전송  <br /> → flv 형태로 서버에 전송</td>
+        <td>하나의 영상을 일정한 구간별로 잘라 ts 파일로 만들어서 전송 <br />적응형 비트 전송률 스트리밍 기능<br /> → 스트리밍 도중에도 네트워크 상태에 따라 비디오 품질을 조절하여 끊기지 않게 재생가능</td>
+    </tr>
+   </tbody>
+</table>
+
+<br>
+
+### 2. 채팅
+
+<table>
+    <thead>
+        <th>
+            Socket I/O
+        </th>
+         <th>
+            Aho-corasick
+        </th>
+         <th>
+            Redis
+        </th>
+    <thead>
+   <tbody>
+     <tr>
+        <td> 안정성  <br /> 실시간 통신 </td>
+        <td>많은 단어를 한번에 처리 가능</td>
+        <td> 빠른 속도  <br /> 좋은 메모리 효율 <br /> 클러스터 모드 지원 </td>
+    </tr>
+   </tbody>
+</table>
+
+<br>
+
+### 3. 배포
+
+<table>
+    <thead>
+        <th>
+            Google Cloud
+        </th>
+         <th>
+            Docker
+        </th>
+         <th>
+            Kubernetes
+        </th>
+    <thead>
+   <tbody>
+     <tr>
+        <td> 편리한 UI  <br /> 300달러 크레딧 <br /> → 비용적 측면 </td>
+        <td>서버를 일관성있게 배포 가능 <br /> 다양한 라이브러리 제공 </td>
+        <td> 마이크로서비스아키텍쳐 도입 계획 <br /> → 운영 및 관리가 복잡 가능성 증가 <br /> 실시간 모니터링 및 로깅 <br /> → 신속한 대응  <br /> 오토스케일링</td>
+    </tr>
+   </tbody>
+</table>
+
+<br>
+<br>
+
 ## 🛢 ERD
 
 <img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/e7a014d6-96fa-4c7a-879b-f97fd08152b7/Untitled.png?id=ef77d1a1-e03d-4913-af88-a07665e356e1&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1706911200000&signature=AkNQo6vpidNtysOPROq7EBrc78vpJj8_xtqVBE_EO-A&downloadName=Untitled.png">
+
+<br>
+<br>
+
+## 👾 중간 MVP 전 Trouble Shooting
+
+<h2>배포</h2>
+
+-   도커파일 2개를 한 번에 도커컴포즈로 실행하고 있던 상황, 로드밸런서를 활용해 https로 배포 시 스트리밍 연결 실패
+
+### 시도 1
+
+로드밸런서에 열어놓은 포트를 모두 연결하려고 모든 포트번호를 넣고 ssl 인증서도 포트별로 만들어 서브도메인을 등록해 봄
+
+-   결과 : 로드밸런서를 활용해 https로 배포하려고 하니 스트리밍에 대한 연결이 제대로 되지 않음
+
+### 시도 2
+
+로드밸런서를 포트별로 각각 만들어보려 시도
+
+-   결과 : 하나의 인스턴스에서 두개 이상의 로드밸런서를 만드는건 가능하지 않았음
+
+### 원인 분석
+
+로드밸런서에 연결한 포트는 3002 포트 하나인데 8080 포트 컨테이너에도 연결하려니 로드밸런서 이용한 SSL 인증 실패한 것
+
+### 해결 (이후 서비스의 확장을 고려)
+
+-   인스턴스 컴퓨터를 한 대 더 만들어 서비스용, 스트리밍 전용으로, 로드밸런서도 포트별로 분리!
+-   기존 도커 컴포즈 파일을 백엔드 컴퓨터와 nginx (스트리밍용) 두개로 분리 후 각 컴퓨터에서 따로 실행

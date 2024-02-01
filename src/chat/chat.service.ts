@@ -98,7 +98,6 @@ export class ChatService {
             } else console.log('데이터를 레디스에 넣고 db로 옮김');
 
             //2개의 채널이 동시에 작동하는 경우 테스트 해볼것.
-            //TODO
             //이미 몽고db에 저장되었다면, 다시 저장 안되도록 하기
             //const checkMongoDBSave = new this.ChatModel.findOne({ where: { channelId: `channelId :${channelId}`, content: getDataArr[2] } });
 

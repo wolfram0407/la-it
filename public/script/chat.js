@@ -68,7 +68,12 @@ function chatSending(e) {
     console.log('채팅메세지');
     const chatInput = document.querySelector('.chatInputText');
     console.log('chatInput', chatInput.value, roomNum);
-    socket.emit('new_message', chatInput.value, roomNum);
+    console.log('~~~> ', chatInput.value.trim().length);
+    if (chatInput.value.trim().length < 1) {
+        return;
+    } else {
+        socket.emit('new_message', chatInput.value, roomNum);
+    }
 }
 
 //메세지 받아오기

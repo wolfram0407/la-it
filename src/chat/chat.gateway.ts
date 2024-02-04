@@ -48,9 +48,17 @@ export class ChatGateway {
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
         }
-        const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
-        console.log('메세지 확인', value);
 
+        const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
+        console.log('saveChat', saveChat);
+        if (saveChat === 'sameChat') {
+            console.log('같은내용임 ');
+            return this.server.to(channelId).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
+        }
+        if (saveChat === 'toFastChat') {
+            console.log('빨라유 ');
+            return this.server.to(channelId).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.');
+        }
         return this.server.to(channelId).emit('sending_message', value, nickname);
     }
 

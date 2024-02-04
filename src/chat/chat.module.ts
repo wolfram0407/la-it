@@ -7,9 +7,11 @@ import { Chat, ChatSchema } from './schema/chat.schema';
 import { UserModule } from 'src/user/user.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { RedisModule } from 'src/redis/redis.module';
+import { LiveModule } from 'src/live/live.module';
+import { LiveService } from 'src/live/live.service';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule], //
+    imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule, LiveModule], //
     controllers: [],
     providers: [ChatService, ChatGateway],
 })

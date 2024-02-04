@@ -18,17 +18,26 @@ const chatInputText = document.querySelector('.chatInputText');
 let roomNum;
 
 if (path.includes('streaming')) {
+    //방송 시작
+    const startLiveChat = document.querySelector('#liveStartBtn');
+
     //방송종료
     const endChat = document.querySelector('#liveEndBtn');
     const sendChatBtnStreamerPage = document.querySelector('#sendChatBtnStreamerPage');
 
-    //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
-        const enterRoom = socket.emit('enter_room', channelId);
-        console.log('두둥', enterRoom, '---');
-        roomNum = channelId;
+        //const createRoom = socket.emit('create_room', channelId);
+        //const enterRoom = socket.emit('enter_room', channelId);
+        //console.log('두둥', enterRoom, '---');
+        //roomNum = channelId;
         console.log('스트리머 룸 아이디', roomNum);
+        startLiveChat.addEventListener('click', (e) => {
+            e.preventDefault();
+            const createRoom = socket.emit('create_room', channelId);
+            roomNum = channelId;
+        });
+
         sendChatBtnStreamerPage.addEventListener('click', chatSending);
         chatInputText.addEventListener('keydown', (e) => {
             if ((e.keyCode === 13) | (e.which === 13)) {
@@ -38,6 +47,7 @@ if (path.includes('streaming')) {
 
         endChat.addEventListener('click', function (e) {
             console.log('방송 끝');
+            socket.emit('stop_live', channelId);
             return socket.emit('exit_room', channelId);
         });
     });

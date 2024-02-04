@@ -14,6 +14,9 @@ import { DataSource, MongoDBNamespace } from 'typeorm';
 export class ChatService {
     private timeOutIsRunning = false;
     private timeOut: NodeJS.Timeout | null = null;
+    private setIntervalFunc;
+    private intervalDataPush;
+    private createChatRoomNoChatData;
 
     constructor(
         @InjectModel(Chat.name) private readonly ChatModel: Model<Chat>,
@@ -23,24 +26,52 @@ export class ChatService {
         private dataSource: DataSource,
     ) {}
 
+    async createChatRoom(channelId: string, socket: Socket) {
+        try {
+            const joinTheChatRoom = socket.join(channelId);
+            this.createChatRoomNoChatData = true;
+
+            this.setIntervalFunc = setInterval(async () => {
+                console.log('채팅방만들때 확인 channelId', channelId);
+                await this.dataPushMongo(channelId);
+                console.log('5초마다 타임아웃 실행중');
+            }, 5000); //10초로 변경예정
+            console.log('방만들어짐.');
+            return joinTheChatRoom;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async deleteChatRoom(channelId: string, socket: Socket) {
+        try {
+            clearInterval(this.setIntervalFunc);
+            return;
+        } catch (err) {
+            console.log(err);
+        }
+    }
     async enterLiveRoomChat(channelId: string, socket: Socket) {
         try {
             const joinTheChatRoom = socket.join(channelId);
-            return joinTheChatRoom;
+
+            const getChannelChatCacheData = await this.redis.xRange(channelId, '-', '+');
+
+            return getChannelChatCacheData;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }
     }
-
-    async dataPushMongo(channelId) {
+    //방송종료시 채팅 데이터 다 넘기기
+    async liveChatDataMoveMongo(channelId: string, countNum: number) {
         try {
-            const channelIdDataSize = await this.redis.xLen(channelId);
-            const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
-            console.log('5초주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
-            //캐시에 반절만 가져오기
-            const getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: channelIdDataSizeHalf });
-
-            if (getRedisChatData.length < 3) return false; //100 으로 변경예정
+            let getRedisChatData;
+            if (countNum > 0) {
+                getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: countNum });
+                if (getRedisChatData.length < 3) return false; //100 으로 변경예정
+            } else {
+                getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+            }
 
             const onlyIdGetRedisChatData = getRedisChatData.map((e) => e.id);
             const newGetRedisChatData = getRedisChatData.map((e) => {
@@ -57,9 +88,29 @@ export class ChatService {
             });
             const mongoChatSave = await this.ChatModel.insertMany(newGetRedisChatData);
 
-            await this.redis.xDel(channelId, [...onlyIdGetRedisChatData]);
+            if (countNum > 0) {
+                await this.redis.xDel(channelId, [...onlyIdGetRedisChatData]);
+                return;
+            } else {
+                await this.redis.del(channelId);
+                return;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
-            return true;
+    async dataPushMongo(channelId: string) {
+        try {
+            if (this.createChatRoomNoChatData === true) return;
+
+            console.log('channelId', typeof channelId, channelId);
+            const channelIdDataSize = await this.redis.xLen(channelId);
+            const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
+            console.log('5초주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
+            //캐시에 반절만 가져오기
+            const moveDataToCache = await this.liveChatDataMoveMongo(channelId, channelIdDataSizeHalf);
+            return moveDataToCache;
         } catch (err) {
             console.log(err);
         }
@@ -79,12 +130,6 @@ export class ChatService {
             return true;
         }
 
-        setInterval(async () => {
-            this.timeOutIsRunning = true;
-            await this.dataPushMongo(channelId);
-            this.timeOutIsRunning = false;
-            return true;
-        }, 5000); //10초로 변경예정
         if (!this.timeOutIsRunning) return false;
         return false;
     }
@@ -92,10 +137,11 @@ export class ChatService {
     //채팅
     async createChat(socket: Socket, content: string, channelId: string, userId: number, nickname: string): Promise<string> {
         try {
+            this.createChatRoomNoChatData = false;
             //도배확인
             const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
             const filterRedisData = getRedisChatData.filter((data) => {
-                if (+data.message.userId === userId && data.message.content === content) {
+                if (+data.message.userId === userId && data.message.content === content.trim()) {
                     return data;
                 }
             });
@@ -105,7 +151,7 @@ export class ChatService {
                 const dataTime = new Date(+cacheDataTime);
                 const currentTime = new Date();
 
-                if (+currentTime - +dataTime < 3000) {
+                if (+currentTime - +dataTime < 2000) {
                     return 'toFastChat';
                 }
 

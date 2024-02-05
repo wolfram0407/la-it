@@ -33,8 +33,10 @@ export class LiveService {
 
     async end(channelId: number) {
         const endTargetLive = await this.findOneByChannelId(+channelId);
-        console.log('endTargetLive', endTargetLive);
-        const updateStatusLive = await this.liveRepository.update(endTargetLive.live_id, { status: false });
+        //console.log('endTargetLive', endTargetLive);
+        const updateStatusLive = await this.liveRepository.update(endTargetLive.live_id ?? endTargetLive, { status: false });
+        //endTargetLive.status = false;
+        //const updateStatusLive = await this.liveRepository.save(endTargetLive);
 
         return updateStatusLive;
     }

@@ -43,6 +43,11 @@ export class ChatGateway {
         return 'intervalEnd';
     }
 
+    //@OnGatewayDisconnect()
+    //async streamerDisconnect({ client, channelId, userId }: { client: Socket; channelId: string; userId: number; }) {
+    //    console.log('스트리머가 방을 나가버림');
+    //}
+
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
         console.log('방입장했슈~~');
@@ -68,8 +73,13 @@ export class ChatGateway {
     //TODO 방송 종료하면 나가기
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
+        console.log('exit_room에 왔음', channelId);
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
+        console.log('캐시데이터 비우고 몽고에 넣음');
+
         const endLive = await this.liveService.end(+channelId);
+        console.log('endLive함수 정상 작동', endLive);
+
         console.log('endLive', endLive);
         if (endLive) {
             return this.server.to(channelId).emit('bye');

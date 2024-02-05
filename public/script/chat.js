@@ -27,11 +27,9 @@ if (path.includes('streaming')) {
 
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
-        //const createRoom = socket.emit('create_room', channelId);
-        //const enterRoom = socket.emit('enter_room', channelId);
-        //console.log('두둥', enterRoom, '---');
-        //roomNum = channelId;
-        console.log('스트리머 룸 아이디', roomNum);
+
+        endChat.addEventListener('click', endLive);
+
         startLiveChat.addEventListener('click', (e) => {
             e.preventDefault();
             const createRoom = socket.emit('create_room', channelId);
@@ -43,12 +41,6 @@ if (path.includes('streaming')) {
             if ((e.keyCode === 13) | (e.which === 13)) {
                 chatSending(e);
             }
-        });
-
-        endChat.addEventListener('click', function (e) {
-            console.log('방송 끝');
-            socket.emit('stop_live', channelId);
-            return socket.emit('exit_room', channelId);
         });
     });
 } else if (path.includes('channel')) {
@@ -70,6 +62,18 @@ if (path.includes('streaming')) {
             }
         });
     });
+}
+
+//스트리머 방송 종료
+async function endLive(e) {
+    e.preventDefault();
+    const url = '/';
+    return (window.location.href = url);
+    //console.log('방송 끝');
+
+    //await socket.emit('exit_room', channelId);
+    //await socket.emit('stop_live', channelId);
+    //return;
 }
 
 //채팅 메시지 보내기

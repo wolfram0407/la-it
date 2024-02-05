@@ -9,10 +9,10 @@ const video = document.getElementById('video');
 
 // 방송 시작 버튼 눌렀을때 라이브 등록 처리
 liveStartBtn.addEventListener('click', createLive);
-liveEndBtn.addEventListener('click', endLive);
+//liveEndBtn.addEventListener('click', endLive);
 
 // 방송 페이지 벗어나면 방송 종료, 새로고침도 포함
-window.addEventListener('beforeunload', endLive);
+//window.addEventListener('beforeunload', endLive);
 
 async function createLive() {
     const getAccessToken = getCookie('Authorization');
@@ -64,16 +64,17 @@ async function createLive() {
         });
 }
 
-async function endLive() {
-    await axios
-        .post(`/api/live/end/${channelId}`)
-        .then(function (response) {
-            window.location.href = `/my-page/${channelId}`;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-}
+//소켓이랑 겹쳐서 주석
+//async function endLive() {
+//    await axios
+//        .post(`/api/live/end/${channelId}`)
+//        .then(function (response) {
+//            window.location.href = `/my-page/${channelId}`;
+//        })
+//        .catch(function (error) {
+//            console.log(error);
+//        });
+//}
 
 // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
 // When the browser has built-in HLS support (check using canPlayType), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the src property.

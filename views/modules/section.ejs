@@ -4,6 +4,10 @@
         <div class="videoBoxTopImg">
             <img class="liveImage" src="/imgs/free-icon-live-1246264.png" />
         </div>
+        <div class="howManyWatch">
+            <div class="getChannelId" hidden><%= live.channel.channelId %></div>
+            현재 시청자수 : <%= live.channel.watchNum %>
+        </div>
         <div class="videoThumbnail">
             <img id="thumb" class="liveImage" src="http://localhost:8080<%= live.thumbnail %>" />
         </div>
@@ -18,4 +22,5 @@
         </div>
     </div>
 </a>
+
 <!-- 비디오박스 끝 -->

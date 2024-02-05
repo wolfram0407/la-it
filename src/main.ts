@@ -14,6 +14,7 @@ import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 
 import * as Sentry from '@sentry/node';
 import { ConfigService } from '@nestjs/config';
+import { RedisIoAdapter } from './redis/redis.adapter';
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
@@ -35,7 +36,11 @@ async function bootstrap() {
     app.enableCors(corsOptions);
     app.use(cookieParser());
     //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
-    app.useWebSocketAdapter(new IoAdapter(app));
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis(configService);
+    app.useWebSocketAdapter(redisIoAdapter);
+
+    //app.useWebSocketAdapter(new IoAdapter(app));
 
     const config = new DocumentBuilder().setTitle('NestJS project').setDescription('').setVersion('1.0').addBearerAuth().build();
     const customOptions: SwaggerCustomOptions = {

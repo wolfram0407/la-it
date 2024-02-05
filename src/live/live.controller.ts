@@ -28,7 +28,8 @@ export class LiveController {
     })
     @Post('end/:channelId')
     end(@Param('channelId') channelId: string) {
-        return this.liveService.end(+channelId);
+        //return this.liveService.end(+channelId);
+        //socket에서 하는것과 중복되어 주석처리.
     }
 
     @Get()

@@ -30,11 +30,15 @@ export class AppController {
         const getRedisData = await this.redis.hGetAll('watchCtn');
         lives.map((e) => {
             const channelId = e.channel.channelId;
+            console.log('getRedisData', getRedisData);
             const redisId = Object.keys(getRedisData);
-            const findData = redisId.filter((e) => (e === channelId.toString() ? getRedisData[e] : null));
-            e.channel['watchNum'] = +findData[0];
-        });
+            const findData = redisId.filter((e) => e === channelId.toString());
+            console.log('findData', findData, getRedisData[+findData]);
 
+            return (e.channel['watchNum'] = getRedisData[+findData]);
+            console.log(e);
+        });
+        console.log('///', lives);
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 

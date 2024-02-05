@@ -23,6 +23,8 @@ import { LiveService } from 'src/live/live.service';
 @UseGuards(WsGuard)
 export class ChatGateway {
     @WebSocketServer() server: Server;
+    private interval;
+    private whileRepeat;
     constructor(
         private readonly chatService: ChatService,
         @Inject(LiveService)
@@ -47,19 +49,36 @@ export class ChatGateway {
             const arr = e.split('_');
             return (obj[arr[0]] = arr[1]);
         });
-        await this.redis.hSet('watchCtn', obj);
+        console.log('오비제이이', obj), newWatchCount;
+        if (Object.keys(obj).length >= 1) {
+            await this.redis.hSet('watchCtn', obj);
+        }
     }
 
     @SubscribeMessage('create_room')
     async createLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         const createChatRoom = await this.chatService.createChatRoom(channelId, client);
+        await this.countLiveChatUser(client, channelId);
+        this.whileRepeat = true;
+        this.interval = setInterval(async () => {
+            if (!this.whileRepeat) return;
+            await this.countLiveChatUser(client, channelId);
+            console.log('1분마다 라이브방송 참여유저수 계산중');
+        }, 600);
         return createChatRoom;
         return true;
     }
 
     @SubscribeMessage('stop_live')
     async deleteChatRoom(client: Socket, channelId: string) {
-        const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
+        //const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
+        console.log('멈춤2');
+        this.whileRepeat = false;
+        clearInterval(this.interval);
+        console.log('멈춤 인터벌');
+        const obj = {};
+        obj[channelId] = 0;
+        await this.redis.hDel('watchCtn', channelId);
         return 'intervalEnd';
     }
 

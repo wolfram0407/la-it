@@ -64,10 +64,27 @@ if (path.includes('streaming')) {
     });
 }
 
+//document.addEventListener('DOMContentLoaded', function () {
+//    const howManyWatch = document.querySelector('.howManyWatch');
+//    const hiddenChannelId = document.querySelector('.getChannelId');
+//    //countLiveChatUser(channelId);
+//    const countNum = socket.emit('count_live_chat_user', channelId);
+//    socket.on('count_live_chat_user_res', (msg) => {
+//        console.log('몇명의 유저가 있나요211', msg);
+//        //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${hiddenChannelId}_${msg}</div>`);
+
+//        return msg;
+//    });
+//    //const countNum = socket.emit('count_live_chat_user', hiddenChannelId);
+//    //console.log('countNum', countNum);
+//    //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${countNum.toString()}</div>`);
+//});
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
     const url = '/';
+    socket.emit('stop_live', channelId);
+
     return (window.location.href = url);
 }
 
@@ -90,6 +107,15 @@ socket.on('sending_message', (msg, nickname) => {
     console.log('받은거', msg, nickname);
     addMessage(msg, nickname);
 });
+
+////현재 채팅방에 몇명의 유저가 있는지 확인
+//function countLiveChatUser(channelId) {
+//    const countNum = socket.emit('count_live_chat_user', channelId);
+//}
+////socket.on('count_live_chat_user_res', (msg) => {
+////    console.log('몇명의 유저가 있나요2', msg);
+////    return msg;
+////});
 
 //금칙어_ 허용하지 않는 단어입니다.
 socket.on('alert', (msg) => {

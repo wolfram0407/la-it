@@ -26,7 +26,6 @@ async function createLive() {
             `/api/live/create/${channelId}`,
             {
                 title: streamingTitle,
-                thumbnail: 'test image',
                 description: streamingDesc,
             },
             {

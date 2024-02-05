@@ -32,11 +32,8 @@ export class ChatService {
             this.createChatRoomNoChatData = true;
 
             this.setIntervalFunc = setInterval(async () => {
-                console.log('채팅방만들때 확인 channelId', channelId);
                 await this.dataPushMongo(channelId);
-                console.log('5초마다 타임아웃 실행중');
             }, 5000); //10초로 변경예정
-            console.log('방만들어짐.');
             return joinTheChatRoom;
         } catch (err) {
             console.log(err);
@@ -104,7 +101,6 @@ export class ChatService {
         try {
             if (this.createChatRoomNoChatData === true) return;
 
-            console.log('channelId', typeof channelId, channelId);
             const channelIdDataSize = await this.redis.xLen(channelId);
             const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
             console.log('5초주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
@@ -125,7 +121,6 @@ export class ChatService {
 
         if (channelIdDataSize >= 10) {
             //100으로 변경예정
-            console.log('열개 넘음');
             this.dataPushMongo(channelId);
             return true;
         }

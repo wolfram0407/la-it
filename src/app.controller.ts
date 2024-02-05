@@ -1,7 +1,7 @@
 import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -11,6 +11,7 @@ import { Roles } from './common/decorator/role.decorator';
 import { Role } from './common/types/userRoles.type';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { RedisClientType } from 'redis';
 
 @ApiTags('Frontend')
 @Controller()
@@ -19,13 +20,21 @@ export class AppController {
         private readonly userService: UserService,
         private readonly liveService: LiveService,
         private readonly mainService: MainService,
+        @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
 
     @Get()
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req) {
         const lives = await this.liveService.findAll();
-        console.log('lives', lives);
+        const getRedisData = await this.redis.hGetAll('watchCtn');
+        lives.map((e) => {
+            const channelId = e.channel.channelId;
+            const redisId = Object.keys(getRedisData);
+            const findData = redisId.filter((e) => (e === channelId.toString() ? getRedisData[e] : null));
+            e.channel['watchNum'] = +findData[0];
+        });
+
         return { title: 'Home Page', path: req.url, lives: lives };
     }
 

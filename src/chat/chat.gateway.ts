@@ -4,7 +4,7 @@ import { Server, Socket } from 'socket.io';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ServerOptions } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
-import { createClient } from 'redis';
+import { RedisClientType, createClient } from 'redis';
 
 import { ChatService } from './chat.service';
 import { SearchDto } from './dto/chat.dto';
@@ -27,11 +27,31 @@ export class ChatGateway {
         private readonly chatService: ChatService,
         @Inject(LiveService)
         private readonly liveService: LiveService,
+        @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
+
+    @SubscribeMessage('count_live_chat_user')
+    async countLiveChatUser(client: Socket, channelId: string) {
+        const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
+        const rooms = this.server.sockets.adapter.rooms;
+        let newWatchCount = [];
+        const obj = {};
+        const keys = Object.fromEntries(rooms);
+        for (let data in keys) {
+            if (Number(data)) {
+                newWatchCount.push(`${data}_${keys[data].size}`);
+            }
+        }
+
+        newWatchCount.map(async (e) => {
+            const arr = e.split('_');
+            return (obj[arr[0]] = arr[1]);
+        });
+        await this.redis.hSet('watchCtn', obj);
+    }
 
     @SubscribeMessage('create_room')
     async createLiveRoomChat(client: Socket, channelId: string): Promise<any> {
-        console.log('방 만드는중');
         const createChatRoom = await this.chatService.createChatRoom(channelId, client);
         return createChatRoom;
         return true;
@@ -43,22 +63,10 @@ export class ChatGateway {
         return 'intervalEnd';
     }
 
-    //@OnGatewayDisconnect()
-    //async streamerDisconnect({ client, channelId, userId }: { client: Socket; channelId: string; userId: number; }) {
-    //    console.log('스트리머가 방을 나가버림');
-    //}
-
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
-        console.log('방입장했슈~~');
-        //TODO 유저가 들어오면 기존 채팅 50개 보여주기 추후 구현 예정.
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
-        //console.log('게이트웨이', chats);
-        //for (let i = 0; i < chats.length; i++) {
-        //    //this.server.to(liveId).emit('sending_message', chats[content], chats[nickname]);
-        //}
 
-        console.log('가져왓슈~', chats);
         for (let i = 0; i < chats.length; i++) {
             this.server.to(channelId).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
         }
@@ -73,14 +81,9 @@ export class ChatGateway {
     //TODO 방송 종료하면 나가기
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
-        console.log('exit_room에 왔음', channelId);
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
-        console.log('캐시데이터 비우고 몽고에 넣음');
-
         const endLive = await this.liveService.end(+channelId);
-        console.log('endLive함수 정상 작동', endLive);
 
-        console.log('endLive', endLive);
         if (endLive) {
             return this.server.to(channelId).emit('bye');
         }

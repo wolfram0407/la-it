@@ -69,11 +69,6 @@ async function endLive(e) {
     e.preventDefault();
     const url = '/';
     return (window.location.href = url);
-    //console.log('방송 끝');
-
-    //await socket.emit('exit_room', channelId);
-    //await socket.emit('stop_live', channelId);
-    //return;
 }
 
 //채팅 메시지 보내기

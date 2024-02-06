@@ -4,15 +4,6 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class ReqCreateLiveDto {
     @ApiProperty({
         required: true,
-        example: 'imageUrl://',
-        description: '라이브 썸네일',
-    })
-    @IsString()
-    @IsNotEmpty()
-    thumbnail: string;
-
-    @ApiProperty({
-        required: true,
         example: '[LIVE] 실시간 스트리밍',
         description: '라이브 제목',
     })
@@ -31,14 +22,6 @@ export class ReqCreateLiveDto {
 }
 
 export class ReqUpdateLiveDto extends PartialType(ReqCreateLiveDto) {
-    @ApiProperty({
-        example: 'imageUrl://',
-        description: '라이브 썸네일',
-    })
-    @IsString()
-    @IsOptional()
-    thumbnail?: string;
-
     @ApiProperty({
         example: '[LIVE] 실시간 스트리밍',
         description: '라이브 제목',

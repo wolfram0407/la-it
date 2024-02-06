@@ -54,8 +54,8 @@
         <div class="chatMain" id="chatBoxWrapStreaming">
             <div class="chatBox" id="chatBox">
                 <div class="chatList" id="oneChat">
-                    <div class="chatNickname" id="chatNickname">방정맞은 라이언</div>
-                    <div class="chatText" id="chatText">대박이네요!!</div>
+                    <div class="chatNickname" id="chatNickname"></div>
+                    <div class="chatText" id="chatText"></div>
                 </div>
             </div>
             <div class="chatInputWrap streamingChatInputWrap">
@@ -65,11 +65,14 @@
         </div>
     </div>
 </div>
+<img width="300px" height="300px" id="thumb" src="" alt="" />
 <script defer src="/script/chat.js"></script>
 
 <script defer>
     const channelId = document.querySelector('.channelIdInLive').textContent;
     const liveId = document.querySelector('.liveIdInLive').textContent;
+    const thumb = document.getElementById('thumb');
+
     document.addEventListener('DOMContentLoaded', async () => {
         await axios
             .get(`/api/live/${liveId}`)
@@ -78,13 +81,13 @@
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);
-
+                thumb.src = `${HLS_URL}/thumb/thumbnail_${streamKey}.png`;
                 if (Hls.isSupported()) {
                     1;
                     const hls = new Hls({
                         debug: false,
                     });
-
+                    console.log(`${HLS_URL}/thumb/thumbnail_${streamKey}.png`);
                     console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
                     hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);

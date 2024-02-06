@@ -18,27 +18,29 @@ const chatInputText = document.querySelector('.chatInputText');
 let roomNum;
 
 if (path.includes('streaming')) {
+    //방송 시작
+    const startLiveChat = document.querySelector('#liveStartBtn');
+
     //방송종료
     const endChat = document.querySelector('#liveEndBtn');
     const sendChatBtnStreamerPage = document.querySelector('#sendChatBtnStreamerPage');
 
-    //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
-        const enterRoom = socket.emit('enter_room', channelId);
-        console.log('두둥', enterRoom, '---');
-        roomNum = channelId;
-        console.log('스트리머 룸 아이디', roomNum);
+
+        endChat.addEventListener('click', endLive);
+
+        startLiveChat.addEventListener('click', (e) => {
+            e.preventDefault();
+            const createRoom = socket.emit('create_room', channelId);
+            roomNum = channelId;
+        });
+
         sendChatBtnStreamerPage.addEventListener('click', chatSending);
         chatInputText.addEventListener('keydown', (e) => {
             if ((e.keyCode === 13) | (e.which === 13)) {
                 chatSending(e);
             }
-        });
-
-        endChat.addEventListener('click', function (e) {
-            console.log('방송 끝');
-            return socket.emit('exit_room', channelId);
         });
     });
 } else if (path.includes('channel')) {
@@ -62,6 +64,30 @@ if (path.includes('streaming')) {
     });
 }
 
+//document.addEventListener('DOMContentLoaded', function () {
+//    const howManyWatch = document.querySelector('.howManyWatch');
+//    const hiddenChannelId = document.querySelector('.getChannelId');
+//    //countLiveChatUser(channelId);
+//    const countNum = socket.emit('count_live_chat_user', channelId);
+//    socket.on('count_live_chat_user_res', (msg) => {
+//        console.log('몇명의 유저가 있나요211', msg);
+//        //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${hiddenChannelId}_${msg}</div>`);
+
+//        return msg;
+//    });
+//    //const countNum = socket.emit('count_live_chat_user', hiddenChannelId);
+//    //console.log('countNum', countNum);
+//    //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${countNum.toString()}</div>`);
+//});
+//스트리머 방송 종료
+async function endLive(e) {
+    e.preventDefault();
+    const url = '/';
+    socket.emit('stop_live', channelId);
+
+    return (window.location.href = url);
+}
+
 //채팅 메시지 보내기
 function chatSending(e) {
     e.preventDefault();
@@ -81,6 +107,15 @@ socket.on('sending_message', (msg, nickname) => {
     console.log('받은거', msg, nickname);
     addMessage(msg, nickname);
 });
+
+////현재 채팅방에 몇명의 유저가 있는지 확인
+//function countLiveChatUser(channelId) {
+//    const countNum = socket.emit('count_live_chat_user', channelId);
+//}
+////socket.on('count_live_chat_user_res', (msg) => {
+////    console.log('몇명의 유저가 있나요2', msg);
+////    return msg;
+////});
 
 //금칙어_ 허용하지 않는 단어입니다.
 socket.on('alert', (msg) => {

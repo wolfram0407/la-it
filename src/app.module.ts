@@ -15,11 +15,12 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import sentryConfig from './common/config/sentry.config';
 
-import { RedisModule } from '@nestjs-modules/ioredis';
+//import { RedisModule } from '@nestjs-modules/ioredis';
 import { ImageModule } from './image/image.module';
 import { HeartModule } from './heart/heart.module';
 import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
 import { PaymentModule } from './payment/payment.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
     imports: [

@@ -13,17 +13,18 @@ export class LiveService {
         private channelRepository: Repository<Channel>,
     ) {}
 
-    async create(title: string, thumbnail: string, description: string, hlsUrl: string, channelId: number) {
+    async create(title: string, description: string, thumbnail: string, hlsUrl: string, channelId: number) {
         const channelColumn = await this.channelRepository.findOneBy({ channelId });
         console.log('channelColumn: ', channelColumn);
         const streamKey = channelColumn.streamKey;
         console.log('streamKey: ', streamKey);
         hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
+        thumbnail = `/thumb/thumbnail_${streamKey}.png`;
 
         const createLive = await this.liveRepository.save({
             title,
-            thumbnail,
             description,
+            thumbnail,
             hlsUrl,
             channel: channelColumn,
         });
@@ -32,8 +33,14 @@ export class LiveService {
     }
 
     async end(channelId: number) {
-        const endLive = await this.liveRepository.update({ channel: { channelId } }, { status: false });
-        return endLive;
+        const endTargetLive = await this.findOneByChannelId(+channelId);
+        console.log('endTargetLive', endTargetLive);
+        if (!endTargetLive) return;
+        const updateStatusLive = await this.liveRepository.update(endTargetLive?.live_id, { status: false });
+        //endTargetLive.status = false;
+        //const updateStatusLive = await this.liveRepository.save(endTargetLive);
+
+        return updateStatusLive;
     }
 
     async findAll(): Promise<Live[]> {
@@ -47,7 +54,7 @@ export class LiveService {
     }
 
     async findOneByChannelId(channelId: number) {
-        const channel = await this.liveRepository.findOne({ where: { channel: { channelId } } });
+        const channel = await this.liveRepository.findOne({ where: { channel: { channelId }, status: true } });
         return channel;
     }
 
@@ -56,9 +63,8 @@ export class LiveService {
         return liveDataFromChannel;
     }
 
-    async update(liveId: number, title: string, thumbnail: string) {
+    async update(liveId: number, title: string) {
         const updateLive = await this.liveRepository.update(liveId, {
-            thumbnail,
             title,
         });
         return this.findOne(liveId);

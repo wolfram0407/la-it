@@ -39,7 +39,7 @@ export class AppController {
             console.log(e);
         });
         console.log('///', lives);
-        return { title: 'Home Page', path: req.url, lives: lives };
+        return { title: 'Home Page', path: req.url, lives: lives, hlsUrl:process.env.HLS_URL};
     }
 
     //@Get('live/:liveId')

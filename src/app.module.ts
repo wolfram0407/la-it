@@ -39,8 +39,8 @@ import { RedisModule } from './redis/redis.module';
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
                 uri: configService.get<string>('MONGO_URL'),
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
+                // useNewUrlParser: true,
+                // useUnifiedTopology: true,
             }),
         }),
         JwtModule.registerAsync({

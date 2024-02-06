@@ -39,7 +39,7 @@ export class AppController {
             console.log(e);
         });
         console.log('///', lives);
-        return { title: 'Home Page', path: req.url, lives: lives };
+        return { title: 'Home Page', path: req.url, lives: lives, hlsUrl:process.env.HLS_URL};
     }
 
     //@Get('live/:liveId')
@@ -97,7 +97,9 @@ export class AppController {
         // }
         //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
 
-        return { title: 'Streaming Page', path: '/streaming', channel };
+        return { title: 'Streaming Page', path: '/streaming', channel, hlsUrl: `${process.env.HLSURL}` };
+        // hls url 추가해서 환경변수로 관리 
+        // 'http://localhost:8080'
     }
 
     @Render('main') // Render the 'main' EJS template

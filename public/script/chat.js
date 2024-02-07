@@ -64,21 +64,6 @@ if (path.includes('streaming')) {
     });
 }
 
-//document.addEventListener('DOMContentLoaded', function () {
-//    const howManyWatch = document.querySelector('.howManyWatch');
-//    const hiddenChannelId = document.querySelector('.getChannelId');
-//    //countLiveChatUser(channelId);
-//    const countNum = socket.emit('count_live_chat_user', channelId);
-//    socket.on('count_live_chat_user_res', (msg) => {
-//        console.log('몇명의 유저가 있나요211', msg);
-//        //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${hiddenChannelId}_${msg}</div>`);
-
-//        return msg;
-//    });
-//    //const countNum = socket.emit('count_live_chat_user', hiddenChannelId);
-//    //console.log('countNum', countNum);
-//    //howManyWatch.insertAdjacentHTML('beforeend', `<div class='howManyWatch'>${countNum.toString()}</div>`);
-//});
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
@@ -144,16 +129,11 @@ function addMessage(msg, nickname) {
     console.log('==>', msg, nickname);
     const temp = ` <div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
+    chatScroll();
     return (chatInputText.value = '');
 }
 
-////토큰 가져오는 함수
-//function getCookie(access_token) {
-//    const cookieArr = document.cookie.split(';');
-//    const getToken = cookieArr.filter((e) => {
-//        if (e.split('=')[0] === 'access_token') {
-//            return e.split('=')[1];
-//        }
-//    });
-//    return getToken;
-//}
+//스크롤
+function chatScroll() {
+    return (chatBox.scrollTop = chatBox.scrollHeight);
+}

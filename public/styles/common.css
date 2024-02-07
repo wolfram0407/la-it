@@ -970,8 +970,6 @@ input {
     border: 0.01px solid rgba(255, 255, 255, 0.209);
     border-radius: 10px;
 
-    /*border: none;
-    border-bottom: 1px solid white;*/
     color: white;
     font-size: 18px;
     background-color: #1e1e1e;
@@ -999,8 +997,6 @@ input {
 }
 
 .getNewStreamkeyBtn {
-    /*background-color: #f8f9fa;
-    color: black;*/
     width: 80px;
     height: 40px;
     border-radius: 20px;
@@ -1009,8 +1005,6 @@ input {
 }
 
 .uploadBtn {
-    /*background-color: #f8f9fa;*/
-    /*color: black;*/
     color: white;
     width: 80px;
     height: 40px;
@@ -1018,12 +1012,6 @@ input {
     border: 1px solid rgba(255, 255, 255, 0.209);
     margin-right: 10px;
 }
-
-/*.uploadBtn,
-.getNewStreamkeyBtn {
-    border: none;
-    color: black;
-}*/
 
 .uploadBtn:hover,
 .getNewStreamkeyBtn:hover {

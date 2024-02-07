@@ -1,11 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { LiveService } from './live.service';
 import { ReqCreateLiveDto, ReqUpdateLiveDto } from './dto/req.live.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Role } from 'src/common/types/userRoles.type';
-import { Roles } from 'src/common/decorator/role.decorator';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Live')
 @Controller('/api/live')

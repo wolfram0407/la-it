@@ -1,4 +1,5 @@
 <!-- 비디오 박스 시작-->
+
 <a href="/channel/<%= live.channel.channelId %>" class="videoBox">
     <div class="videoBoxTop">
         <div class="videoBoxTopImg">
@@ -9,7 +10,7 @@
             현재 시청자수 : <%= live.channel.watchNum %>
         </div>
         <div class="videoThumbnail">
-            <img id="thumb" class="liveImage" src="http://localhost:8080<%= live.thumbnail %>" />
+            <img id="thumb" class="liveImage" src="" />
         </div>
     </div>
     <div class="videoBoxBottom">
@@ -22,5 +23,24 @@
         </div>
     </div>
 </a>
+<div id="liveId" style="display: none"><%= live.live_id %></div>
 
 <!-- 비디오박스 끝 -->
+<script defer>
+    const liveId = document.getElementById('liveId').textContent;
+    // console.log(liveId);
+    const thumb = document.getElementById('thumb');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await axios
+            .get(`/api/live/${liveId}`)
+            .then(function (response) {
+                const streamKey = response.data.channel.streamKey;
+
+                thumb.src = `${HLS_URL}/thumb/thumbnail_${streamKey}.png`;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
+</script>

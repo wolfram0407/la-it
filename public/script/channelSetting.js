@@ -12,6 +12,9 @@ function writeChannelInfo(e) {
     document.querySelector('.channelInfoSettingContainer').removeAttribute('hidden');
     document.querySelector('#channelSettingForm').addEventListener('submit', sendChannelInfoData);
     document.querySelector('#streamKeyGetNew').addEventListener('click', changeStreamKey);
+    exitBtn.addEventListener('click', () => {
+        window.location.reload();
+    });
 }
 
 // 폼데이터 전송.
@@ -43,6 +46,7 @@ async function sendChannelInfoData(e) {
     document.querySelector('.channelInfoContainer').removeAttribute('hidden');
     document.querySelector('.homeBox').removeAttribute('hidden');
     document.querySelector('.channelInfoSettingContainer').setAttribute('hidden', true);
+    const exitBtn = document.getElementById('#exitBtn');
 }
 
 //s3에 이미지 저장함수
@@ -83,17 +87,24 @@ async function saveChannelInfoData(channelId, saveImageUrlData, formDataObj, Acc
 }
 
 //스트림키 재발급
-async function changeStreamKey(e) {
+async function changeStreamKey(e, AccessToken) {
     e.preventDefault();
     console.log('스트림키 바꿀예정이에유');
     return await axios
-        .put(`/api/channel/change-key/${channelId}`, {
-            withCredentials: true,
-            headers: {
-                authorization: AccessToken,
+        .put(
+            `/api/channel/change-key/${channelId}`,
+
+            {
+                withCredentials: true,
+                headers: {
+                    authorization: AccessToken,
+                },
             },
-        })
+        )
         .then((response) => {
+            console.log(response.data.streamKey);
+            const newStreamKey = response.data.streamKey; // 응답에서 새 스트림키 값 가져오기 (응답 구조에 따라 수정 필요)
+            document.querySelector('#streamKeyValue').textContent = newStreamKey;
             console.log(response);
         });
 }

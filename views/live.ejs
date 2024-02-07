@@ -81,15 +81,15 @@
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);
-                thumb.src = `${HLS_URL}/thumb/thumbnail_${streamKey}.png`;
+                thumb.src = `<%= hlsUrl %>/thumb/thumbnail_${streamKey}.png`;
                 if (Hls.isSupported()) {
                     1;
                     const hls = new Hls({
                         debug: false,
                     });
-                    console.log(`${HLS_URL}/thumb/thumbnail_${streamKey}.png`);
-                    console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
-                    hls.loadSource(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                    console.log(`<%= hlsUrl %>/thumb/thumbnail_${streamKey}.png`);
+                    console.log(`<%= hlsUrl %>/hls/${streamKey}/index.m3u8`);
+                    hls.loadSource(`<%= hlsUrl %>/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
                         video.muted = true;

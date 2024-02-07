@@ -34,12 +34,13 @@ export class AppController {
             const redisId = Object.keys(getRedisData);
             const findData = redisId.filter((e) => e === channelId.toString());
             console.log('findData', findData, getRedisData[+findData]);
-
-            return (e.channel['watchNum'] = getRedisData[+findData]);
-            console.log(e);
+            e.channel['watchNum'] = getRedisData[+findData];
+            return e;
         });
         console.log('///', lives);
-        return { title: 'Home Page', path: req.url, lives: lives, hlsUrl:process.env.HLS_URL};
+        const livesIncludeHlsUrl = { lives, hlsUrl: process.env.HLS_URL };
+        //console.log('livesIncludeHlsUrl', livesIncludeHlsUrl);
+        return { title: 'Home Page', path: req.url, livesIncludeHlsUrl };
     }
 
     //@Get('live/:liveId')
@@ -55,8 +56,7 @@ export class AppController {
         const channel = await this.userService.FindChannelIdByChannel(+channelId);
         const live = await this.liveService.findByChannelIdOnlyCurrentLive(+channelId);
         const channelLive = { ...channel, ...live };
-        console.log('app controller channelLive', channelLive);
-        return { title: 'Live - User view page', path: '/channel', channelLive };
+        return { title: 'Live - User view page', path: '/channel', channelLive: { channelLive, hlsUrl: process.env.HLS_URL } };
     }
 
     @UseGuards(JwtAuthGuard)
@@ -97,8 +97,8 @@ export class AppController {
         // }
         //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
 
-        return { title: 'Streaming Page', path: '/streaming', channel, hlsUrl: `${process.env.HLSURL}` };
-        // hls url 추가해서 환경변수로 관리 
+        return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}` } };
+        // hls url 추가해서 환경변수로 관리
         // 'http://localhost:8080'
     }
 

@@ -48,8 +48,8 @@
                                     </div>
                                     <% } else { %>
                                         <div class="videoBoxWrap">
-                                            <% lives.forEach(live=> { %>
-                                                <div><%- include('./modules/section.ejs', {live:live}) %></div>
+                                            <% livesIncludeHlsUrl.lives.forEach(live=> { %>
+                                                <div><%- include('./modules/section.ejs', {live:{live, hlsUrl:livesIncludeHlsUrl.hlsUrl }}) %></div>
                                                 <% }) %>
                                         </div>
                                         <% } %>

@@ -399,7 +399,8 @@ input {
 .liveStreamerInfo {
     background-color: #191b1d;
     width: 100%;
-    /* height: 50%; */
+    margin-left: 1px;
+    border-right: 1px solid #9da5b673;
 }
 
 .liveTitle {
@@ -810,6 +811,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-right: 1px solid #9da5b62f;
     width: 50%;
     height: 100%;
 }

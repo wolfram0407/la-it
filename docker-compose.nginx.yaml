@@ -8,9 +8,7 @@ services:
         platform: linux/x86_64
         build:
             context: .
-            dockerfile: Dockerfile.nginx
-        environment:
-            - UPSTREAM_API_SERVER=${UPSTREAM_API_SERVER}
+            dockerfile: Dockerfile.nginx.deploy
         ports:
             - 1935:1935
             - 8080:8080

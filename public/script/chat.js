@@ -82,7 +82,7 @@ if (path.includes('streaming')) {
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
-    const url = '/';
+    const url = '/?s=true';
     socket.emit('stop_live', channelId);
 
     return (window.location.href = url);

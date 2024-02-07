@@ -920,6 +920,9 @@ input {
     justify-content: center;
     align-items: center;
 }
+.channelInfoSettingForm input {
+    background-color: #1e1e1e;
+}
 
 .channelInfoTitle {
     margin-bottom: 20px;
@@ -942,8 +945,16 @@ input {
     border-radius: 10px;
     padding: 10px;
     width: 100%;
-}
+    background-color: black;
+    /*background-color: #141517;*/
 
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.209);
+    border-radius: 0%;
+}
+.channelTitleInput:focus {
+    outline: none;
+}
 .streamkeyVal {
     display: flex;
     text-align: left;
@@ -955,18 +966,25 @@ input {
     max-height: 200px;
     min-height: 200px;
 
+    margin-top: 50px;
+    border: 0.01px solid rgba(255, 255, 255, 0.209);
     border-radius: 10px;
 
-    color: black;
+    /*border: none;
+    border-bottom: 1px solid white;*/
+    color: white;
     font-size: 18px;
+    background-color: #1e1e1e;
 }
 
 .channelImageWrap {
     display: flex;
     width: 100%;
+    margin-left: 15px;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 .channelImageINputWrap {
@@ -977,27 +995,43 @@ input {
     align-items: center;
     border-radius: 10px;
     padding: 7px;
+    background-color: #1e1e1e;
 }
 
 .getNewStreamkeyBtn {
-    background-color: #f8f9fa;
-    color: black;
+    /*background-color: #f8f9fa;
+    color: black;*/
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.209);
+    color: white;
 }
 
 .uploadBtn {
-    border: none;
+    /*background-color: #f8f9fa;*/
+    /*color: black;*/
+    color: white;
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.209);
+    margin-right: 10px;
 }
 
-.uploadBtn,
+/*.uploadBtn,
 .getNewStreamkeyBtn {
     border: none;
     color: black;
-}
+}*/
 
 .uploadBtn:hover,
 .getNewStreamkeyBtn:hover {
-    color: black;
-    background-color: #f8f9fa;
+    color: white;
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid white;
     margin: 2px;
 }
 
@@ -1023,7 +1057,11 @@ input {
     width: 100%;
     padding: 10px;
     border-radius: 10px;
-    color: black;
+    background-color: #1e1e1e;
+    font-weight: bolder;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.209);
+    border-radius: 0%;
 }
 
 .streamingChatInputWrap {

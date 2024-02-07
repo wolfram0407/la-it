@@ -63,8 +63,8 @@ export class ChatGateway {
         this.interval = setInterval(async () => {
             if (!this.whileRepeat) return;
             await this.countLiveChatUser(client, channelId);
-            console.log('1분마다 라이브방송 참여유저수 계산중');
-        }, 600);
+            console.log('5초마다 라이브방송 참여유저수 계산중');
+        }, 5000);
         return createChatRoom;
         return true;
     }

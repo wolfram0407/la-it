@@ -28,20 +28,20 @@
         </div>
         <div class="liveStreamerInfo">
             <div class="liveTitle">
-                <span> <%= channelLive.title %> </span>
-                <span style="display: none" class="channelIdInLive"><%= channelLive.channelId %></span>
-                <span style="display: none" class="liveIdInLive"><%= channelLive.live_id %></span>
+                <span> <%= channelLive.channelLive.title %> </span>
+                <span style="display: none" class="channelIdInLive"><%= channelLive.channelLive.channelId %></span>
+                <span style="display: none" class="liveIdInLive"><%= channelLive.channelLive.live_id %></span>
             </div>
             <div class="streamerInfo">
                 <div class="streamerInfoDetail">
                     <div class="streamerImg">
-                        <img src="<%= channelLive.channelImage %>" />
+                        <img src="<%= channelLive.channelLive.channelImage %>" />
                     </div>
                     <div class="streamerTextWrap">
-                        <div class="streamerNickname"><span> <%= channelLive.channelName %> </span></div>
+                        <div class="streamerNickname"><span> <%= channelLive.channelLive.channelName %> </span></div>
                         <div class="streamInfo">
                             <!-- <div>현재<span> 5,131 </span>시청중</div> -->
-                            <div class="streamerDescription"><%= channelLive.description %></div>
+                            <div class="streamerDescription"><%= channelLive.channelLive.description %></div>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
         </div>
     </div>
 </div>
-<img width="300px" height="300px" id="thumb" src="" alt="" />
+<img style="display: none" width="300px" height="300px" id="thumb" src="" alt="" />
 <script defer src="/script/chat.js"></script>
 
 <script defer>
@@ -81,15 +81,15 @@
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);
-                thumb.src = `<%= hlsUrl %>/thumb/thumbnail_${streamKey}.png`;
+                thumb.src = `<%= channelLive.hlsUrl %>/thumb/thumbnail_${streamKey}.png`;
                 if (Hls.isSupported()) {
                     1;
                     const hls = new Hls({
                         debug: false,
                     });
-                    console.log(`<%= hlsUrl %>/thumb/thumbnail_${streamKey}.png`);
-                    console.log(`<%= hlsUrl %>/hls/${streamKey}/index.m3u8`);
-                    hls.loadSource(`<%= hlsUrl %>/hls/${streamKey}/index.m3u8`);
+                    console.log(`<%= channelLive.hlsUrl %>/thumb/thumbnail_${streamKey}.png`);
+                    console.log(`<%= channelLive.hlsUrl %>/hls/${streamKey}/index.m3u8`);
+                    hls.loadSource(`<%= channelLive.hlsUrl %>/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
                         video.muted = true;

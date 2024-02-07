@@ -1,5 +1,5 @@
 <div class="liveMasterWrap">
-    <div class="channelId" style="display: none"><%= channel.channelId %></div>
+    <div class="channelId" style="display: none"><%= channel.channel.channelId %></div>
     <div class="liveMasterMainBox">
         <div class="liveMasterVideoBox">
             <div id="call">
@@ -13,11 +13,11 @@
             <div class="masterSettingBoxLeft">
                 <div class="masterSettingTitle">
                     <span>제목</span>
-                    <input id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
+                    <input class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
                 </div>
                 <div class="masterSettingDesc">
                     <span>내용</span>
-                    <input id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
+                    <input class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
                 </div>
             </div>
             <div class="MasterSettingBoxRight">
@@ -58,5 +58,67 @@
         </div>
     </div>
 </div>
-<script defer src="/script/streaming.js"></script>
+<!--<script defer src="/script/streaming.js"></script>-->
 <script defer src="/script/chat.js"></script>
+<script>
+    const liveStartBtn = document.getElementById('liveStartBtn');
+    const liveEndBtn = document.getElementById('liveEndBtn');
+    const broadcastBtn = document.querySelector('.broadcastBtn');
+    const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
+    const channelId = document.querySelector('.channelId').textContent;
+    console.log('channelId: ', channelId);
+
+    const video = document.getElementById('video');
+
+    // 방송 시작 버튼 눌렀을때 라이브 등록 처리
+    liveStartBtn.addEventListener('click', createLive);
+
+    async function createLive() {
+        const getAccessToken = getCookie('Authorization');
+        let streamingTitle = document.getElementById('streamingTitle').value;
+        let streamingDesc = document.getElementById('streamingDesc').value;
+        //console.log('streamingTitle: ', streamingTitle);
+        //console.log('streamingDesc: ', streamingDesc);
+
+        await axios
+            .post(
+                `/api/live/create/${channelId}`,
+                {
+                    title: streamingTitle,
+                    description: streamingDesc,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        authorization: getAccessToken,
+                    },
+                },
+            )
+            .then(function (response) {
+                //console.log('response: ', response);
+
+                const streamKey = response.data.channel.streamKey;
+                //console.log('streamKey: ', streamKey);
+                broadcastBtn.hidden = true;
+                broadcastCloseBtn.hidden = false;
+
+                if (Hls.isSupported()) {
+                    1;
+                    const hls = new Hls({
+                        debug: false,
+                    });
+
+                    //console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+                    hls.loadSource(`<%= channel.hlsUrl %>/hls/${streamKey}/index.m3u8`);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                        video.muted = true;
+                        video.play();
+                    });
+                }
+            })
+            .catch(function (error) {
+                //console.log(error);
+            });
+    }
+</script>

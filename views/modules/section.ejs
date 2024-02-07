@@ -1,26 +1,46 @@
 <!-- 비디오 박스 시작-->
-<a href="/channel/<%= live.channel.channelId %>" class="videoBox">
+
+<a href="/channel/<%= live.live.channel.channelId %>" class="videoBox">
     <div class="videoBoxTop">
         <div class="videoBoxTopImg">
             <img class="liveImage" src="/imgs/free-icon-live-1246264.png" />
         </div>
         <div class="howManyWatch">
-            <div class="getChannelId" hidden><%= live.channel.channelId %></div>
-            현재 시청자수 : <%= live.channel.watchNum %>
+            <div class="getChannelId" hidden><%= live.live.channel.channelId %></div>
+            현재 시청자수 : <%= live.live.channel.watchNum %>
         </div>
         <div class="videoThumbnail">
-            <img id="thumb" class="liveImage" src="http://localhost:8080<%= live.thumbnail %>" />
+            <img id="thumb" class="liveImage" src="" />
         </div>
     </div>
     <div class="videoBoxBottom">
         <div class="videoBoxBottomImgWrap">
-            <img class="videoBoxBottomImg" src="<%= live.channel.channelImage %>" />
+            <img class="videoBoxBottomImg" src="<%= live.live.channel.channelImage %>" />
         </div>
         <div class="videoBoxBottomInfo">
-            <div><%= live.title %></div>
-            <div class="videoBoxBottomNickname"><%= live.channel.channelName %></div>
+            <div><%= live.live.title %></div>
+            <div class="videoBoxBottomNickname"><%= live.live.channel.channelName %></div>
         </div>
     </div>
 </a>
+<div id="liveId" style="display: none"><%= live.live.live_id %></div>
 
 <!-- 비디오박스 끝 -->
+<script>
+    const liveId = document.getElementById('liveId').textContent;
+    // console.log(liveId);
+    const thumb = document.getElementById('thumb');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await axios
+            .get(`/api/live/${liveId}`)
+            .then(function (response) {
+                const streamKey = response.data.channel.streamKey;
+
+                thumb.src = `<%= live.hlsUrl %>/thumb/thumbnail_${streamKey}.png`;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
+</script>

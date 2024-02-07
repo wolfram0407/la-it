@@ -779,15 +779,20 @@ input {
     align-items: center;
 }
 
-/* .masterSettingTitle {
-    font-size: 2rem;
-    margin-left: 20px;
-    display: flex;
-    flex-direction: row;
-} */
+.masterSettingTitle {
+    margin-right: 20px;
+}
 
 .masterSettingBoxLeft {
     width: 50%;
+    display: flex;
+    padding: 50px;
+}
+
+.titleInput,
+.descInput {
+    background-color: #292a2e;
+    padding-left: 5px;
 }
 
 .masterSettingTitle > img {

@@ -33,7 +33,7 @@ export class ChatService {
 
             this.setIntervalFunc = setInterval(async () => {
                 await this.dataPushMongo(channelId);
-            }, 5000); //10초로 변경예정
+            }, 60000); //1분
             return joinTheChatRoom;
         } catch (err) {
             console.log(err);
@@ -59,13 +59,13 @@ export class ChatService {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }
     }
-    //방송종료시 채팅 데이터 다 넘기기
+
     async liveChatDataMoveMongo(channelId: string, countNum: number) {
         try {
             let getRedisChatData;
             if (countNum > 0) {
                 getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: countNum });
-                if (getRedisChatData.length < 3) return false; //100 으로 변경예정
+                if (getRedisChatData.length < 100) return false; //100 으로 변경예정
             } else {
                 getRedisChatData = await this.redis.xRange(channelId, '-', '+');
             }
@@ -103,7 +103,7 @@ export class ChatService {
 
             const channelIdDataSize = await this.redis.xLen(channelId);
             const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
-            console.log('5초주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
+            console.log('1분 주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
             //캐시에 반절만 가져오기
             const moveDataToCache = await this.liveChatDataMoveMongo(channelId, channelIdDataSizeHalf);
             return moveDataToCache;
@@ -119,7 +119,7 @@ export class ChatService {
 
         //console.log('channelIdDataSize 길이캐쉬', channelIdDataSize);
 
-        if (channelIdDataSize >= 10) {
+        if (channelIdDataSize >= 200) {
             //100으로 변경예정
             this.dataPushMongo(channelId);
             return true;

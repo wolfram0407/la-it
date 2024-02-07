@@ -4,8 +4,8 @@ version: '3.7'
 services:
     # nginx
     lait-backend-nginx:
-        image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-streaming-image:0.3
-        platform: linux/x86_64
+        # image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-streaming-image:0.3
+        # platform: linux/x86_64
         build:
             context: .
             dockerfile: Dockerfile.nginx.deploy

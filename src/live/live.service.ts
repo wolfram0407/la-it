@@ -13,7 +13,7 @@ export class LiveService {
         private channelRepository: Repository<Channel>,
     ) {}
 
-    async create(title: string, description: string, thumbnail: string, hlsUrl: string, channelId: number) {
+    async create(title: string, description: string, thumbnail: string, hlsUrl: string, channelId: string) {
         const channelColumn = await this.channelRepository.findOneBy({ channelId });
         console.log('channelColumn: ', channelColumn);
         const streamKey = channelColumn.streamKey;
@@ -32,8 +32,8 @@ export class LiveService {
         return createLive;
     }
 
-    async end(channelId: number) {
-        const endTargetLive = await this.findOneByChannelId(+channelId);
+    async end(channelId: string) {
+        const endTargetLive = await this.findOneByChannelId(channelId);
         console.log('endTargetLive', endTargetLive);
         if (!endTargetLive) return;
         const updateStatusLive = await this.liveRepository.update(endTargetLive?.live_id, { status: false });
@@ -53,12 +53,12 @@ export class LiveService {
         return live;
     }
 
-    async findOneByChannelId(channelId: number) {
+    async findOneByChannelId(channelId: string) {
         const channel = await this.liveRepository.findOne({ where: { channel: { channelId }, status: true } });
         return channel;
     }
 
-    async findByChannelIdOnlyCurrentLive(channelId: number) {
+    async findByChannelIdOnlyCurrentLive(channelId: string) {
         const liveDataFromChannel = await this.liveRepository.findOne({ where: { channel: { channelId } }, order: { createdAt: 'DESC' } });
         return liveDataFromChannel;
     }

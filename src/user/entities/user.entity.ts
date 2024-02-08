@@ -35,7 +35,7 @@ export class User {
     deletedAt: Date;
 
     @OneToOne(() => Channel, (channel) => channel.user)
-    channelId: number;
+    channelId: string;
 
     @OneToMany(() => Heart, (heart) => heart.user, { cascade: true })
     heart: Heart[];

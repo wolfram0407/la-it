@@ -49,7 +49,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             const channelId = url[url.length - 1];
             Logger.log(`channelId: ${channelId}`);
 
-            if (+channelId !== findChannel.channelId) {
+            if (channelId !== findChannel.channelId) {
                 Logger.log(`스트리머가 아닌 유저가 페이지 나가면 방송은 계속 진행됩니다.`);
 
                 console.log('스트리머가 아닌 유저가 페이지 나가면 방송은 계속 진행됩니다.');
@@ -57,7 +57,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             }
 
             const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
-            //const endLive = await this.liveService.end(+channelId);
+            //const endLive = await this.liveService.end(channelId);
 
             //if (endLive) {
             this.server.to(channelId).emit('bye');

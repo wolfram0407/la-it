@@ -119,7 +119,7 @@ export class UserService {
   */
 
     // channel 전체 조회
-    async getChannelImageByChannelId(id: number) {
+    async getChannelImageByChannelId(id: string) {
         try {
             const channel = await this.channelRepository.findBy({ channelId: id });
             return channel;
@@ -136,7 +136,7 @@ export class UserService {
             return channel;
         } catch (error) {}
     }
-    async FindChannelIdByChannel(id: number) {
+    async FindChannelIdByChannel(id: string) {
         try {
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
             return channel;
@@ -144,7 +144,7 @@ export class UserService {
     }
 
     // channel information update
-    async updateChannelInfo(id: number, channelName: string, description: string, channelImage: string) {
+    async updateChannelInfo(id: string, channelName: string, description: string, channelImage: string) {
         try {
             console.log('서비스', id, channelName, description, channelImage);
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
@@ -157,7 +157,7 @@ export class UserService {
         }
     }
     // channel Image update
-    async updateChannelImage(id: number, channelImage: string) {
+    async updateChannelImage(id: string, channelImage: string) {
         try {
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
             channel.channelImage = channelImage;
@@ -168,7 +168,7 @@ export class UserService {
     }
 
     // change Stream Key
-    async changeStreamKey(id: number) {
+    async changeStreamKey(id: string) {
         const randomId = () => crypto.randomBytes(8).toString('hex').toString();
         try {
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
@@ -179,7 +179,7 @@ export class UserService {
         }
     }
 
-    async resetStreamKey(id: number) {
+    async resetStreamKey(id: string) {
         try {
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
             channel.streamKey = '';

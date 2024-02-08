@@ -35,12 +35,19 @@ export class ChatGateway {
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
         const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
+        console.log('room', room);
         const rooms = this.server.sockets.adapter.rooms;
+        console.log('rooms', rooms);
+
         let newWatchCount = [];
         const obj = {};
         const keys = Object.fromEntries(rooms);
+        console.log('keys', keys);
+
         for (let data in keys) {
-            if (Number(data)) {
+            console.log('data 루프', data);
+
+            if (data.length > 20) {
                 newWatchCount.push(`${data}_${keys[data].size}`);
             }
         }
@@ -103,7 +110,7 @@ export class ChatGateway {
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
-        const endLive = await this.liveService.end(+channelId);
+        const endLive = await this.liveService.end(channelId);
 
         if (endLive) {
             return this.server.to(channelId).emit('bye');

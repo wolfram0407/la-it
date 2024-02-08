@@ -42,5 +42,5 @@ export class Heart {
     @JoinColumn()
     channel: Channel;
     @Column({ type: 'int' })
-    channelId: number;
+    channelId: string;
 }

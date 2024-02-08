@@ -8,7 +8,7 @@ import { RedisClientType, createClient } from 'redis';
 
 import { ChatService } from './chat.service';
 import { SearchDto } from './dto/chat.dto';
-import { Inject, UnprocessableEntityException, UseGuards } from '@nestjs/common';
+import { Inject, Logger, UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { EnterRoomSuccessDto } from './types/res.types';
 import { WsGuard } from 'src/auth/guards/chat.guard';
 import { searchProhibitedWords } from './forbidden.words';
@@ -58,6 +58,8 @@ export class ChatGateway {
     @SubscribeMessage('create_room')
     async createLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         const createChatRoom = await this.chatService.createChatRoom(channelId, client);
+        Logger.log(`채팅방이 생성되었어요.${client.id}`);
+
         await this.countLiveChatUser(client, channelId);
         this.whileRepeat = true;
         this.interval = setInterval(async () => {

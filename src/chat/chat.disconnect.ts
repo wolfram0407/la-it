@@ -14,7 +14,6 @@ import * as jwt from 'jsonwebtoken';
         credentials: true,
     },
 })
-
 export class ChatGatewayDisconnect implements OnGatewayDisconnect {
     @WebSocketServer() server: Server;
     constructor(
@@ -44,7 +43,6 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             const userId1 = verify.sub;
             Logger.log(`userId1: ${userId1}`);
 
-
             const userId = client.handshake.auth.user.userId;
             const findChannel = await this.userService.findChannelIdByUserId(userId);
             const url = client.handshake.headers.referer.split('/');
@@ -56,11 +54,11 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             }
 
             const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
-            const endLive = await this.liveService.end(+channelId);
+            //const endLive = await this.liveService.end(+channelId);
 
-            if (endLive) {
-                this.server.to(channelId).emit('bye');
-            }
+            //if (endLive) {
+            this.server.to(channelId).emit('bye');
+            //}
 
             const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
             return 'endLive';

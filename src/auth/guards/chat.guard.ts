@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
@@ -23,6 +23,7 @@ export class WsGuard implements CanActivate {
                 if (tokenType === 'Bearer' && tokenValue) {
                     //console.log('있따!!! ');
                     const verify = jwt.verify(tokenValue, this.secretKey);
+                    
                     //console.log(verify);
                     if (!verify) {
                         throw new UnauthorizedException('인증이 유효하지 않습니다. ');
@@ -31,7 +32,9 @@ export class WsGuard implements CanActivate {
                         const userId = verify.sub;
                         const findUser = await this.userService.findByUserIdGetUserName(+userId);
                         //console.log('findUser', findUser);
-                        context.switchToWs().getClient().handshake.auth.user = findUser; //TypeError: Cannot create property 'user' on string 'first'
+                        const handshakAuthUser = (context.switchToWs().getClient().handshake.auth.user = findUser); //TypeError: Cannot create property 'user' on string 'first';
+                        Logger.log(`handshakAuthUser: ${handshakAuthUser}`);
+
                         return true;
                     }
                 } else {

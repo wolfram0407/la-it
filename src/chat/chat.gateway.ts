@@ -16,8 +16,8 @@ import { LiveService } from 'src/live/live.service';
 
 @WebSocketGateway({
     cors: {
-        //origin: ['ws://도메인주소적기/live'],
-        origin: '*',
+        origin: ['https://la-it.online/', 'https://streaming.la-it.online/'],
+        credentials: true,
     },
 })
 @UseGuards(WsGuard)

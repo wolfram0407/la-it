@@ -29,7 +29,7 @@ async function bootstrap() {
     const configService = app.get(ConfigService);
 
     const corsOptions: CorsOptions = {
-        origin: '*',
+        origin: ['https://la-it.online/', 'https://streaming.la-it.online/'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
     };

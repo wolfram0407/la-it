@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from './schema/chat.schema';
 import { Model } from 'mongoose';
@@ -9,6 +9,7 @@ import { Cache } from 'cache-manager';
 import { RedisClientType } from 'redis';
 import { object } from 'joi';
 import { DataSource, MongoDBNamespace } from 'typeorm';
+import { Client } from 'socket.io/dist/client';
 
 @Injectable()
 export class ChatService {
@@ -30,6 +31,7 @@ export class ChatService {
         try {
             const joinTheChatRoom = socket.join(channelId);
             this.createChatRoomNoChatData = true;
+
 
             this.setIntervalFunc = setInterval(async () => {
                 await this.dataPushMongo(channelId);

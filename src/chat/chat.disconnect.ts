@@ -35,7 +35,6 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             Logger.log(`client.handshake.auth.user.userId: ${client.handshake.auth.user.userId}`);
 
             Logger.log(`client.handshake.auth: ${client.handshake.auth.token}`);
-            //Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInRva2VuIjoiQWNjZXNzIiwiaWF0IjoxNzA3MzcyMDM2LCJleHAiOjE3MDc0NTg0MzZ9.snI3HtHji2XNUysj2xd4w3eputT6SONAs4n_xe0GYUM
 
             const token = client.handshake.auth.token;
             const tokenValue = token.split(' ')[1];
@@ -44,7 +43,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             Logger.log(`userId1: ${userId1}`);
 
             const userId = client.handshake.auth.user.userId;
-            const findChannel = await this.userService.findChannelIdByUserId(userId);
+            const findChannel = await this.userService.findChannelIdByUserId(+userId1);
             const url = client.handshake.headers.referer.split('/');
             const channelId = url[url.length - 1];
 

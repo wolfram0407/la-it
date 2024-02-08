@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { Inject, Logger, UseGuards } from '@nestjs/common';
 import { WebSocketGateway, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { WsGuard } from 'src/auth/guards/chat.guard';
@@ -25,7 +25,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
 
     async handleDisconnect(client: Socket) {
         try {
-            console.log(`Client disconnected: ${client.id}`);
+            Logger.log(`Client disconnected: ${client.id}`);
             const userId = client.handshake.auth.user.userId;
             const findChannel = await this.userService.findChannelIdByUserId(userId);
             const url = client.handshake.headers.referer.split('/');

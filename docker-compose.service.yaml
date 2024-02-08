@@ -4,15 +4,15 @@ version: '3.7'
 services:
     # nest
     lait-backend-computer:
-        # image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-service-image:0.3
-        # platform: linux/x86_64
+        image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-service-image:0.6
+        platform: linux/x86_64
         build:
             context: .
-            dockerfile: Dockerfile.nest
-        ports:
-            - 3002:3002
-        env_file:
-            - ./.env.docker
+            dockerfile: Dockerfile.nest.deploy
+        # ports:
+        #     - 3002:3002
+        # env_file:
+        #     - ./.env.docker
 # steps:
 # - name: 'gcr.io/cloud-builders/docker'
 #   script: |

@@ -23,7 +23,7 @@
         <div class="channelInfoSettingWrap">
             <form class="channelInfoSettingForm" id="channelSettingForm" enctype="multipart/form-data">
                 <h2 class="channelInfoTitle">채널 정보</h2>
-                <div class="channelInfoSettingInput">
+                <div class="channelInfoSettingInputBoxName">
                     <span class="channelTitleHeader">채널명</span>
                     <input type="text" name="channelName" class="channelTitleInput" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="<%=  channel.channelName %>" />
                 </div>
@@ -45,8 +45,10 @@
                     <span class="channelTitleHeader">상세정보</span>
                     <textarea name="channelDescription" class="channelInfoText" id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"><%=channel.description%></textarea>
                 </div>
-                <button type="submit" class="channelSettingSaveBtn">저장</button>
-                <button type="button" id="exitBtn" class="channelSettingSaveBtn">닫기</button>
+                <div class="channelInfoBtnWrap">
+                    <button type="submit" class="channelSettingSaveBtn">저장</button>
+                    <button type="button" id="exitBtn" class="channelSettingSaveBtn">닫기</button>
+                </div>
             </form>
         </div>
     </div>

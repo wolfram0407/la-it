@@ -27,7 +27,8 @@ if (path.includes('streaming')) {
 
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
-
+        //만약 유저가 새로고침이 되어 다시 들어온거라면?
+        //유저 시간. 유저
         endChat.addEventListener('click', endLive);
 
         startLiveChat.addEventListener('click', (e) => {

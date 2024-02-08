@@ -28,26 +28,30 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
 
     async handleDisconnect(client: Socket) {
         try {
+            Logger.log(`무무무무무`);
             Logger.log(`Client disconnected: ${client.id}`);
             Logger.log(`client.handshake: ${client.handshake}`);
             Logger.log(`client.handshake.auth: ${client.handshake.auth}`);
-            Logger.log(`client.handshake.auth.user: ${client.handshake.auth.user}`);
-            Logger.log(`client.handshake.auth.user.userId: ${client.handshake.auth.user.userId}`);
-
             Logger.log(`client.handshake.auth: ${client.handshake.auth.token}`);
 
             const token = client.handshake.auth.token;
             const tokenValue = token.split(' ')[1];
             const verify = jwt.verify(tokenValue, this.secretKey);
-            const userId1 = verify.sub;
-            Logger.log(`userId1: ${userId1}`);
+            const userId = verify.sub;
+            Logger.log(`userId: ${userId}`);
 
-            const userId = client.handshake.auth.user.userId;
-            const findChannel = await this.userService.findChannelIdByUserId(+userId1);
+            const findChannel = await this.userService.findChannelIdByUserId(+userId);
+            Logger.log(`findChannel: ${findChannel}`);
+
             const url = client.handshake.headers.referer.split('/');
+            Logger.log(`url: ${url}`);
+
             const channelId = url[url.length - 1];
+            Logger.log(`channelId: ${channelId}`);
 
             if (+channelId !== findChannel.channelId) {
+                Logger.log(`스트리머가 아닌 유저가 페이지 나가면 방송은 계속 진행됩니다.`);
+
                 console.log('스트리머가 아닌 유저가 페이지 나가면 방송은 계속 진행됩니다.');
                 return;
             }
@@ -61,6 +65,11 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
 
             const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
             return 'endLive';
+
+            //Logger.log(`client.handshake.auth.user: ${client.handshake.auth.user}`);
+            //Logger.log(`client.handshake.auth.user.userId: ${client.handshake.auth.user.userId}`);
+
+            //const userId = client.handshake.auth.user.userId;
         } catch (err) {
             console.log(err);
         }

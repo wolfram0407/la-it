@@ -11,10 +11,11 @@ import { LiveModule } from 'src/live/live.module';
 import { LiveService } from 'src/live/live.service';
 import { ChatGatewayDisconnect } from './chat.disconnect';
 import { UserService } from 'src/user/user.service';
+import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule, LiveModule], //
     controllers: [],
-    providers: [ChatService, ChatGateway, ChatGatewayDisconnect],
+    providers: [ChatService, ChatGateway, ChatGatewayDisconnect, JwtStrategy],
 })
 export class ChatModule {}

@@ -20,7 +20,6 @@ import { LiveService } from 'src/live/live.service';
         credentials: true,
     },
 })
-@UseGuards(WsGuard)
 export class ChatGateway {
     @WebSocketServer() server: Server;
     private interval;
@@ -62,6 +61,7 @@ export class ChatGateway {
         }
     }
 
+    @UseGuards(WsGuard)
     @SubscribeMessage('create_room')
     async createLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         const createChatRoom = await this.chatService.createChatRoom(channelId, client);
@@ -78,6 +78,7 @@ export class ChatGateway {
         return true;
     }
 
+    @UseGuards(WsGuard)
     @SubscribeMessage('stop_live')
     async deleteChatRoom(client: Socket, channelId: string) {
         //const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
@@ -106,7 +107,6 @@ export class ChatGateway {
         };
     }
 
-    //TODO 방송 종료하면 나가기
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
@@ -117,6 +117,7 @@ export class ChatGateway {
         }
     }
 
+    @UseGuards(WsGuard)
     @SubscribeMessage('new_message')
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         const { userId, nickname } = client.handshake.auth.user;

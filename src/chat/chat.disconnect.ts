@@ -30,11 +30,14 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
         try {
             Logger.log(`무무무무무`);
             Logger.log(`Client disconnected: ${client.id}`);
+
+            const token = client.handshake.auth.token;
+            if (!token || token.split(' ')[0] !== 'Bearer') return;
+
             Logger.log(`client.handshake: ${client.handshake}`);
             Logger.log(`client.handshake.auth: ${client.handshake.auth}`);
             Logger.log(`client.handshake.auth: ${client.handshake.auth.token}`);
 
-            const token = client.handshake.auth.token;
             const tokenValue = token.split(' ')[1];
             const verify = jwt.verify(tokenValue, this.secretKey);
             const userId = verify.sub;

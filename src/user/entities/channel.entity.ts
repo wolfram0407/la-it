@@ -44,9 +44,4 @@ export class Channel {
 
     @OneToMany(() => Heart, (heart) => heart.heartId, { cascade: true })
     heart: Heart[];
-
-    //@BeforeInsert()
-    //generateId() {
-    //    this.channelId = uuidv4();
-    //}
 }

@@ -19,6 +19,13 @@ export class UserController {
 
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
+    @Get('/user/authCheck')
+    async isLoginUserCheck() {
+        return true;
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     @Get('/user')
     async temp(@UserInfo() { id }: UserAfterAuth) {
         return await this.userService.findUserIdByUser(+id);

@@ -85,12 +85,24 @@ async function endLive(e) {
 }
 
 //채팅 메시지 보내기
-function chatSending(e) {
+async function chatSending(e) {
     e.preventDefault();
-    console.log('채팅메세지');
+    await axios
+        .get('/api/user/authCheck', {
+            withCredentials: true,
+            headers: {
+                authorization: `${getCookie('Authorization')}`,
+            },
+        })
+        .then((res) => {
+            console.log('res', res);
+        })
+        .catch((err) => {
+            console.log('catch err', err);
+            return alert('로그인 후 이용 가능합니다.');
+        });
     const chatInput = document.querySelector('.chatInputText');
-    console.log('chatInput', chatInput.value, roomNum);
-    console.log('~~~> ', chatInput.value.trim().length);
+    console.log('~~~> ', chatInput.value);
     if (chatInput.value.trim().length < 1) {
         return;
     } else {
@@ -104,20 +116,20 @@ socket.on('sending_message', (msg, nickname) => {
     addMessage(msg, nickname);
 });
 
-////현재 채팅방에 몇명의 유저가 있는지 확인
-//function countLiveChatUser(channelId) {
-//    const countNum = socket.emit('count_live_chat_user', channelId);
-//}
-////socket.on('count_live_chat_user_res', (msg) => {
-////    console.log('몇명의 유저가 있나요2', msg);
-////    return msg;
-////});
-
 //금칙어_ 허용하지 않는 단어입니다.
 socket.on('alert', (msg) => {
     console.log('받은거', msg);
     alert(msg);
     //addMessage(msg, nickname);
+});
+
+//에러메세지
+socket.on('error_message', (msg) => {
+    console.log('받은거', msg);
+    const getMessage = JSON.parse(msg);
+    if (getMessage.error.message) {
+        alert(getMessage.error.message);
+    }
 });
 
 //방송 종료시 알림.경로 이동

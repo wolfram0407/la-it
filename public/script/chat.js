@@ -70,6 +70,7 @@ async function endLive(e) {
     e.preventDefault();
     const url = '/?s=true';
     socket.emit('stop_live', channelId);
+    //chat.disconnect가 정상적으로 연결끊김 문제 및 에러가 해결되면 이건 지우거.
     await axios
         .post(`/api/live/end/${channelId}`, {
             withCredentials: true,
@@ -81,6 +82,7 @@ async function endLive(e) {
             console.log('response', response.data.data);
             return response.data.data;
         });
+
     return (window.location.href = url);
 }
 
@@ -137,7 +139,6 @@ socket.on('bye', () => {
     console.log('종료 bye 실행중');
     alert('방송이 종료되었습니다.');
     const url = '/';
-
     return (window.location.href = url);
 });
 

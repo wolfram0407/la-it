@@ -1,37 +1,33 @@
-import {UserService} from './../user/user.service';
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {ChannelNotice} from './entities/channel-board.entity';
-import {Repository} from 'typeorm';
-import {NoticeAllowComments} from './types/channel-notice.type';
+import { UserService } from './../user/user.service';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ChannelNotice } from './entities/channel-board.entity';
+import { Repository } from 'typeorm';
+import { NoticeAllowComments } from './types/channel-notice.type';
 
 @Injectable()
 export class ChannelNoticeService {
-  constructor(
-    @InjectRepository(ChannelNotice)
-    private readonly channelNotice: Repository<ChannelNotice>,
+    constructor(
+        @InjectRepository(ChannelNotice)
+        private readonly channelNotice: Repository<ChannelNotice>,
+    ) {}
+    // create Notice
+    async createNotice(channelId: string, title: string, contents: string, commentsAllow: NoticeAllowComments) {
+        const newNotice = await this.channelNotice.save(
+            this.channelNotice.create({
+                title,
+                contents,
+                commentsAllow,
+                //channel: { channelsId },
+            }),
+        );
 
-  ) {}
-  // create Notice
-  async createNotice(channelId: number, title: string, contents: string, commentsAllow: NoticeAllowComments) {
-    const newNotice = await this.channelNotice.save(
-      this.channelNotice.create({
-        title,
-        contents,
-        commentsAllow,
-        channel: {channelId},
-      })
-    )
+        return newNotice;
+    }
 
-    return newNotice
-  }
-
-  //
-  async getAllNotice(channelId: number) {
-    // channel id 추가해야됨
-    return await this.channelNotice.find()
-  }
-
-
-
+    //
+    async getAllNotice(channelId: string) {
+        // channel id 추가해야됨
+        return await this.channelNotice.find();
+    }
 }

@@ -15,7 +15,7 @@ export class LiveController {
     @Post('create/:channelId')
     create(@Body() { title, description }: ReqCreateLiveDto, thumbnail: string, hlsUrl: string, @Param('channelId') channelId: string) {
         console.log('!');
-        return this.liveService.create(title, description, thumbnail, hlsUrl, +channelId);
+        return this.liveService.create(title, description, thumbnail, hlsUrl, channelId);
     }
 
     @ApiOperation({
@@ -24,7 +24,7 @@ export class LiveController {
     })
     @Post('end/:channelId')
     end(@Param('channelId') channelId: string) {
-        return this.liveService.end(+channelId);
+        return this.liveService.end(channelId);
         //socket에서 하는것과 중복되어 주석처리.
     }
 

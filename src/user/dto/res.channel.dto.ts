@@ -1,25 +1,24 @@
-import { IsDate, IsNumber, IsString } from "class-validator"
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
-export class ResUpdateChannelImageDto
-{
-  @IsNumber()
-  channelId: number
+export class ResUpdateChannelImageDto {
+    @IsNumber()
+    channelId: string;
 
-  @IsString()
-  description: string
+    @IsString()
+    description: string;
 
-  @IsString()
-  channelImage: string
+    @IsString()
+    channelImage: string;
 
-  @IsString()
-  streamKey: string
+    @IsString()
+    streamKey: string;
 
-  @IsDate()
-  createdAt: Date;
+    @IsDate()
+    createdAt: Date;
 
-  @IsDate()
-  updatedAt: Date;
+    @IsDate()
+    updatedAt: Date;
 
-  @IsDate()
-  deletedAt: Date;
+    @IsDate()
+    deletedAt: Date;
 }

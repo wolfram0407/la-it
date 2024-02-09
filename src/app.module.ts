@@ -51,7 +51,7 @@ import { RedisModule } from './redis/redis.module';
                 signOptions: { expiresIn: '1d' },
             }),
         }),
-        ConfigModule.forRoot(), // 환경변수를 사용하기 위한 ConfigModule
+        ConfigModule.forRoot(),
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,

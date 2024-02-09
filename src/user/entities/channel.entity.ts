@@ -1,13 +1,17 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Live } from 'src/live/entities/live.entity';
 import { ChannelNotice } from 'src/channel-notice/entities/channel-board.entity';
 import { Heart } from 'src/heart/entities/heart.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity('channels')
 export class Channel {
-    @PrimaryGeneratedColumn({ name: 'channel_id', unsigned: true })
-    channelId: number;
+    //@PrimaryColumn({ type: 'varchar', length: 36, name: 'channel_id' })
+    //channelId: string;
+
+    @PrimaryGeneratedColumn('uuid')
+    channelId: string;
 
     @Column({ name: 'channel_name', nullable: true, default: ' ' })
     channelName: string;
@@ -40,4 +44,9 @@ export class Channel {
 
     @OneToMany(() => Heart, (heart) => heart.heartId, { cascade: true })
     heart: Heart[];
+
+    //@BeforeInsert()
+    //generateId() {
+    //    this.channelId = uuidv4();
+    //}
 }

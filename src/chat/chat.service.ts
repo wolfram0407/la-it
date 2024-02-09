@@ -32,7 +32,6 @@ export class ChatService {
             const joinTheChatRoom = socket.join(channelId);
             this.createChatRoomNoChatData = true;
 
-
             this.setIntervalFunc = setInterval(async () => {
                 await this.dataPushMongo(channelId);
             }, 60000); //1분

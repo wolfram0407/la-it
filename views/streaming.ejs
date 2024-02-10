@@ -72,13 +72,20 @@
 
     // 방송 시작 버튼 눌렀을때 라이브 등록 처리
     liveStartBtn.addEventListener('click', createLive);
-
+    let liveStatus = `<%= channel.channel.liveStatusValue %>`;
+    console.log('liveStatus', typeof liveStatus);
+    if (liveStatus === 'true') {
+        broadcastBtn.hidden = true;
+        broadcastCloseBtn.hidden = false;
+    } else if (liveStatus === 'false') {
+        broadcastBtn.hidden = false;
+        broadcastCloseBtn.hidden = true;
+    }
     async function createLive() {
         const getAccessToken = getCookie('Authorization');
         let streamingTitle = document.getElementById('streamingTitle').value;
         let streamingDesc = document.getElementById('streamingDesc').value;
-        //console.log('streamingTitle: ', streamingTitle);
-        //console.log('streamingDesc: ', streamingDesc);
+
 
         await axios
             .post(

@@ -7,7 +7,7 @@ const socket = io({
 });
 
 console.log('path확인', path);
-console.log('소켓 연결 확인', socket);
+console.log('소켓 연결 확인', socket.connected);
 
 const chatBox = document.querySelector('#chatBox');
 const chatNickname = document.querySelector('#chatNickname');
@@ -70,6 +70,7 @@ async function endLive(e) {
     e.preventDefault();
     const url = '/?s=true';
     socket.emit('stop_live', channelId);
+    socket.emit('exit_room', channelId);
     //chat.disconnect가 정상적으로 연결끊김 문제 및 에러가 해결되면 이건 지우거.
     await axios
         .post(`/api/live/end/${channelId}`, {
@@ -97,10 +98,11 @@ async function chatSending(e) {
             },
         })
         .then((res) => {
-            console.log('res', res);
+            console.log('res 로그인 확인', res);
         })
         .catch((err) => {
-            console.log('catch err', err);
+            console.log('catch err 로그인 에러', err);
+            if (err.message === 'Network Error') return alert('500 잠시 후 다시 시도해 주세요.');
             return alert('로그인 후 이용 가능합니다.');
         });
     const chatInput = document.querySelector('.chatInputText');
@@ -114,7 +116,7 @@ async function chatSending(e) {
 
 //메세지 받아오기
 socket.on('sending_message', (msg, nickname) => {
-    console.log('받은거', msg, nickname);
+    console.log('sending_message 받은거', msg, nickname);
     addMessage(msg, nickname);
 });
 
@@ -142,6 +144,12 @@ socket.on('bye', () => {
     return (window.location.href = url);
 });
 
+//서버 연결 불안정시 disconnect 되면 새로고침
+socket.on('reload', () => {
+    //const url = '/';
+    return window.location.reload(true);
+});
+
 //채팅 전체 메세지 받아오기 _ 추후 방송별 채팅 메세지 받아오기 버튼 추가(유저 채널 쪽에)
 function getAllChatByChannelId(e) {
     e.preventDefault();
@@ -151,7 +159,7 @@ function getAllChatByChannelId(e) {
 
 //메세지 그리기
 function addMessage(msg, nickname) {
-    console.log('==>', msg, nickname);
+    console.log('addMessage ==>', msg, nickname);
     const temp = ` <div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
     chatScroll();

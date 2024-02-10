@@ -44,8 +44,6 @@ export class ChatGateway {
         console.log('keys', keys);
 
         for (let data in keys) {
-            console.log('data 루프', data);
-
             if (data.length > 20) {
                 newWatchCount.push(`${data}_${keys[data].size}`);
             }
@@ -81,7 +79,7 @@ export class ChatGateway {
     @UseGuards(WsGuard)
     @SubscribeMessage('stop_live')
     async deleteChatRoom(client: Socket, channelId: string) {
-        //const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
+        const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
         console.log('멈춤2');
         this.whileRepeat = false;
         clearInterval(this.interval);
@@ -97,7 +95,8 @@ export class ChatGateway {
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
 
         for (let i = 0; i < chats.length; i++) {
-            this.server.to(channelId).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
+            this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
+            //this.server.to(channelId).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
         }
 
         return {
@@ -122,7 +121,7 @@ export class ChatGateway {
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         const { userId, nickname } = client.handshake.auth.user;
         const filterWord = await searchProhibitedWords(value);
-
+        console.log('clientId', client.id);
         if (filterWord) {
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.');
         }
@@ -137,6 +136,7 @@ export class ChatGateway {
             console.log('빨라유 ');
             return this.server.to(client.id).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.');
         }
+        Logger.log('new_message 실행중');
         return this.server.to(channelId).emit('sending_message', value, nickname);
     }
 

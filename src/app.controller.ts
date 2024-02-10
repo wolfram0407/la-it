@@ -105,12 +105,13 @@ export class AppController {
     async provideLive(@Param('channelId') channelId: string, @Req() req) {
         const channel = await this.userService.FindChannelIdByChannel(channelId);
         const live = await this.liveService.findOneByChannelId(channelId);
-        //const liveStatusValue = live.status;
+
+        const liveStatusValue = live ? live.status : false;
         // if (liveStatusValue === true) {
-        //     await this.liveService.end(channelId);
+        // await this.liveService.end(channelId);
         // }
         //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
-
+        channel['liveStatusValue'] = liveStatusValue;
         return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}` } };
         // hls url 추가해서 환경변수로 관리
         // 'http://localhost:8080'

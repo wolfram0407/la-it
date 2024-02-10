@@ -6,6 +6,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import cookieParser from 'cookie-parser';
 import { WinstonLogger, WinstonModule, utilities } from 'nest-winston';
@@ -28,6 +29,14 @@ async function bootstrap() {
     });
     const configService = app.get(ConfigService);
 
+    const kafka = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+        transport: Transport.KAFKA, //
+        options: {
+            client: {
+                brokers: ['localhost:9092'],
+            },
+        },
+    });
     const corsOptions: CorsOptions = {
         origin: ['https://la-it.online/', 'https://streaming.la-it.online/'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

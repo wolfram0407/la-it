@@ -147,13 +147,13 @@ export class ChatService {
                 const dataTime = new Date(+cacheDataTime);
                 const currentTime = new Date();
 
-                if (+currentTime - +dataTime < 2000) {
+                if (+currentTime - +dataTime < 1000) {
                     return 'toFastChat';
                 }
 
-                //if (filterRedisData.length >= 1) {
-                //    return 'sameChat';
-                //}
+                if (filterRedisData.length >= 2) {
+                    return 'sameChat';
+                }
             }
 
             const cacheData = {

@@ -71,13 +71,17 @@ if (path.includes('streaming')) {
 
 //재연결 시도가 시작될때
 socket.on('reconnect_attempt', (attemptNumber) => {
+    Logger.log('~~~~~~~attemptNumber');
     console.log('~~~~~~~attemptNumber');
+
     socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
 });
 
 //재연결 시도중일 때
 socket.on('reconnecting', (attemptNumber) => {
+    Logger.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
     console.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
+
     socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
 });
 

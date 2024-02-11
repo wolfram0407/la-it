@@ -31,6 +31,29 @@ export class ChatGateway {
         @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
 
+    @UseGuards(WsGuard)
+    @SubscribeMessage('reconnecting_to_server')
+    async reconnecting(client: Socket, attemptNumber: string, channelId: string) {
+        //이게 작동은 할까?????
+        console.log('reconnecting_to_server____++++_____++++client', client);
+        console.log('reconnecting_to_server_attemptNumber', attemptNumber);
+        console.log('reconnecting_to_server_channelId', channelId);
+        const { userId } = client.handshake.auth.user;
+        console.log('reconnecting_to_server_userId', userId);
+
+        //레디스에서 가져오기 메세지
+        const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+        const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
+        console.log('getRedisChatData', getRedisChatData);
+        console.log('findUserDisconnectData', findUserDisconnectData);
+
+        //정보를 가져와서 뭐.. 보여주고 끝이 아니자나
+        //보여주고나서 유저 채팅 원활하게 해야하자나.. 그건 어떻게 할껀데...
+        //근데 유
+        //레디스에서 유저 정보 가져와서  해당 유저정보에 해당하는 메세지
+        //를 그려준다....
+    }
+
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
         const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
@@ -72,6 +95,7 @@ export class ChatGateway {
             await this.countLiveChatUser(client, channelId);
             console.log('5초마다 라이브방송 참여유저수 계산중');
         }, 5000);
+
         return createChatRoom;
         return true;
     }
@@ -92,6 +116,18 @@ export class ChatGateway {
 
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
+        //이게 작동은 할까?????
+        console.log('enter_room____++++_____++++client', client);
+        console.log('enter_room_channelId', channelId);
+        const { userId } = client.handshake.auth.user;
+        console.log('enter_room_userId', userId);
+
+        //레디스에서 가져오기 메세지
+        const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+        const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
+        console.log('enter_room_getRedisChatData', getRedisChatData);
+        console.log('enter_room_findUserDisconnectData', findUserDisconnectData);
+
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
 
         for (let i = 0; i < chats.length; i++) {

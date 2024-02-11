@@ -4,10 +4,14 @@ const socket = io({
     auth: {
         token: `${getCookie('Authorization')}`,
     },
+    pingTimeout: 600000,
+    reconnection: true,
+    reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
+    reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
+    reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
 });
 
 console.log('path확인', path);
-console.log('소켓 연결 확인', socket.connected);
 
 const chatBox = document.querySelector('#chatBox');
 const chatNickname = document.querySelector('#chatNickname');
@@ -65,24 +69,35 @@ if (path.includes('streaming')) {
     });
 }
 
+//재연결 시도가 시작될때
+socket.on('reconnect_attempt', (attemptNumber) => {
+    console.log('~~~~~~~attemptNumber');
+    socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+});
+
+//재연결 시도중일 때
+socket.on('reconnecting', (attemptNumber) => {
+    console.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
+    socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+});
+
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
     const url = '/?s=true';
     socket.emit('stop_live', channelId);
     socket.emit('exit_room', channelId);
-    //chat.disconnect가 정상적으로 연결끊김 문제 및 에러가 해결되면 이건 지우거.
-    await axios
-        .post(`/api/live/end/${channelId}`, {
-            withCredentials: true,
-            headers: {
-                authorization: `${getCookie('Authorization')}`,
-            },
-        })
-        .then((response) => {
-            console.log('response', response.data.data);
-            return response.data.data;
-        });
+    //await axios
+    //    .post(`/api/live/end/${channelId}`, {
+    //        withCredentials: true,
+    //        headers: {
+    //            authorization: `${getCookie('Authorization')}`,
+    //        },
+    //    })
+    //    .then((response) => {
+    //        console.log('response', response.data.data);
+    //        return response.data.data;
+    //    });
 
     return (window.location.href = url);
 }

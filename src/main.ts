@@ -50,6 +50,7 @@ async function bootstrap() {
     app.useWebSocketAdapter(redisIoAdapter);
 
     //app.useWebSocketAdapter(new IoAdapter(app));
+    //app.useWebSocketAdapter(new RedisIoAdapter(app));
 
     const config = new DocumentBuilder().setTitle('NestJS project').setDescription('').setVersion('1.0').addBearerAuth().build();
     const customOptions: SwaggerCustomOptions = {
@@ -74,7 +75,7 @@ async function bootstrap() {
     //app.enableCors(); //위와 중복되어 주석처리.
     //Sentry.init({ dsn: configService.get('SENTRY_DSN') });
     //app.useGlobalInterceptors(new SentryInterceptor());
-    await app.listen(3002);
-    Logger.log(`listening on ${3002}`);
+    await app.listen(process.env.PORT);
+    Logger.log(`listening on ${process.env.PORT}`);
 }
 bootstrap();

@@ -13,6 +13,8 @@ import { EnterRoomSuccessDto } from './types/res.types';
 import { WsGuard } from 'src/auth/guards/chat.guard';
 import { searchProhibitedWords } from './forbidden.words';
 import { LiveService } from 'src/live/live.service';
+import { ConfigService } from '@nestjs/config';
+import * as jwt from 'jsonwebtoken';
 
 @WebSocketGateway({
     cors: {
@@ -28,8 +30,11 @@ export class ChatGateway {
         private readonly chatService: ChatService,
         @Inject(LiveService)
         private readonly liveService: LiveService,
-        @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
+        @Inject('REDIS_CLIENT')
+        private readonly redis: RedisClientType,
+        private readonly configService: ConfigService,
     ) {}
+    private readonly secretKey = this.configService.get<string>('JWT_SECRET_KEY');
 
     @UseGuards(WsGuard)
     @SubscribeMessage('reconnecting_to_server')
@@ -117,20 +122,54 @@ export class ChatGateway {
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
         //이게 작동은 할까?????
-        Logger.log('enter_room____++++_____++++client', client);
+        Logger.log('enter_room___client', client);
         Logger.log('enter_room_channelId', channelId);
-        const { userId } = client.handshake.auth.user;
-        Logger.log('enter_room_userId', userId);
 
-        //레디스에서 가져오기 메세지
-        const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
-        const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
-        Logger.log('enter_room_getRedisChatData', getRedisChatData);
-        Logger.log('enter_room_findUserDisconnectData', findUserDisconnectData);
+        //재접속인 경우 확인은 어떻게 하지
+        //lastChat_채널이름 데이터가 키로 있고, 그 안에 해당 유저의id가 있을때.
+        //재접속인 경우 필요한 로직.
+        const token = client.handshake.auth?.token;
+        let userId;
+        if (token !== 'undefined') {
+            const tokenValue = token?.split(' ')[1];
+            const verify = jwt.verify(tokenValue, this.secretKey);
+            userId = verify.sub;
+        }
+
+        const lastChatData = await this.redis.hGet(`lastChat_${channelId}`, `userId${userId}`);
+        if (lastChatData) {
+            const [lastChatId, lastClientIdData] = lastChatData.split('__');
+            const lastClientId = lastClientIdData.split('_')[1];
+            Logger.log('lastChatId, lastClientId', lastChatId, lastClientId);
+            console.log('client', client);
+
+            const getAllChatData = await this.redis.xRange(channelId, '-', '+');
+            Logger.log('레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
+            let lastChatIndex;
+            const findMustShowChatData = getAllChatData.filter((data, i) => {
+                if (data.id.toString() === lastChatId) {
+                    lastChatIndex = i;
+                }
+                if (i > lastChatIndex) return data;
+            });
+            Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
+            const chats = await this.chatService.enterLiveRoomChat(channelId, client);
+
+            for (let i = 0; i < findMustShowChatData.length; i++) {
+                Logger.log('enter_room 함수 안에서 반복문이에요~~');
+                this.server.to(lastClientId).emit('sending_message', findMustShowChatData[i].message.content, findMustShowChatData[i].message.nickname);
+            }
+
+            return;
+        }
+
+        //유저가 다시 방에 입장하게 된다면 채팅 입력이 안되는 문제가 생긴다.
+        //유저의 화면에 있는 채팅의 client id 값과, 다시 연결됬을때의 client id값이 바뀌기 때문.
 
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
 
         for (let i = 0; i < chats.length; i++) {
+            Logger.log('enter_room 함수 안에서 반복문이에요~~');
             this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
             //this.server.to(channelId).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
         }
@@ -173,6 +212,10 @@ export class ChatGateway {
             return this.server.to(client.id).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.');
         }
         Logger.log('new_message 실행중');
+
+        const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
+        Logger.log('sendingMessage', sendingMessage);
+
         return this.server.to(channelId).emit('sending_message', value, nickname);
     }
 

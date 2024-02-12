@@ -30,7 +30,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
     async handleDisconnect(client: Socket) {
         try {
             const reason = client.disconnect; // Socket.IO 3.x 이상에서 사용 가능
-            console.log('reason', reason);
+            Logger.log('reason', reason);
             Logger.log('___________________________', client);
 
             Logger.log(`클라이언트 아이디에요 확인필수: ${client.id}`);

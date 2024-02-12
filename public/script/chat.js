@@ -8,9 +8,9 @@ const socket = io({
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
-    pingInterval: 60000, // 60초마다 ping
-    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
-    upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
+    //pingInterval: 60000, // 60초마다 ping
+    //pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
+    //upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 
 console.log('path확인', path);

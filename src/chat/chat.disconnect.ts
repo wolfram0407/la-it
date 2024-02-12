@@ -90,7 +90,8 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
                 const disconnectDataExpire = await this.redis.expire(`socket_disconnect_userId_${userId}`, ttl);
 
                 Logger.log('saveDisconnectData', saveDisconnectData);
-                return this.server.to(channelId).emit('reload');
+                //return this.server.to(channelId).emit('reload');
+                return;
             }
             //유저의 연결 해제 정보가 있다면
             if (findUserDisconnectData) {
@@ -103,7 +104,8 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
                     const saveDisconnectData = await this.redis.hSet(`socket_disconnect_userId_${userId}`, disconnectDataObj);
                     const disconnectDataExpire = await this.redis.expire(`socket_disconnect_userId_${userId}`, ttl);
                     Logger.log('saveDisconnectData', saveDisconnectData);
-                    return this.server.to(channelId).emit('reload');
+                    //return this.server.to(channelId).emit('reload');
+                    return;
                 }
             }
             Logger.log('10분이 넘었슈');

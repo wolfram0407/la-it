@@ -14,10 +14,12 @@
                 <div class="masterSettingTitle">
                     <span>제목</span>
                     <input class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
+                    <span hidden id="streamingTitleContent"></span>
                 </div>
                 <div class="masterSettingDesc">
                     <span>내용</span>
                     <input class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
+                    <span hidden id="streamingDescContent"></span>
                 </div>
             </div>
             <div class="MasterSettingBoxRight">
@@ -66,6 +68,10 @@
     const broadcastBtn = document.querySelector('.broadcastBtn');
     const broadcastCloseBtn = document.querySelector('.broadcastCloseBtn');
     const channelId = document.querySelector('.channelId').textContent;
+    const streamingTitle = document.getElementById('streamingTitle');
+    const streamingDesc = document.getElementById('streamingDesc');
+    const streamingTitleContent = document.getElementById('streamingTitleContent');
+    const streamingDescContent = document.getElementById('streamingDescContent');
     console.log('channelId: ', channelId);
 
     const video = document.getElementById('video');
@@ -77,15 +83,37 @@
     if (liveStatus === 'true') {
         broadcastBtn.hidden = true;
         broadcastCloseBtn.hidden = false;
+        streamingTitle.hidden = true;
+        streamingDesc.hidden = true;
+        streamingTitleContent.hidden = false;
+        streamingTitleContent.textContent = `<%= channel.channel.liveTitle %>`;
+        streamingDescContent.hidden = false;
+        streamingDescContent.textContent = `<%= channel.channel.liveDesc %>`;
+
+        if (Hls.isSupported()) {
+            1;
+            const hls = new Hls({
+                debug: false,
+            });
+
+            //console.log(`${HLS_URL}/hls/${streamKey}/index.m3u8`);
+            hls.loadSource(`<%= channel.hlsUrl %>/hls/<%= channel.channel.streamKey %>/index.m3u8`);
+
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                video.muted = true;
+                video.play();
+            });
+        }
     } else if (liveStatus === 'false') {
         broadcastBtn.hidden = false;
         broadcastCloseBtn.hidden = true;
     }
+
     async function createLive() {
         const getAccessToken = getCookie('Authorization');
         let streamingTitle = document.getElementById('streamingTitle').value;
         let streamingDesc = document.getElementById('streamingDesc').value;
-
 
         await axios
             .post(

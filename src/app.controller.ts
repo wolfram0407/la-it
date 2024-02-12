@@ -107,11 +107,16 @@ export class AppController {
         const live = await this.liveService.findOneByChannelId(channelId);
 
         const liveStatusValue = live ? live.status : false;
+        const liveTitle = live ? live.title : false;
+        const liveDesc = live ? live.description : false;
         // if (liveStatusValue === true) {
         // await this.liveService.end(channelId);
         // }
         //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
         channel['liveStatusValue'] = liveStatusValue;
+        channel['liveTitle'] = liveTitle;
+        channel['liveDesc'] = liveDesc;
+        console.log('!!!channel!!! =========> ', channel);
         return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}` } };
         // hls url 추가해서 환경변수로 관리
         // 'http://localhost:8080'

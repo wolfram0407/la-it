@@ -4,11 +4,13 @@ const socket = io({
     auth: {
         token: `${getCookie('Authorization')}`,
     },
-    pingTimeout: 600000,
     reconnection: true,
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
+    pingInterval: 60000, // 60초마다 ping
+    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
+    upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 
 console.log('path확인', path);
@@ -69,14 +71,22 @@ if (path.includes('streaming')) {
     });
 }
 
-//재연결 시도가 시작될때
-socket.on('reconnect_attempt', (attemptNumber) => {
-    Logger.log('~~~~~~~attemptNumber');
-    console.log('~~~~~~~attemptNumber');
-
-    socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+// 연결 시작
+socket.on('connect', () => {
+    console.log('~~~');
 });
 
+// 연결 해제될때 이유 보기
+socket.on('disconnect', (reason) => {
+    console.log('연결해제 이유', reason);
+    const chatListArr = document.querySelector('.chatList');
+    const lastChat = chatListArr[chatListArr - 1];
+    console.log('~~~', lastChat);
+});
+//재연결 시도가 시작될때
+socket.io.on('reconnect_attempt', (attempt) => {
+    console.log('리커넥트 어템프으');
+});
 //재연결 시도중일 때
 socket.on('reconnecting', (attemptNumber) => {
     Logger.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
@@ -135,7 +145,7 @@ async function chatSending(e) {
 
 //메세지 받아오기
 socket.on('sending_message', (msg, nickname) => {
-    console.log('sending_message 받은거', msg, nickname);
+    console.log('sending_message 받은거~~', msg, nickname);
     addMessage(msg, nickname);
 });
 
@@ -179,7 +189,7 @@ function getAllChatByChannelId(e) {
 //메세지 그리기
 function addMessage(msg, nickname) {
     console.log('addMessage ==>', msg, nickname);
-    const temp = ` <div class="chatList" id="oneChat"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
+    const temp = ` <div class="chatList"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
     chatScroll();
     return (chatInputText.value = '');

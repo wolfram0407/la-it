@@ -83,10 +83,12 @@ socket.on('disconnect', (reason) => {
     const lastChat = chatListArr[chatListArr - 1];
     console.log('~~~', lastChat);
 });
+
 //재연결 시도가 시작될때
 socket.io.on('reconnect_attempt', (attempt) => {
     console.log('리커넥트 어템프으');
 });
+
 //재연결 시도중일 때
 socket.on('reconnecting', (attemptNumber) => {
     Logger.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);

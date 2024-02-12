@@ -140,8 +140,8 @@ export class ChatGateway {
         if (lastChatData) {
             const [lastChatId, lastClientIdData] = lastChatData.split('__');
             const lastClientId = lastClientIdData.split('_')[1];
-            Logger.log('lastChatId, lastClientId', lastChatId, lastClientId);
-            console.log('client', client);
+            Logger.log('lastChatId, lastClientId', `${lastChatId}, ${lastClientId}`);
+            console.log('lastClientId', lastClientId);
 
             const getAllChatData = await this.redis.xRange(channelId, '-', '+');
             Logger.log('레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
@@ -203,10 +203,10 @@ export class ChatGateway {
 
         const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
         console.log('saveChat', saveChat);
-        if (saveChat === 'sameChat') {
-            console.log('같은내용임 ');
-            return this.server.to(client.id).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
-        }
+        //if (saveChat === 'sameChat') {
+        //    console.log('같은내용임 ');
+        //    return this.server.to(client.id).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
+        //}
         if (saveChat === 'toFastChat') {
             console.log('빨라유 ');
             return this.server.to(client.id).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.');
@@ -215,8 +215,7 @@ export class ChatGateway {
 
         const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
         Logger.log('sendingMessage', sendingMessage);
-
-        return this.server.to(channelId).emit('sending_message', value, nickname);
+        return sendingMessage;
     }
 
     @SubscribeMessage('get_all_chat_by_channelId')

@@ -1,7 +1,7 @@
 import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Inject, Param, Query, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger, Param, Query, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -27,7 +27,12 @@ export class AppController {
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req, @Query('s') s) {
         const status = s ? s : false;
+        Logger.log('스테이터스가 있다면 리로드 되고 있다.', status);
         const lives = await this.liveService.findAll();
+        Logger.log('req', req);
+        Logger.log('알이큐 헤더즈', req.headers); // 모든 헤더 출력
+        Logger.log('알이큐 아이피', req.ip); // 요청한 클라이언트의 IP 주소
+        Logger.log('알이큐 유저에이전트', req.headers['user-agent']); // 클라이언트의 User-Agent 값(어플 유형, 운영체제, 소프트웨어 버전)
         const getRedisData = await this.redis.hGetAll('watchCtn');
         lives.map((e) => {
             const channelId = e.channel.channelId;

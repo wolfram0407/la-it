@@ -8,9 +8,9 @@ const socket = io({
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
-    //pingInterval: 60000, // 60초마다 ping
-    //pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
-    //upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
+    pingInterval: 60000, // 60초마다 ping
+    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
+    upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 
 console.log('path확인', path);
@@ -78,31 +78,32 @@ socket.on('connect', () => {
 
 // 연결 해제될때 이유 보기
 socket.on('disconnect', (reason) => {
-    console.log('연결해제 이유', reason);
+    console.log('연결해제 이유', reason); //연결해제 이유 transport close
     const chatListArr = document.querySelector('.chatList');
     const lastChat = chatListArr[chatListArr - 1];
     console.log('~~~', lastChat);
 });
 
 //재연결 시도가 시작될때
-socket.io.on('reconnect_attempt', (attempt) => {
+socket.io.on('reconnect_attempt', async (attempt) => {
     console.log('리커넥트 어템프으');
+    await socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
 });
 
 //재연결 시도중일 때
-socket.on('reconnecting', (attemptNumber) => {
+socket.on('reconnecting', async (attemptNumber) => {
     Logger.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
     console.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
 
-    socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+    await socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
 });
 
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
     const url = '/?s=true';
-    socket.emit('stop_live', channelId);
-    socket.emit('exit_room', channelId);
+    await socket.emit('stop_live', channelId);
+    await socket.emit('exit_room', channelId);
     //await axios
     //    .post(`/api/live/end/${channelId}`, {
     //        withCredentials: true,
@@ -128,20 +129,18 @@ async function chatSending(e) {
                 authorization: `${getCookie('Authorization')}`,
             },
         })
-        .then((res) => {
-            console.log('res 로그인 확인', res);
-        })
+        .then((res) => {})
         .catch((err) => {
             console.log('catch err 로그인 에러', err);
             if (err.message === 'Network Error') return alert('500 잠시 후 다시 시도해 주세요.');
             return alert('로그인 후 이용 가능합니다.');
         });
     const chatInput = document.querySelector('.chatInputText');
-    console.log('~~~> ', chatInput.value);
     if (chatInput.value.trim().length < 1) {
         return;
     } else {
         socket.emit('new_message', chatInput.value, roomNum);
+        chatInputText.value = '';
     }
 }
 
@@ -194,7 +193,7 @@ function addMessage(msg, nickname) {
     const temp = ` <div class="chatList"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
     chatBox.insertAdjacentHTML('beforeend', temp);
     chatScroll();
-    return (chatInputText.value = '');
+    return;
 }
 
 //스크롤

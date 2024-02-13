@@ -140,7 +140,8 @@ export class ChatService {
         try {
             this.createChatRoomNoChatData = false;
             //도배확인
-            const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+            const getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: 5 });
+            Logger.log('위에서부터 5개 데이터만 가져와유 ', getRedisChatData);
             const filterRedisData = getRedisChatData.filter((data) => {
                 if (+data.message.userId === userId && data.message.content === content.trim()) {
                     return data;
@@ -153,6 +154,7 @@ export class ChatService {
                 const currentTime = new Date();
 
                 if (+currentTime - +dataTime < 1000) {
+                    Logger.log('너무 빨라유 1초안에  많은걸 하려고 하지 마세요');
                     return 'toFastChat';
                 }
 

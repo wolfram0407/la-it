@@ -42,16 +42,11 @@ export class AppController {
                 console.log('잇슈슈슈슈');
 
                 const findData = redisId.filter((e) => e === channelId)[0];
-
                 console.log('findData', findData, getRedisData[findData]);
-                console.log('e', e);
                 return (e.channel['watchNum'] = getRedisData[findData]);
             }
-            console.log('e', e);
-            return e;
         });
         const livesIncludeHlsUrl = { lives, hlsUrl: process.env.HLS_URL };
-        console.log('livesIncludeHlsUrl', livesIncludeHlsUrl);
         return { title: 'Home Page', path: req.url, livesIncludeHlsUrl, status };
     }
 

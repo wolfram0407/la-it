@@ -38,19 +38,19 @@ export class ChatGateway {
 
     @UseGuards(WsGuard)
     @SubscribeMessage('reconnecting_to_server')
-    async reconnecting(client: Socket, attemptNumber: string, channelId: string) {
+    async reconnecting(client: Socket, attemptNumber: string) {
         //이게 작동은 할까?????
         Logger.log('reconnecting_to_server____++++_____++++client', client);
-        Logger.log('reconnecting_to_server_attemptNumber', attemptNumber);
-        Logger.log('reconnecting_to_server_channelId', channelId);
-        const { userId } = client.handshake.auth.user;
-        Logger.log('reconnecting_to_server_userId', userId);
+        //Logger.log('reconnecting_to_server_attemptNumber', attemptNumber);
+        //Logger.log('reconnecting_to_server_channelId', channelId);
+        //const { userId } = client.handshake.auth.user;
+        //Logger.log('reconnecting_to_server_userId', userId);
 
-        //레디스에서 가져오기 메세지
-        const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
-        const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
-        Logger.log('getRedisChatData', getRedisChatData);
-        Logger.log('findUserDisconnectData', findUserDisconnectData);
+        ////레디스에서 가져오기 메세지
+        //const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+        //const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
+        //Logger.log('getRedisChatData', getRedisChatData);
+        //Logger.log('findUserDisconnectData', findUserDisconnectData);
 
         //정보를 가져와서 뭐.. 보여주고 끝이 아니자나
         //보여주고나서 유저 채팅 원활하게 해야하자나.. 그건 어떻게 할껀데...
@@ -62,14 +62,11 @@ export class ChatGateway {
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
         const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
-        console.log('room', room);
         const rooms = this.server.sockets.adapter.rooms;
-        console.log('rooms', rooms);
 
         let newWatchCount = [];
         const obj = {};
         const keys = Object.fromEntries(rooms);
-        console.log('keys', keys);
 
         for (let data in keys) {
             if (data.length > 20) {
@@ -81,7 +78,7 @@ export class ChatGateway {
             const arr = e.split('_');
             return (obj[arr[0]] = arr[1]);
         });
-        console.log('오비제이이', obj), newWatchCount;
+        console.log('count_live_chat_user  오비제이이', obj, newWatchCount);
         if (Object.keys(obj).length >= 1) {
             await this.redis.hSet('watchCtn', obj);
         }
@@ -109,10 +106,9 @@ export class ChatGateway {
     @SubscribeMessage('stop_live')
     async deleteChatRoom(client: Socket, channelId: string) {
         const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
-        console.log('멈춤2');
         this.whileRepeat = false;
         clearInterval(this.interval);
-        console.log('멈춤 인터벌');
+        console.log('stop_live 멈춤 인터벌');
         const obj = {};
         obj[channelId] = 0;
         await this.redis.hDel('watchCtn', channelId);
@@ -122,12 +118,10 @@ export class ChatGateway {
     @SubscribeMessage('enter_room')
     async enterLiveRoomChat(client: Socket, channelId: string): Promise<EnterRoomSuccessDto> {
         //이게 작동은 할까?????
-        Logger.log('enter_room___client', client);
-        Logger.log('enter_room_channelId', channelId);
+        Logger.log('++++++++++++++++++엔터룸+++++++++');
+        Logger.log('channelId', channelId);
 
-        //재접속인 경우 확인은 어떻게 하지
-        //lastChat_채널이름 데이터가 키로 있고, 그 안에 해당 유저의id가 있을때.
-        //재접속인 경우 필요한 로직.
+        //userId 추출
         const token = client.handshake.auth?.token;
         let userId;
         if (token !== 'undefined') {
@@ -144,7 +138,8 @@ export class ChatGateway {
             console.log('lastClientId', lastClientId);
 
             const getAllChatData = await this.redis.xRange(channelId, '-', '+');
-            Logger.log('레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
+            console.log('getAllChatData', getAllChatData);
+            Logger.log('enter_room 함수 안__레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
             let lastChatIndex;
             const findMustShowChatData = getAllChatData.filter((data, i) => {
                 if (data.id.toString() === lastChatId) {
@@ -152,12 +147,20 @@ export class ChatGateway {
                 }
                 if (i > lastChatIndex) return data;
             });
-            Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
-            const chats = await this.chatService.enterLiveRoomChat(channelId, client);
+            //console.log('findMustShowChatData', findMustShowChatData);
 
-            for (let i = 0; i < findMustShowChatData.length; i++) {
+            //Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
+
+            const userDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'channelId');
+            console.log('유저가 연결 해제된 channelId', userDisconnectData);
+            //const chats = await this.chatService.enterLiveRoomChat(channelId, client);
+            userDisconnectData.split(' / ').forEach((channelId) => {
+                client.join(channelId);
+                //lastClientId.join(channelId); //오류남.
+            });
+            for (let i = 0; i < getAllChatData.length; i++) {
                 Logger.log('enter_room 함수 안에서 반복문이에요~~');
-                this.server.to(lastClientId).emit('sending_message', findMustShowChatData[i].message.content, findMustShowChatData[i].message.nickname);
+                this.server.to(client.id).emit('sending_message', getAllChatData[i].message.content, getAllChatData[i].message.nickname);
             }
 
             return;
@@ -171,7 +174,6 @@ export class ChatGateway {
         for (let i = 0; i < chats.length; i++) {
             Logger.log('enter_room 함수 안에서 반복문이에요~~');
             this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
-            //this.server.to(channelId).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
         }
 
         return {

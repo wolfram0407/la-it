@@ -37,7 +37,7 @@ export class ChatGateway {
     private readonly secretKey = this.configService.get<string>('JWT_SECRET_KEY');
 
     @UseGuards(WsGuard)
-    @SubscribeMessage('reconnecting_to_server')
+    @SubscribeMessage('reconect')
     async reconnecting(client: Socket, attemptNumber: string) {
         //이게 작동은 할까?????
         Logger.log('reconnecting_to_server____++++_____++++client', client);
@@ -61,6 +61,7 @@ export class ChatGateway {
 
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
+        Logger.log('5초마다 실행되는 카운트 라이브 챗 유저 함수');
         const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
         const rooms = this.server.sockets.adapter.rooms;
 
@@ -93,6 +94,7 @@ export class ChatGateway {
         await this.countLiveChatUser(client, channelId);
         this.whileRepeat = true;
         this.interval = setInterval(async () => {
+            Logger.log('라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.');
             if (!this.whileRepeat) return;
             await this.countLiveChatUser(client, channelId);
             console.log('5초마다 라이브방송 참여유저수 계산중');
@@ -185,6 +187,7 @@ export class ChatGateway {
 
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
+        Logger.log(`exit_room 이 실행되고 있습니다.`);
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
         const endLive = await this.liveService.end(channelId);
 

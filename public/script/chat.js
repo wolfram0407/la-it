@@ -52,7 +52,6 @@ if (path.includes('streaming')) {
     });
 } else if (path.includes('channel')) {
     const sendChatBtn = document.querySelector('#sendChat');
-    //const chatRecord = document.querySelector('#record');
 
     //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
@@ -73,29 +72,26 @@ if (path.includes('streaming')) {
 
 // 연결 시작
 socket.on('connect', () => {
-    console.log('~~~');
+    console.log('연결 시작~~~');
 });
 
 // 연결 해제될때 이유 보기
 socket.on('disconnect', (reason) => {
     console.log('연결해제 이유', reason); //연결해제 이유 transport close
-    const chatListArr = document.querySelector('.chatList');
-    const lastChat = chatListArr[chatListArr - 1];
-    console.log('~~~', lastChat);
 });
 
 //재연결 시도가 시작될때
 socket.io.on('reconnect_attempt', async (attempt) => {
     console.log('리커넥트 어템프으');
-    await socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+    await socket.emit('reconnect', { attempt: attempt });
 });
 
 //재연결 시도중일 때
 socket.on('reconnecting', async (attemptNumber) => {
-    Logger.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
-    console.log('~~~~~~~a~~~~~~~a~~~~~~~aattemptNumber', attemptNumber);
+    Logger.log('리커넥팅!! 실행중', attemptNumber);
+    console.log('리커넥팅!! 실행중', attemptNumber);
 
-    await socket.emit('reconnecting_to_server', { attemptNumber: attemptNumber });
+    await socket.emit('reconnect', { attemptNumber: attemptNumber });
 });
 
 //스트리머 방송 종료
@@ -174,11 +170,11 @@ socket.on('bye', () => {
     return (window.location.href = url);
 });
 
-//서버 연결 불안정시 disconnect 되면 새로고침
-socket.on('reload', () => {
-    //const url = '/';
-    return window.location.reload(true);
-});
+////서버 연결 불안정시 disconnect 되면 새로고침
+//socket.on('reload', () => {
+//    //const url = '/';
+//    return window.location.reload(true);
+//});
 
 //채팅 전체 메세지 받아오기 _ 추후 방송별 채팅 메세지 받아오기 버튼 추가(유저 채널 쪽에)
 function getAllChatByChannelId(e) {

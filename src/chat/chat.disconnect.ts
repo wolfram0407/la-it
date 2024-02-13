@@ -30,47 +30,47 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
     async handleDisconnect(client: Socket) {
         try {
             const reason = client.disconnect; // Socket.IO 3.x 이상에서 사용 가능
-            Logger.log('===>reason', reason);
+            Logger.log('디스커넥트 함수내부 끊긴이유===>reason', reason);
             Logger.log(`___________________________ ${client.id}`);
 
             const url = client.handshake.headers.referer.split('/');
-            Logger.log(`url: ${url}`);
+            Logger.log(`디스커넥트 함수내부  url: ${url}`);
             const channelId = url[url.length - 1];
-            Logger.log(`channelId: ${channelId}`);
+            Logger.log(`디스커넥트 함수내부  channelId: ${channelId}`);
 
             const userUrlStreamOrChannel = url[url.length - 2];
-            Logger.log(`userUrlStreamOrChannel: ${userUrlStreamOrChannel}`);
+            Logger.log(`디스커넥트 함수내부  userUrlStreamOrChannel: ${userUrlStreamOrChannel}`);
 
             let disconnectDataObj = {};
             let ttl = 600;
             const token = client.handshake.auth.token;
             if (!token || token.split(' ')[0] !== 'Bearer') return;
 
-            Logger.log(`client.handshake.auth: ${client.handshake.auth.token}`);
+            Logger.log(`디스커넥트 함수내부 client.handshake.auth: ${client.handshake.auth.token}`);
 
             const tokenValue = token.split(' ')[1];
             const verify = jwt.verify(tokenValue, this.secretKey);
             const userId = verify.sub;
-            Logger.log(`userId  확인필수: ${userId}`);
+            Logger.log(`디스커넥트 함수내부 userId  확인필수: ${userId}`);
 
             const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
             const findUserDisconnectClientId = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'clientId');
-            Logger.log('findUserDisconnectData', findUserDisconnectData);
-            console.log(findUserDisconnectData);
+            Logger.log('디스커넥트 함수내부 findUserDisconnectData', findUserDisconnectData);
 
             //레디스에서 채팅 데이터 가져오기.
             const findUserLastChatData = await this.redis.xRange(channelId, '-', '+');
-            Logger.log('findUserLastChatData', findUserLastChatData);
+            Logger.log('디스커넥트 함수내부  findUserLastChatData', findUserLastChatData);
             const lastChat = findUserLastChatData[findUserLastChatData.length - 1];
 
-            console.log('lastChat', lastChat);
+            console.log('디스커넥트 함수내부  lastChat', lastChat);
 
             //lastChat_채널아이디_유저아이디 라는 키로 해당 채팅 데이터를 넣기.(id값만 넣으면 될꺼같음.)
             let obj = {};
             if (!lastChat) {
                 obj[`userId${userId}`] = `lastChat 없음__clientId_${client.id}`;
+            } else {
+                obj[`userId${userId}`] = `${lastChat.id}__clientId_${client.id}`;
             }
-            obj[`userId${userId}`] = `${lastChat.id}__clientId_${client.id}`;
             await this.redis.hSet(`lastChat_${channelId}`, obj);
             await this.redis.expire(`lastChat_${channelId}`, 10);
             //레디스에서 찍히는 스트림 타입의 시간은 대한민국 시간
@@ -85,7 +85,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
                 const saveDisconnectData = await this.redis.hSet(`socket_disconnect_userId_${userId}`, disconnectDataObj);
                 const disconnectDataExpire = await this.redis.expire(`socket_disconnect_userId_${userId}`, ttl);
 
-                Logger.log('saveDisconnectData', saveDisconnectData);
+                Logger.log('디스커넥트 함수내부  saveDisconnectData', saveDisconnectData);
                 //return this.server.to(channelId).emit('reload');
                 return;
             }
@@ -103,7 +103,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
 
                     const saveDisconnectData = await this.redis.hSet(`socket_disconnect_userId_${userId}`, disconnectDataObj);
                     const disconnectDataExpire = await this.redis.expire(`socket_disconnect_userId_${userId}`, ttl);
-                    Logger.log('saveDisconnectData', saveDisconnectData);
+                    Logger.log('디스커넥트 함수내부  saveDisconnectData', saveDisconnectData);
                     //return this.server.to(channelId).emit('reload');
                     return;
                 }

@@ -33,6 +33,7 @@ export class ChatService {
             this.createChatRoomNoChatData = true;
 
             this.setIntervalFunc = setInterval(async () => {
+                Logger.log('룸이 생성된 이후 1분마다 몽고디비에 데이터 보낼 준비를 합니다.');
                 await this.dataPushMongo(channelId);
             }, 60000); //1분
             return joinTheChatRoom;
@@ -87,9 +88,11 @@ export class ChatService {
             const mongoChatSave = await this.ChatModel.insertMany(newGetRedisChatData);
 
             if (countNum > 0) {
+                Logger.log('레디스에 채팅내역 반절 삭제중');
                 await this.redis.xDel(channelId, [...onlyIdGetRedisChatData]);
                 return;
             } else {
+                Logger.log('레디스에 채팅내역 해당 채널내용 다 삭제중');
                 await this.redis.del(channelId);
                 return;
             }
@@ -101,12 +104,13 @@ export class ChatService {
     async dataPushMongo(channelId: string) {
         try {
             if (this.createChatRoomNoChatData === true) return;
-
             const channelIdDataSize = await this.redis.xLen(channelId);
             const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
             console.log('1분 주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
             //캐시에 반절만 가져오기
             const moveDataToCache = await this.liveChatDataMoveMongo(channelId, channelIdDataSizeHalf);
+            Logger.log('몽고디비에 데이터 넣었슈', moveDataToCache);
+
             return moveDataToCache;
         } catch (err) {
             console.log(err);
@@ -116,6 +120,7 @@ export class ChatService {
     //캐시 저장.
     async setStreamCache(channelId: string, cacheData: object) {
         await this.redis.xAdd(channelId, '*', { ...cacheData });
+        Logger.log('레디스에 데이터 넣었슈');
         const channelIdDataSize = await this.redis.xLen(channelId);
 
         //console.log('channelIdDataSize 길이캐쉬', channelIdDataSize);
@@ -135,7 +140,8 @@ export class ChatService {
         try {
             this.createChatRoomNoChatData = false;
             //도배확인
-            const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
+            const getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: 5 });
+            Logger.log('위에서부터 5개 데이터만 가져와유 ', getRedisChatData);
             const filterRedisData = getRedisChatData.filter((data) => {
                 if (+data.message.userId === userId && data.message.content === content.trim()) {
                     return data;
@@ -148,6 +154,7 @@ export class ChatService {
                 const currentTime = new Date();
 
                 if (+currentTime - +dataTime < 1000) {
+                    Logger.log('너무 빨라유 1초안에  많은걸 하려고 하지 마세요');
                     return 'toFastChat';
                 }
 

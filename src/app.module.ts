@@ -21,6 +21,7 @@ import { HeartModule } from './heart/heart.module';
 import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
 import { PaymentModule } from './payment/payment.module';
 import { RedisModule } from './redis/redis.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
     imports: [
@@ -61,6 +62,7 @@ import { RedisModule } from './redis/redis.module';
         RedisModule,
         ImageModule,
         ChannelNoticeModule,
+        HealthModule,
     ],
     controllers: [AppController],
     providers: [Logger],

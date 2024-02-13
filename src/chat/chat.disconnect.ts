@@ -82,7 +82,6 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
                 disconnectDataObj['disconnectTime'] = client.handshake.issued;
                 disconnectDataObj['clientId'] = client.id;
                 disconnectDataObj['channelId'] = channelId;
-                console.log('확확확인인인필필필', disconnectDataObj);
                 const saveDisconnectData = await this.redis.hSet(`socket_disconnect_userId_${userId}`, disconnectDataObj);
                 const disconnectDataExpire = await this.redis.expire(`socket_disconnect_userId_${userId}`, ttl);
 

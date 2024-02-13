@@ -106,10 +106,9 @@ export class ChatGateway {
     @SubscribeMessage('stop_live')
     async deleteChatRoom(client: Socket, channelId: string) {
         const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
-        console.log('멈춤2');
         this.whileRepeat = false;
         clearInterval(this.interval);
-        console.log('멈춤 인터벌');
+        console.log('stop_live 멈춤 인터벌');
         const obj = {};
         obj[channelId] = 0;
         await this.redis.hDel('watchCtn', channelId);
@@ -148,9 +147,9 @@ export class ChatGateway {
                 }
                 if (i > lastChatIndex) return data;
             });
-            console.log('findMustShowChatData', findMustShowChatData);
+            //console.log('findMustShowChatData', findMustShowChatData);
 
-            Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
+            //Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
 
             const userDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'channelId');
             console.log('유저가 연결 해제된 channelId', userDisconnectData);

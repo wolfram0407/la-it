@@ -187,6 +187,7 @@ export class ChatGateway {
 
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
+        Logger.log(`exit_room 이 실행되고 있습니다.`);
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
         const endLive = await this.liveService.end(channelId);
 

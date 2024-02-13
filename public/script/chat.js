@@ -83,7 +83,7 @@ socket.on('disconnect', (reason) => {
 //재연결 시도가 시작될때
 socket.io.on('reconnect_attempt', async (attempt) => {
     console.log('리커넥트 어템프으');
-    await socket.emit('reconnect', { attemptNumber: attemptNumber });
+    await socket.emit('reconnect', { attempt: attempt });
 });
 
 //재연결 시도중일 때

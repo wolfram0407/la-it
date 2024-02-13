@@ -4,7 +4,8 @@ version: '3.7'
 services:
     # nest
     lait-backend-computer:
-        image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-service-image:2.0
+        # image: us-west2-docker.pkg.dev/pivotal-cistern-410100/la-it-docker-repo/la-it-service-image:2.3
+        image: asia-northeast3-docker.pkg.dev/la-it-k8s-414207/la-it-resistry/la-it-service-image:0.6
         platform: linux/x86_64
         build:
             context: .

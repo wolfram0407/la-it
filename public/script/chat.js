@@ -7,9 +7,9 @@ const socket = io({
     reconnection: true,
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
-    reconnectionDelayMax: 10000, // 최대 재연결 지연 시간 (밀리초)
-    pingInterval: 20000, // 60초마다 ping
-    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
+    reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
+    pingInterval: 2000, // 60초마다 ping->2초
+    pingTimeout: 600000, // 60초 동안 응답 없으면 연결 종료
     upgradeTimeout: 20000, // 연결 업그레이드 시간 제한
 });
 
@@ -56,6 +56,7 @@ if (path.includes('streaming')) {
     //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(9);
+        console.log('채널아이디', channelId);
         const enterRoom = socket.emit('enter_room', channelId);
         console.log('두둥', enterRoom, '---');
         roomNum = channelId;
@@ -75,6 +76,16 @@ socket.on('connect', () => {
     console.log('연결 시작~~~');
 });
 
+//ping 테스트
+socket.io.on('ping', () => {
+    console.log('핑이벤트 감지되었다');
+});
+
+//reconnect 테스트
+socket.io.on('reconnect', (attempt) => {
+    console.log('리커넥트 이벤트 실행중', attempt);
+});
+
 // 연결 해제될때 이유 보기
 socket.on('disconnect', (reason) => {
     console.log('연결해제 이유', reason); //연결해제 이유 transport close
@@ -84,6 +95,16 @@ socket.on('disconnect', (reason) => {
 socket.io.on('reconnect_attempt', async (attempt) => {
     console.log('리커넥트 어템프으');
     await socket.emit('reconnect', { attempt: attempt });
+});
+
+//혹시몰라 실패할때 재연결
+socket.io.on('reconnect_failed', () => {
+    console.log('리커넥트 실패한 경우 일어나는 이벤트');
+});
+
+//에러날 경우 사용되는 이벤트
+socket.io.on('reconnect_error', (error) => {
+    console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
 });
 
 //재연결 시도중일 때
@@ -135,6 +156,7 @@ async function chatSending(e) {
     if (chatInput.value.trim().length < 1) {
         return;
     } else {
+        console.log('룸넘버 채팅방 채널아이디 확인', roomNum);
         socket.emit('new_message', chatInput.value, roomNum);
         chatInputText.value = '';
     }

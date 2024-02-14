@@ -206,6 +206,8 @@ input {
     font-family: 'Do Hyeon', sans-serif;
     font-weight: 400;
     font-size: 50px;
+    width: 130px;
+    padding-bottom: 10px;
 }
 
 .main__inner {

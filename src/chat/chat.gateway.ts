@@ -202,14 +202,16 @@ export class ChatGateway {
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         const { userId, nickname } = client.handshake.auth.user;
         const filterWord = await searchProhibitedWords(value);
-        Logger.log('클라이언트 아이디 확인확인', client.id);
-        Logger.log('채널아이디 확인확인', channelId);
+        Logger.log('클라이언트 아이디 확인확인', client.id); //콘솔에 찍힘
+        Logger.log('채널아이디 확인확인', channelId); //콘솔에 찍힘
         if (filterWord) {
+            const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
+            Logger.log('첫번째 sendingMessage', sendingMessage); //sendingMessage, true
             return this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.'); //소켓 서버 끊겨도 알러트 뜨는거 확인.
         }
 
         const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
-        Logger.log('세이브쳇 saveChat', saveChat);
+        Logger.log('세이브쳇 saveChat', saveChat); //콘솔에 찍힘
         if (saveChat === 'sameChat') {
             Logger.log('같은내용임 ');
             return this.server.to(client.id).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
@@ -218,10 +220,10 @@ export class ChatGateway {
             Logger.log('빨라유 ');
             return this.server.to(client.id).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.'); //연결 끊겨도 나오는거 확인.
         }
-        Logger.log('new_message 실행중');
+        Logger.log('new_message 실행중'); //콘솔에 찍힘
 
         const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
-        Logger.log('sendingMessage', sendingMessage);
+        Logger.log('sendingMessage', sendingMessage); //sendingMessage, true
         return sendingMessage;
     }
 

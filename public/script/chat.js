@@ -9,7 +9,8 @@ const socket = io({
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
     pingInterval: 2000, // 60초마다 ping->2초
-    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료
+    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
+    //pingTimeout: 600000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
     upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 
@@ -102,7 +103,7 @@ socket.io.on('reconnect_failed', () => {
     console.log('리커넥트 실패한 경우 일어나는 이벤트');
 });
 
-//에러날 경우 사용되는 이벤트
+//재연결 에러날 경우 사용되는 이벤트
 socket.io.on('reconnect_error', (error) => {
     console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
 });
@@ -113,6 +114,13 @@ socket.on('reconnecting', async (attemptNumber) => {
     console.log('리커넥팅!! 실행중', attemptNumber);
 
     await socket.emit('reconnect', { attemptNumber: attemptNumber });
+});
+
+//연결 에러날때
+socket.on('connect_error', (err) => {
+    console.log(err.message); //에러 이유
+    console.log(err.description);
+    console.log(err.context);
 });
 
 //스트리머 방송 종료

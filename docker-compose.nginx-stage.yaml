@@ -4,10 +4,10 @@ version: '3.7'
 services:
     # nginx
     lait-backend-nginx:
-        image: asia-northeast3-docker.pkg.dev/la-it-k8s-414207/la-it-resistry/la-it-streaming-image:0.3
         platform: linux/x86_64
         build:
             context: .
-            dockerfile: Dockerfile.nginx.deploy
+            dockerfile: Dockerfile.nginx.stage
         ports:
             - 1935:1935
+            - 8080:8080

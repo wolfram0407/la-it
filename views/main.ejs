@@ -47,7 +47,15 @@
                                         <%- include('./search.ejs', {searchs: searchs, searchState:searchState,search })
                                             %>
                                     </div>
-                                    <% } else { %>
+                                    <% } else if(path==='/register') { %>
+                                        <div>
+                                            <%- include('./registerForm.ejs') %>
+                                        </div>
+                                    <% } else if(path==='/login') { %>
+                                        <div>
+                                            <%- include('./loginForm.ejs') %>
+                                        </div>
+                                        <% } else { %>
                                         <%if(status){%>
                                             <script>
                                                 location.reload()

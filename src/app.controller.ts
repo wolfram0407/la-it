@@ -55,6 +55,19 @@ export class AppController {
         return { title: 'Home Page', path: req.url, livesIncludeHlsUrl, status };
     }
 
+    @Get('register')
+    @Render('main')
+    async register(@Req() req) {
+        // console.log('register!!!!');
+        return { title: 'Register Page', path: req.url };
+    }
+
+    @Get('login')
+    @Render('main')
+    async login(@Req() req) {
+        // console.log('login!!!');
+        return { title: 'Login Page', path: req.url };
+    }
     //@Get('live/:liveId')
     //@Render('main') // Render the 'main' EJS template
     //async live(@Param('liveId') liveId: string, @Res() res: Response) {

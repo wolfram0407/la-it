@@ -102,7 +102,7 @@ socket.io.on('reconnect_failed', () => {
     console.log('리커넥트 실패한 경우 일어나는 이벤트');
 });
 
-//에러날 경우 사용되는 이벤트
+//재연결 에러날 경우 사용되는 이벤트
 socket.io.on('reconnect_error', (error) => {
     console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
 });
@@ -113,6 +113,13 @@ socket.on('reconnecting', async (attemptNumber) => {
     console.log('리커넥팅!! 실행중', attemptNumber);
 
     await socket.emit('reconnect', { attemptNumber: attemptNumber });
+});
+
+//연결 에러날때
+socket.on('connect_error', (err) => {
+    console.log(err.message); //에러 이유
+    console.log(err.description);
+    console.log(err.context);
 });
 
 //스트리머 방송 종료

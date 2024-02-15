@@ -2,7 +2,7 @@
     <h1 style="display: none">HEADER</h1>
     <div class="headerWrap">
         <div class="menuAndLogoWrap">
-            <div class="logo">라잇</div>
+            <div class="logo"> <img class="logoImg" src="/imgs/lait-logo.png" /></div>
         </div>
         <div class="searchWrap">
             <%if(path=== '/search' ){ %>
@@ -27,6 +27,8 @@
         </div>
 
         <div class="userBtnWrap">
+            <div hidden class="registerBtn userBtn"><button id="registerBtn">회원가입</button></div>
+            <div hidden class="defaultLoginBtn userBtn"><button id="loginBtn">로그인</button></div>
             <div class="logoutBtn userBtn"><button id="logoutBtn">로그아웃</button></div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
 
@@ -35,6 +37,7 @@
                     <img class="loginBtn" src="/imgs/free-icon-kakao-talk-3991999.png" />
                 </a>
             </div>
+            
         </div>
     </div>
     </header>
@@ -44,6 +47,8 @@
         const myInfoBtn = document.querySelector('.myInfoBtn')
         //const myNotificationBtn = document.querySelector('.myNotificationBtn');
         const kakaoLoginBtn = document.querySelector('#kakao')
+        const registerBtn = document.querySelector('.registerBtn')
+        const loginBtn = document.querySelector('.defaultLoginBtn')
         const logoutBtn = document.querySelector('.logoutBtn')
         const kakaoLink = document.getElementById('kakaoLink')
         const kakaoUrl = '/api/auth/login/kakao'
@@ -52,15 +57,22 @@
         const getAccessToken = getCookie('Authorization')
         // const AccessToken = `Bearer ${getAccessToken}`;
 
-
         kakaoLink.href = kakaoUrl
 
         if (!getAccessToken) {
-            myInfoBtn.hidden = true
+            myInfoBtn.hidden = true;
             //myNotificationBtn.hidden = true;
-            logoutBtn.hidden = true
+            logoutBtn.hidden = true;
+            registerBtn.addEventListener('click', () => {
+                window.location.href="/register"
+            })
+            loginBtn.addEventListener('click', () => {
+                window.location.href="/login"
+            })
         } else {
             kakaoLoginBtn.hidden = true
+            loginBtn.hidden = true
+            registerBtn.hidden = true
             logoutBtn.hidden = false
             myInfoBtn.addEventListener('click', async () => {
                 const myId = await axios.get('/my-page',

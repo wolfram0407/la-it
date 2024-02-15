@@ -1,0 +1,28 @@
+<div class="loginFormWrap">
+    <form class="loginForm">
+        <h2 class="loginTitle">로그인</h2>
+        <input id="loginInput" class="emailInput" type="email" name="email" placeholder="이메일 입력" required />
+        <input id="pwdInput" class="pwdInput" type="password" name="password" placeholder="비밀번호 입력" required />
+        <button class="userBtn" type="button" id="loginBtn">로그인</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginBtn = document.getElementById('loginBtn');
+        loginBtn.addEventListener('click', async () => {
+            const email = document.getElementById('loginInput').value;
+            const password = document.getElementById('pwdInput').value;
+
+            await axios
+                .post('/api/user/login', {
+                    email: email,
+                    password: password,
+                })
+                .then(function (response) {})
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    });
+</script>

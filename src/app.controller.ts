@@ -34,6 +34,7 @@ export class AppController {
         Logger.log('알이큐 아이피', req.ip); // 요청한 클라이언트의 IP 주소
         Logger.log('알이큐 유저에이전트', req.headers['user-agent']); // 클라이언트의 User-Agent 값(어플 유형, 운영체제, 소프트웨어 버전)
         const getRedisData = await this.redis.hGetAll('watchCtn');
+        console.log('lives =======> ', lives);
         lives.map((e) => {
             const channelId = e.channel.channelId;
             const redisId = Object.keys(getRedisData);

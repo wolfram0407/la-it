@@ -24,6 +24,7 @@
     </div>
 </a>
 <div id="liveId" style="display: none"><%= live.live.live_id %></div>
+<div id="liveId" style="display: none"><%= live.live.thumbnail %></div>
 
 <!-- 비디오박스 끝 -->
 <script>
@@ -37,7 +38,7 @@
             .then(function (response) {
                 const streamKey = response.data.channel.streamKey;
 
-                thumb.src = `<%= live.hlsUrl %>/thumb/thumbnail_${streamKey}.png`;
+                thumb.src = `<%= live.hlsUrl %><%= live.live.thumbnail %>`;
             })
             .catch(function (error) {
                 console.log(error);

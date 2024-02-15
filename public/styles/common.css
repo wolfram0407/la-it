@@ -206,6 +206,8 @@ input {
     font-family: 'Do Hyeon', sans-serif;
     font-weight: 400;
     font-size: 50px;
+    width: 130px;
+    padding-bottom: 10px;
 }
 
 .main__inner {
@@ -536,10 +538,12 @@ input {
 .chatBox {
     margin-top: 10px;
     /* border: 0.2px solid #9da5b631; */
-    width: 90%;
+    /*width: 90%;*/
+    width: 500px;
     height: 800px;
     overflow-y: auto;
     margin-bottom: 60px;
+    overflow-x: scroll;
 }
 
 .chatInputWrap {
@@ -572,12 +576,23 @@ input {
     flex-direction: row;
     align-items: center;
     margin-bottom: 5px;
+    word-wrap: break-word; /* 너비를 초과하는 단어를 줄바꿈합니다 */
+    word-break: break-all; /* 어떤 언어든지 간에 단어의 어느 지점에서든 줄바꿈을 허용합니다 */
+    white-space: normal; /* 공백 문자가 있는 곳에서 줄바꿈을 허용합니다 */
 }
 
 .chatNickname {
     color: #ffe062;
     font-weight: 500;
     margin-right: 20px;
+    height: 20px;
+    min-width: 60px;
+}
+
+#chatText {
+    color: white;
+    margin-right: 20px;
+    max-width: 200px;
 }
 
 /* myPage */
@@ -1147,4 +1162,51 @@ input {
     background-color: #ffca75;
     color: black;
     font-weight: bolder;
+}
+
+.registerForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+.registerTitle {
+    margin-bottom: 20px;
+}
+
+.loginForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+.loginTitle {
+    margin-bottom: 20px;
+}
+
+.emailInput {
+    margin-bottom: 20px;
+    height: 50px;
+    padding: 10px;
+    color: #141517;
+}
+
+.nicknameInput {
+    margin-bottom: 20px;
+    height: 50px;
+    padding: 10px;
+    color: #141517;
+}
+
+.pwdInput {
+    margin-bottom: 20px;
+    height: 50px;
+    padding: 10px;
+    color: #141517;
 }

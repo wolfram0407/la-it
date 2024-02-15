@@ -4,13 +4,14 @@ const socket = io({
     auth: {
         token: `${getCookie('Authorization')}`,
     },
+    //transports: ['websocket'],
     reconnection: true,
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
     pingInterval: 2000, // 60초마다 ping->2초
-    pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
-    //pingTimeout: 600000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
+    pingTimeout: 6000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
+    //pingTimeout: 6000000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림 __> 1000분
     upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 
@@ -34,6 +35,7 @@ if (path.includes('streaming')) {
 
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
+        roomNum = channelId;
         //만약 유저가 새로고침이 되어 다시 들어온거라면?
         //유저 시간. 유저
         endChat.addEventListener('click', endLive);
@@ -41,7 +43,6 @@ if (path.includes('streaming')) {
         startLiveChat.addEventListener('click', (e) => {
             e.preventDefault();
             const createRoom = socket.emit('create_room', channelId);
-            roomNum = channelId;
         });
 
         sendChatBtnStreamerPage.addEventListener('click', chatSending);
@@ -121,6 +122,21 @@ socket.on('connect_error', (err) => {
     console.log(err.message); //에러 이유
     console.log(err.description);
     console.log(err.context);
+});
+
+//이건 되는지 테스트
+socket.on('test', (value, nickname) => {
+    console.log('테스트가 되나요? new_message에서 이게 작동 되게 하나요?', value, nickname);
+});
+
+//이건 되는지 테스트2
+socket.on('test2', () => {
+    console.log('테스트가 되나요22222? new_message에서 이게 작동 되게 하나요?');
+});
+
+//이건 되는지 테스트3
+socket.on('test3', () => {
+    console.log('테스트가 되나요3333 클라이언트아이디. new_message에서 이게 작동 되게 하나요?');
 });
 
 //스트리머 방송 종료
@@ -216,8 +232,20 @@ function getAllChatByChannelId(e) {
 //메세지 그리기
 function addMessage(msg, nickname) {
     console.log('addMessage ==>', msg, nickname);
-    const temp = ` <div class="chatList"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
-    chatBox.insertAdjacentHTML('beforeend', temp);
+    const chatListDiv = document.createElement('div');
+    chatListDiv.classList.add('chatList');
+
+    const nicknameSpan = document.createElement('span');
+    nicknameSpan.classList.add('chatNickname');
+    nicknameSpan.textContent = nickname + ' ';
+    const messageText = document.createTextNode(msg);
+
+    chatListDiv.appendChild(nicknameSpan);
+    chatListDiv.appendChild(messageText);
+    chatBox.appendChild(chatListDiv);
+
+    //const temp = ` <div class="chatList"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
+    //chatBox.insertAdjacentHTML('beforeend', temp);
     chatScroll();
     return;
 }

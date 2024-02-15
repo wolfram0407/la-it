@@ -72,9 +72,8 @@ async function bootstrap() {
     app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setViewEngine('ejs');
 
-    //app.enableCors(); //위와 중복되어 주석처리.
-    //Sentry.init({ dsn: configService.get('SENTRY_DSN') });
-    //app.useGlobalInterceptors(new SentryInterceptor());
+    Sentry.init({ dsn: configService.get('SENTRY_DSN') });
+    app.useGlobalInterceptors(new SentryInterceptor());
     await app.listen(3002);
     Logger.log(`listening on 3002`);
 }

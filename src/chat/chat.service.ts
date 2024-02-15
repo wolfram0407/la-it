@@ -140,18 +140,24 @@ export class ChatService {
         try {
             this.createChatRoomNoChatData = false;
             //도배확인
-            const getRedisChatData = await this.redis.xRange(channelId, '-', '+', { COUNT: 5 });
-            Logger.log('위에서부터 5개 데이터만 가져와유 ', getRedisChatData);
-            const filterRedisData = getRedisChatData.filter((data) => {
+            const getRedisChatData = await this.redis.XRANGE(channelId, '-', '+');
+            const recentRedisChatData = getRedisChatData.slice(-5);
+            Logger.log('위에서부터 5개 데이터만 가져와유 ', recentRedisChatData);
+            console.log('위에서부터 5개 데이터만 가져와유 recentRedisChatData', recentRedisChatData);
+            const filterRedisData = recentRedisChatData.filter((data) => {
                 if (+data.message.userId === userId && data.message.content === content.trim()) {
                     return data;
                 }
             });
+            Logger.log('동일유저 동일메세지 인건지_ 필터레디스데이타 길이 ', filterRedisData.length);
 
             if (filterRedisData.length) {
-                const cacheDataTime = filterRedisData[filterRedisData.length - 1].id.split('-')[0];
+                const cacheDataTime = recentRedisChatData[recentRedisChatData.length - 1].id.split('-')[0];
                 const dataTime = new Date(+cacheDataTime);
                 const currentTime = new Date();
+                Logger.log('현재시간', currentTime);
+                Logger.log('이전 데이터 ', currentTime);
+                Logger.log('시간차이', +currentTime - +dataTime);
 
                 if (+currentTime - +dataTime < 1000) {
                     Logger.log('너무 빨라유 1초안에  많은걸 하려고 하지 마세요');
@@ -159,6 +165,7 @@ export class ChatService {
                 }
 
                 if (filterRedisData.length >= 2) {
+                    Logger.log('도배 금지! 동일한 내용을 좀전에 입력했어요');
                     return 'sameChat';
                 }
             }

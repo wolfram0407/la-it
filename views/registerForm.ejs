@@ -1,0 +1,38 @@
+<div class="registerFormWrap">
+    <div class="registerForm">
+        <h2 class="registerTitle">회원가입</h2>
+        <input class="emailInput" id="registerEmail" type="email" name="email" placeholder="이메일 입력" required />
+        <input class="nicknameInput" id="registerNickname" type="text" name="nickname" placeholder="닉네임 입력" required />
+        <input class="pwdInput" id="registerPassword" type="password" name="password" placeholder="비밀번호 입력" required />
+        <button id="register" class="userBtn" type="button">회원가입</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const register = document.getElementById('register');
+        register.addEventListener('click', async () => {
+            const email = document.getElementById('registerEmail').value;
+            const nickname = document.getElementById('registerNickname').value;
+            const password = document.getElementById('registerPassword').value;
+
+            await axios
+                .post('/api/user/register', {
+                    email: email,
+                    nickname: nickname,
+                    password: password,
+                })
+                .then(function (response) {
+                    window.location.href = '/user/login';
+                })
+                .catch(function (error) {
+                    // console.log(error);
+                    if (error.response.status === 409) {
+                        alert('이미 등록된 이메일 입니다.');
+                    } else {
+                        console.log(error);
+                    }
+                });
+        });
+    });
+</script>

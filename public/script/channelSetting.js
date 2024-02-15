@@ -20,6 +20,17 @@ function writeChannelInfo(e) {
 // 폼데이터 전송.
 async function sendChannelInfoData(e) {
     e.preventDefault();
+    const channelTitleInput = document.querySelector('.channelTitleInput');
+    console.log('channelTitleInput', channelTitleInput);
+    const blankChannelTitleInput = channelTitleInput.value.trim().length < 1;
+
+    const channelInfoText = document.querySelector('.channelInfoText');
+    console.log('channelInfoText', channelInfoText);
+    const blankChannelInfoText = channelInfoText.value.trim().length < 1;
+
+    if (blankChannelInfoText || blankChannelTitleInput) {
+        return alert('채널명 과 상세정보를 입력해주세요.');
+    }
 
     const getAccessToken = getCookie('Authorization');
 
@@ -36,8 +47,6 @@ async function sendChannelInfoData(e) {
 
     //channel info 데이터 넣기
     await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, getAccessToken);
-
-    //location.reload();
 
     const url = `/my-page/${channelId}`;
     window.location.href = url;

@@ -11,7 +11,7 @@
         </div>
 
         <div class="myChannelInfoDetail">
-            <div class="chargeBtn"><button>💜충전</button></div>
+            <div hidden class="chargeBtn"><button>💜충전</button></div>
             <div class="blank"></div>
 
             <div class="startLiveBtn"><button id="goToStudioBtn">방송하기</button></div>
@@ -25,12 +25,20 @@
                 <h2 class="channelInfoTitle">채널 정보</h2>
                 <div class="channelInfoSettingInputBoxName">
                     <span class="channelTitleHeader">채널명</span>
-                    <input type="text" name="channelName" class="channelTitleInput" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="<%=  channel.channelName %>" />
+                    <input
+                        type="text"
+                        name="channelName"
+                        class="channelTitleInput"
+                        maxlength="10"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-lg"
+                        value="<%=  channel.channelName %>"
+                    />
                 </div>
                 <div class="channelImageWrap" id="channelInfoSettingImage">
                     <span class="channelTitleHeader">썸네일</span>
                     <div class="channelImageINputWrap">
-                        <input type="file" name="file" class="fileUploadForm" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
+                        <input type="file" name="file" accept="image/jpg, image/jpeg" class="fileUploadForm" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
                         <button class="uploadBtn" type="button">Upload</button>
                     </div>
                 </div>
@@ -43,7 +51,7 @@
                 </div>
                 <div class="channelInfoSettingInput" id="channelInfoSettingTextWrap">
                     <span class="channelTitleHeader">상세정보</span>
-                    <textarea name="channelDescription" class="channelInfoText" id="channelInfoSettingText" placeholder="채널 소개글을 작성해 주세요"><%=channel.description%></textarea>
+                    <textarea name="channelDescription" class="channelInfoText" id="channelInfoSettingText" maxlength="50" placeholder="채널 소개글을 작성해 주세요"><%=channel.description%></textarea>
                 </div>
                 <div class="channelInfoBtnWrap">
                     <button type="submit" class="channelSettingSaveBtn">저장</button>
@@ -53,7 +61,7 @@
         </div>
     </div>
 
-    <div class="homeBox">
+    <div class="homeBox" hidden>
         <!-- 비디오 박스 시작-->
         <div class="videoBox">
             <div class="videoBoxTop">

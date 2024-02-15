@@ -23,17 +23,26 @@ export class ImageService {
         file: Express.Multer.File, //파일 데이터 포함.
         ext: string, //파일확장자
     ) {
-        console.log('----- 이미지 서비스 시작 ------');
-        const command = new PutObjectCommand({
-            //PutObjectCommand는 s3객체 업로드 할때 사용.
-            Bucket: this.configService.get('AWS_BUCKET_NAME'),
-            Key: fileName,
-            Body: file.buffer, //파일의 실제 데이터
-            ACL: 'public-read',
-            ContentType: `image/${ext}`,
-        });
+        try {
+            console.log('----- 이미지 서비스 시작 ------');
 
-        await this.s3Client.send(command);
-        return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${fileName}`;
+            //const allowedExtensions = ['jpg', 'jpeg'];
+            //if (!allowedExtensions.includes(ext)) {
+            //    throw new Error('파일 형식은 jpg, jpeg만 가능합니다.');
+            //}
+            const command = new PutObjectCommand({
+                //PutObjectCommand는 s3객체 업로드 할때 사용.
+                Bucket: this.configService.get('AWS_BUCKET_NAME'),
+                Key: fileName,
+                Body: file.buffer, //파일의 실제 데이터
+                ACL: 'public-read',
+                ContentType: `image/${ext}`,
+            });
+
+            await this.s3Client.send(command);
+            return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${fileName}`;
+        } catch (err) {
+            console.log(err.message);
+        }
     }
 }

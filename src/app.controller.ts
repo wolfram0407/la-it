@@ -52,6 +52,8 @@ export class AppController {
             }
         });
         const livesIncludeHlsUrl = { lives, hlsUrl: process.env.HLS_URL };
+        throw new Error('테테테그트트');
+
         return { title: 'Home Page', path: req.url, livesIncludeHlsUrl, status };
     }
 

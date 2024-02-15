@@ -138,6 +138,8 @@ export class ChatService {
     //채팅
     async createChat(socket: Socket, content: string, channelId: string, userId: number, nickname: string): Promise<string> {
         try {
+            throw new Error('테테테그트트');
+
             this.createChatRoomNoChatData = false;
             //도배확인
             const getRedisChatData = await this.redis.XRANGE(channelId, '-', '+');

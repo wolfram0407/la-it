@@ -51,6 +51,7 @@ if (path.includes('streaming')) {
                 chatSending(e);
             }
         });
+        1;
     });
 } else if (path.includes('channel')) {
     const sendChatBtn = document.querySelector('#sendChat');

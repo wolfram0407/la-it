@@ -37,8 +37,6 @@ async function sendChannelInfoData(e) {
     //channel info 데이터 넣기
     await saveChannelInfoData(channelId, saveImageUrlData, formDataObj, getAccessToken);
 
-    //location.reload();
-
     const url = `/my-page/${channelId}`;
     window.location.href = url;
     location.reload();

@@ -21,6 +21,13 @@ export class ImageController {
 
             const saveImageToS3 = await this.imageService.saveImage(fileName, file, exp);
             console.log('saveImageToS3', saveImageToS3);
+            //if (saveImageToS3 === 'notAllowFileFormat') {
+            //    return {
+            //        success: false,
+            //        message: '이미지 파일은 jpg, jpeg 만 가능합니다',
+            //        data: saveImageToS3,
+            //    };
+            //}
             if (saveImageToS3) {
                 return {
                     success: true,

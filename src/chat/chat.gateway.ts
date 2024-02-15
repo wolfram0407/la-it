@@ -36,29 +36,6 @@ export class ChatGateway {
     ) {}
     private readonly secretKey = this.configService.get<string>('JWT_SECRET_KEY');
 
-    @UseGuards(WsGuard)
-    @SubscribeMessage('reconect')
-    async reconnecting(client: Socket, attemptNumber: string) {
-        //이게 작동은 할까?????
-        Logger.log('reconnecting_to_server____++++_____++++client', client);
-        //Logger.log('reconnecting_to_server_attemptNumber', attemptNumber);
-        //Logger.log('reconnecting_to_server_channelId', channelId);
-        //const { userId } = client.handshake.auth.user;
-        //Logger.log('reconnecting_to_server_userId', userId);
-
-        ////레디스에서 가져오기 메세지
-        //const getRedisChatData = await this.redis.xRange(channelId, '-', '+');
-        //const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
-        //Logger.log('getRedisChatData', getRedisChatData);
-        //Logger.log('findUserDisconnectData', findUserDisconnectData);
-
-        //정보를 가져와서 뭐.. 보여주고 끝이 아니자나
-        //보여주고나서 유저 채팅 원활하게 해야하자나.. 그건 어떻게 할껀데...
-        //근데 유
-        //레디스에서 유저 정보 가져와서  해당 유저정보에 해당하는 메세지
-        //를 그려준다....
-    }
-
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
         Logger.log('5초마다 실행되는 카운트 라이브 챗 유저 함수');
@@ -203,39 +180,26 @@ export class ChatGateway {
         const { userId, nickname } = client.handshake.auth.user;
         const filterWord = await searchProhibitedWords(value);
         let result = true;
-        Logger.log('클라이언트 아이디 확인확인', client.id); //콘솔에 찍힘
-        Logger.log('채널아이디 확인확인', channelId); //콘솔에 찍힘
-        Logger.log('내용', value);
         if (filterWord) {
-            const test = this.server.to(channelId).emit('test', value, nickname);
-            const test2 = this.server.to(channelId).emit('test2');
-            const test3 = this.server.to(client.id).emit('test3');
-            //const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname); //이건;
-            //Logger.log('첫번째 sendingMessage', sendingMessage); //첫번째 sendingMessage, true
             this.server.to(client.id).emit('alert', '허용하지 않는 단어입니다.'); //소켓 서버 끊겨도 알러트 뜨는거 확인.
             result = false;
             return;
         }
 
         const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
-        Logger.log('세이브쳇 saveChat', saveChat); //콘솔에 찍힘
         if (saveChat === 'sameChat') {
-            Logger.log('같은내용임 ');
             this.server.to(client.id).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
             result = false;
             return;
         }
         if (saveChat === 'toFastChat') {
-            Logger.log('빨라유 ');
             this.server.to(client.id).emit('alert', '메세지를 전송할 수 없습니다. 메세지를 너무 빨리 보냈습니다.'); //연결 끊겨도 나오는거 확인.
             result = false;
             return;
         }
-        Logger.log('new_message 실행중'); //콘솔에 찍힘
 
         if (result) {
             const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
-            Logger.log('sendingMessage', sendingMessage); //sendingMessage, true
             return sendingMessage;
         }
     }

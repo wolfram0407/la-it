@@ -29,10 +29,10 @@ export class PaymentService {
                 currency: 'CURRENCY_KRW',
                 payMethod: paymentType,
             });
-            console.log('payment의 response', response);
+            // console.log('payment의 response', response);
             return response;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -63,7 +63,7 @@ export class PaymentService {
                 switch (payment.status) {
                     case 'VIRTUAL_ACCOUNT_ISSUED': {
                         const paymentMethod = payment.paymentMethod;
-                        console.log('paymentMethod', paymentMethod);
+                        // console.log('paymentMethod', paymentMethod);
                         // 가상 계좌가 발급된 상태입니다.
                         // 계좌 정보를 이용해 원하는 로직을 구성하세요.
                         break;
@@ -77,7 +77,7 @@ export class PaymentService {
                 // 결제 금액이 불일치하여 위/변조 시도가 의심됩니다.
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -90,7 +90,7 @@ export class PaymentService {
             refundAmount,
             userId,
         });
-        console.log('결제테이블 데이터 저장 성공', createPaymentData);
+        // console.log('결제테이블 데이터 저장 성공', createPaymentData);
         return createPaymentData;
     }
 }

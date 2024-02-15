@@ -62,7 +62,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             Logger.log('디스커넥트 함수내부  findUserLastChatData', findUserLastChatData);
             const lastChat = findUserLastChatData[findUserLastChatData.length - 1];
 
-            console.log('디스커넥트 함수내부  lastChat', lastChat);
+            // console.log('디스커넥트 함수내부  lastChat', lastChat);
 
             //lastChat_채널아이디_유저아이디 라는 키로 해당 채팅 데이터를 넣기.(id값만 넣으면 될꺼같음.)
             let obj = {};
@@ -129,7 +129,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             //    return 'endLive';
             //}
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 }

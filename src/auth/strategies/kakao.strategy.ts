@@ -1,12 +1,12 @@
-import {UserService} from 'src/user/user.service';
-import {AuthService} from './../auth.service';
+import { UserService } from 'src/user/user.service';
+import { AuthService } from './../auth.service';
 
-import {Injectable, Res} from '@nestjs/common';
-import {ConfigService} from '@nestjs/config';
-import {PassportStrategy} from '@nestjs/passport';
-import {Strategy, Profile} from 'passport-kakao';
+import { Injectable, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy, Profile } from 'passport-kakao';
 import * as _ from 'lodash';
-import {Response} from 'express';
+import { Response } from 'express';
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
@@ -28,15 +28,15 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         let user = await this.authService.validateUser(kakaoId);
         if (!user) {
             // 회원가입 진행
-            user = await this.userService.createUserAndChannel({kakaoId, nickname, profileImage, provider});
-            console.log(user);
+            user = await this.userService.createUserAndChannel({ kakaoId, nickname, profileImage, provider });
+            // console.log(user);
         }
 
         const access_token = await this.authService.createAccessToken(user.userId);
-        const Bearer = 'Bearer ' + access_token
-        console.log('access_token', Bearer);
+        const Bearer = 'Bearer ' + access_token;
+        // console.log('access_token', Bearer);
         //const refresh_token = await this.authService.createRefreshToken(user.userId);
 
-        return {access_token: Bearer};
+        return { access_token: Bearer };
     }
 }

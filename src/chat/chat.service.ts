@@ -38,7 +38,7 @@ export class ChatService {
             }, 60000); //1분
             return joinTheChatRoom;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -47,7 +47,7 @@ export class ChatService {
             clearInterval(this.setIntervalFunc);
             return;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
     async enterLiveRoomChat(channelId: string, socket: Socket) {
@@ -97,7 +97,7 @@ export class ChatService {
                 return;
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -106,14 +106,14 @@ export class ChatService {
             if (this.createChatRoomNoChatData === true) return;
             const channelIdDataSize = await this.redis.xLen(channelId);
             const channelIdDataSizeHalf = Math.floor(channelIdDataSize / 2);
-            console.log('1분 주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
+            // console.log('1분 주기로 실행중', channelIdDataSize, channelIdDataSizeHalf);
             //캐시에 반절만 가져오기
             const moveDataToCache = await this.liveChatDataMoveMongo(channelId, channelIdDataSizeHalf);
             Logger.log('몽고디비에 데이터 넣었슈', moveDataToCache);
 
             return moveDataToCache;
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -143,7 +143,7 @@ export class ChatService {
             const getRedisChatData = await this.redis.XRANGE(channelId, '-', '+');
             const recentRedisChatData = getRedisChatData.slice(-5);
             Logger.log('위에서부터 5개 데이터만 가져와유 ', recentRedisChatData);
-            console.log('위에서부터 5개 데이터만 가져와유 recentRedisChatData', recentRedisChatData);
+            // console.log('위에서부터 5개 데이터만 가져와유 recentRedisChatData', recentRedisChatData);
             const filterRedisData = recentRedisChatData.filter((data) => {
                 if (+data.message.userId === userId && data.message.content === content.trim()) {
                     return data;
@@ -179,14 +179,14 @@ export class ChatService {
             const moveDataToMongo = await this.setStreamCache(channelId, cacheData);
 
             if (!moveDataToMongo) {
-                console.log('데이터를 레디스에만 넣고 db로 아직 안옮김');
+                // console.log('데이터를 레디스에만 넣고 db로 아직 안옮김');
             } else console.log('데이터를 레디스에 넣고 db로 옮김');
 
             //2개의 채널이 동시에 작동하는 경우 테스트 해볼것.
 
             return '성공';
         } catch (err) {
-            console.log('err', err);
+            // console.log('err', err);
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
             //throw new WsException('Invalid credentials.');
         }
@@ -194,7 +194,7 @@ export class ChatService {
 
     async getAllChatByChannelId(channelId: string) {
         try {
-            console.log(channelId);
+            // console.log(channelId);
             //const chats = await this.ChatModel.find({ channelId }).select('userId nickname channelId content createdAt');
             //console.log('chats', chats);
             //return chats;

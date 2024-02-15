@@ -27,7 +27,7 @@ async function paymentRequest(e) {
             },
         )
         .then((response) => {
-            console.log('리스펀스', response);
+            // console.log('리스펀스', response);
         });
 }
 

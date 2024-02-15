@@ -56,7 +56,7 @@ export class ChatGateway {
             const arr = e.split('_');
             return (obj[arr[0]] = arr[1]);
         });
-        console.log('count_live_chat_user  오비제이이', obj, newWatchCount);
+        // console.log('count_live_chat_user  오비제이이', obj, newWatchCount);
         if (Object.keys(obj).length >= 1) {
             await this.redis.hSet('watchCtn', obj);
         }
@@ -74,7 +74,7 @@ export class ChatGateway {
             Logger.log('라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.');
             if (!this.whileRepeat) return;
             await this.countLiveChatUser(client, channelId);
-            console.log('5초마다 라이브방송 참여유저수 계산중');
+            // console.log('5초마다 라이브방송 참여유저수 계산중');
         }, 5000);
 
         return createChatRoom;
@@ -87,7 +87,7 @@ export class ChatGateway {
         const deleteChatRoom = await this.chatService.deleteChatRoom(channelId, client);
         this.whileRepeat = false;
         clearInterval(this.interval);
-        console.log('stop_live 멈춤 인터벌');
+        // console.log('stop_live 멈춤 인터벌');
         const obj = {};
         obj[channelId] = 0;
         await this.redis.hDel('watchCtn', channelId);
@@ -115,10 +115,10 @@ export class ChatGateway {
             const [lastChatId, lastClientIdData] = lastChatData.split('__');
             const lastClientId = lastClientIdData.split('_')[1];
             Logger.log('lastChatId, lastClientId', `${lastChatId}, ${lastClientId}`);
-            console.log('lastClientId', lastClientId);
+            // console.log('lastClientId', lastClientId);
 
             const getAllChatData = await this.redis.xRange(channelId, '-', '+');
-            console.log('getAllChatData', getAllChatData);
+            // console.log('getAllChatData', getAllChatData);
             Logger.log('enter_room 함수 안__레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
             let lastChatIndex;
             const findMustShowChatData = getAllChatData.filter((data, i) => {
@@ -132,7 +132,7 @@ export class ChatGateway {
             //Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
 
             const userDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'channelId');
-            console.log('유저가 연결 해제된 channelId', userDisconnectData);
+            // console.log('유저가 연결 해제된 channelId', userDisconnectData);
             //const chats = await this.chatService.enterLiveRoomChat(channelId, client);
             userDisconnectData.split(' / ').forEach((channelId) => {
                 client.join(channelId);

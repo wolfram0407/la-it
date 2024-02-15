@@ -14,7 +14,7 @@ export class LiveController {
     })
     @Post('create/:channelId')
     create(@Body() { title, description }: ReqCreateLiveDto, thumbnail: string, hlsUrl: string, @Param('channelId') channelId: string) {
-        console.log('!');
+        // console.log('!');
         return this.liveService.create(title, description, thumbnail, hlsUrl, channelId);
     }
 

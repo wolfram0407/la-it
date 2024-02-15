@@ -15,9 +15,9 @@ export class LiveService {
 
     async create(title: string, description: string, thumbnail: string, hlsUrl: string, channelId: string) {
         const channelColumn = await this.channelRepository.findOneBy({ channelId });
-        console.log('channelColumn: ', channelColumn);
+        // console.log('channelColumn: ', channelColumn);
         const streamKey = channelColumn.streamKey;
-        console.log('streamKey: ', streamKey);
+        // console.log('streamKey: ', streamKey);
         hlsUrl = `/tmp/hls/${streamKey}/index.m3u8`;
         thumbnail = `/thumb/thumbnail_${streamKey}.png`;
 
@@ -34,7 +34,7 @@ export class LiveService {
 
     async end(channelId: string) {
         const endTargetLive = await this.findOneByChannelId(channelId);
-        console.log('endTargetLive', endTargetLive);
+        // console.log('endTargetLive', endTargetLive);
         if (!endTargetLive) return;
         const updateStatusLive = await this.liveRepository.update(endTargetLive?.live_id, { status: false });
         //endTargetLive.status = false;

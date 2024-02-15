@@ -34,21 +34,21 @@ export class AppController {
         Logger.log('알이큐 아이피', req.ip); // 요청한 클라이언트의 IP 주소
         Logger.log('알이큐 유저에이전트', req.headers['user-agent']); // 클라이언트의 User-Agent 값(어플 유형, 운영체제, 소프트웨어 버전)
         const getRedisData = await this.redis.hGetAll('watchCtn');
-        console.log('lives =======> ', lives);
+        // console.log('lives =======> ', lives);
         lives.map((e) => {
             const channelId = e.channel.channelId;
             const redisId = Object.keys(getRedisData);
-            console.log('getRedisData', getRedisData);
-            console.log('redisId', redisId);
+            // console.log('getRedisData', getRedisData);
+            // console.log('redisId', redisId);
             if (!redisId.length) {
-                console.log('없슈');
-                console.log('e', e);
+                // console.log('없슈');
+                // console.log('e', e);
                 return (e.channel['watchNum'] = 0);
             } else {
-                console.log('잇슈슈슈슈');
+                // console.log('잇슈슈슈슈');
 
                 const findData = redisId.filter((e) => e === channelId)[0];
-                console.log('findData', findData, getRedisData[findData]);
+                // console.log('findData', findData, getRedisData[findData]);
                 return (e.channel['watchNum'] = getRedisData[findData]);
             }
         });
@@ -91,17 +91,17 @@ export class AppController {
     async userInfo(@UserInfo() user: UserAfterAuth) {
         // 내채널 클릭 시 Id값 필요
         const channel = await this.userService.findChannelIdByUserId(user.id);
-        console.log('app.controller의 channel', channel);
+        // console.log('app.controller의 channel', channel);
         return channel.channelId;
     }
 
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
     async myInfo(@Param('channelId') channelId: string) {
-        console.log('_________');
+        // console.log('_________');
         // 내채널 클릭 시 Id값 필요
         const channel = await this.userService.FindChannelIdByChannel(channelId);
-        console.log('channel가져옴', channel);
+        // console.log('channel가져옴', channel);
         return { title: 'My Page', path: '/my-page', channel: { ...channel, channelId: channelId } };
         //return { title: 'User - channel info view page', path: '/my-page', live: live };
     }
@@ -130,7 +130,7 @@ export class AppController {
         channel['liveStatusValue'] = liveStatusValue;
         channel['liveTitle'] = liveTitle;
         channel['liveDesc'] = liveDesc;
-        console.log('!!!channel!!! =========> ', channel);
+        // console.log('!!!channel!!! =========> ', channel);
         return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}` } };
         // hls url 추가해서 환경변수로 관리
         // 'http://localhost:8080'
@@ -150,7 +150,7 @@ export class AppController {
     @Render('payment') // Render the 'main' EJS template
     @Get('payments/charge')
     async paymentsCharge() {
-        console.log('ddd');
+        // console.log('ddd');
         return { title: 'Payments Charge Page', path: '/payments/charge' };
     }
 }

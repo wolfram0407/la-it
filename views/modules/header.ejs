@@ -93,7 +93,7 @@
         }
 
         searchBtn.addEventListener('click', async () => {
-            const value = searchValue.value
+            const value = searchValue.value.trim()
 
             if (!value) {
                 alert("Please enter a value!")

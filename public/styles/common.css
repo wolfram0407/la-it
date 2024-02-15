@@ -685,6 +685,13 @@ input {
     font-size: 28px;
     font-weight: 900;
     color: #dfe2ea;
+    margin-right: auto;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: left;
 }
 .myChannelInfo {
     display: flex;
@@ -1018,11 +1025,11 @@ input {
 .channelImageWrap {
     display: flex;
     width: 100%;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    margin-left: 20px;
+    /*margin-bottom: 20px;*/
+    /*margin-left: 20px;*/
 }
 
 .channelImageINputWrap {
@@ -1051,6 +1058,7 @@ input {
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.209);
     margin-right: 10px;
+    display: none;
 }
 
 .uploadBtn:hover,

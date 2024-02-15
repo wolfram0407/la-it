@@ -178,6 +178,7 @@ async function chatSending(e) {
             return alert('로그인 후 이용 가능합니다.');
         });
     const chatInput = document.querySelector('.chatInputText');
+    console.log('인풋값', chatInput.value);
     if (chatInput.value.trim().length < 1) {
         return;
     } else {

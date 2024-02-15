@@ -21,11 +21,11 @@ function writeChannelInfo(e) {
 async function sendChannelInfoData(e) {
     e.preventDefault();
     const channelTitleInput = document.querySelector('.channelTitleInput');
-    console.log('channelTitleInput', channelTitleInput);
+    //console.log('channelTitleInput', channelTitleInput);
     const blankChannelTitleInput = channelTitleInput.value.trim().length < 1;
 
     const channelInfoText = document.querySelector('.channelInfoText');
-    console.log('channelInfoText', channelInfoText);
+    //console.log('channelInfoText', channelInfoText);
     const blankChannelInfoText = channelInfoText.value.trim().length < 1;
 
     if (blankChannelInfoText || blankChannelTitleInput) {
@@ -68,7 +68,7 @@ async function saveImageS3(channelId, formData, AccessToken) {
             },
         })
         .then((response) => {
-            console.log('response', response.data.data);
+            // console.log('response', response.data.data);
             return response.data.data;
         });
 }
@@ -91,14 +91,14 @@ async function saveChannelInfoData(channelId, saveImageUrlData, formDataObj, Acc
             },
         )
         .then((response) => {
-            console.log('response', response);
+            // console.log('response', response);
         });
 }
 
 //스트림키 재발급
 async function changeStreamKey(e, AccessToken) {
     e.preventDefault();
-    console.log('스트림키 바꿀예정이에유');
+    // console.log('스트림키 바꿀예정이에유');
     return await axios
         .put(
             `/api/channel/change-key/${channelId}`,
@@ -111,9 +111,9 @@ async function changeStreamKey(e, AccessToken) {
             },
         )
         .then((response) => {
-            console.log(response.data.streamKey);
+            // console.log(response.data.streamKey);
             const newStreamKey = response.data.streamKey; // 응답에서 새 스트림키 값 가져오기 (응답 구조에 따라 수정 필요)
             document.querySelector('#streamKeyValue').textContent = newStreamKey;
-            console.log(response);
+            // console.log(response);
         });
 }

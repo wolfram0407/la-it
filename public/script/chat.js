@@ -96,7 +96,6 @@ socket.on('disconnect', (reason) => {
 
 //재연결 시도가 시작될때
 socket.io.on('reconnect_attempt', async (attempt) => {
-    // console.log('리커넥트 어템프으');
     await socket.emit('reconnect', { attempt: attempt });
 });
 
@@ -113,8 +112,6 @@ socket.io.on('reconnect_error', (error) => {
 //재연결 시도중일 때
 socket.on('reconnecting', async (attemptNumber) => {
     Logger.log('리커넥팅!! 실행중', attemptNumber);
-    // console.log('리커넥팅!! 실행중', attemptNumber);
-
     await socket.emit('reconnect', { attemptNumber: attemptNumber });
 });
 
@@ -138,6 +135,11 @@ socket.on('test2', () => {
 //이건 되는지 테스트3
 socket.on('test3', () => {
     // console.log('테스트가 되나요3333 클라이언트아이디. new_message에서 이게 작동 되게 하나요?');
+});
+
+//방 삭제 테스트
+socket.on('delete-room', () => {
+    console.log('삭제삭제테스트');
 });
 
 //스트리머 방송 종료

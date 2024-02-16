@@ -38,8 +38,9 @@ export class ChatGateway {
 
     @SubscribeMessage('count_live_chat_user')
     async countLiveChatUser(client: Socket, channelId: string) {
-        Logger.log('5초마다 실행되는 카운트 라이브 챗 유저 함수');
+        Logger.log(`5초마다 실행되는 카운트 라이브 챗 유저 함수 ${client.id}`);
         const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
+        console.log('룸의 사이즈', room);
         const rooms = this.server.sockets.adapter.rooms;
 
         let newWatchCount = [];
@@ -71,7 +72,7 @@ export class ChatGateway {
         await this.countLiveChatUser(client, channelId);
         this.whileRepeat = true;
         this.interval = setInterval(async () => {
-            Logger.log('라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.');
+            Logger.log(`라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.${client.id}`);
             if (!this.whileRepeat) return;
             await this.countLiveChatUser(client, channelId);
             // console.log('5초마다 라이브방송 참여유저수 계산중');

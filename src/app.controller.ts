@@ -29,26 +29,14 @@ export class AppController {
         const status = s ? s : false;
         Logger.log('스테이터스가 있다면 리로드 되고 있다.', status);
         const lives = await this.liveService.findAll();
-        Logger.log('req', req);
-        Logger.log('알이큐 헤더즈', req.headers); // 모든 헤더 출력
-        Logger.log('알이큐 아이피', req.ip); // 요청한 클라이언트의 IP 주소
-        Logger.log('알이큐 유저에이전트', req.headers['user-agent']); // 클라이언트의 User-Agent 값(어플 유형, 운영체제, 소프트웨어 버전)
         const getRedisData = await this.redis.hGetAll('watchCtn');
-        // console.log('lives =======> ', lives);
         lives.map((e) => {
             const channelId = e.channel.channelId;
             const redisId = Object.keys(getRedisData);
-            // console.log('getRedisData', getRedisData);
-            // console.log('redisId', redisId);
             if (!redisId.length) {
-                // console.log('없슈');
-                // console.log('e', e);
                 return (e.channel['watchNum'] = 0);
             } else {
-                // console.log('잇슈슈슈슈');
-
                 const findData = redisId.filter((e) => e === channelId)[0];
-                // console.log('findData', findData, getRedisData[findData]);
                 return (e.channel['watchNum'] = getRedisData[findData]);
             }
         });
@@ -59,7 +47,6 @@ export class AppController {
     @Get('register')
     @Render('main')
     async register(@Req() req) {
-        // console.log('register!!!!');
         return { title: 'Register Page', path: req.url };
     }
 

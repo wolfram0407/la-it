@@ -34,35 +34,25 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
             Logger.log(`___________________________ ${client.id}`);
 
             const url = client.handshake.headers.referer.split('/');
-            Logger.log(`디스커넥트 함수내부  url: ${url}`);
             const channelId = url[url.length - 1];
-            Logger.log(`디스커넥트 함수내부  channelId: ${channelId}`);
-
             const userUrlStreamOrChannel = url[url.length - 2];
-            Logger.log(`디스커넥트 함수내부  userUrlStreamOrChannel: ${userUrlStreamOrChannel}`);
-
             let disconnectDataObj = {};
             let ttl = 600;
+
+            //유저정보 가져오기
             const token = client.handshake.auth.token;
             if (!token || token.split(' ')[0] !== 'Bearer') return;
-
-            Logger.log(`디스커넥트 함수내부 client.handshake.auth: ${client.handshake.auth.token}`);
-
             const tokenValue = token.split(' ')[1];
             const verify = jwt.verify(tokenValue, this.secretKey);
             const userId = verify.sub;
-            Logger.log(`디스커넥트 함수내부 userId  확인필수: ${userId}`);
 
             const findUserDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'disconnectTime');
             const findUserDisconnectClientId = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'clientId');
-            Logger.log('디스커넥트 함수내부 findUserDisconnectData', findUserDisconnectData);
 
             //레디스에서 채팅 데이터 가져오기.
             const findUserLastChatData = await this.redis.xRange(channelId, '-', '+');
             Logger.log('디스커넥트 함수내부  findUserLastChatData', findUserLastChatData);
             const lastChat = findUserLastChatData[findUserLastChatData.length - 1];
-
-            // console.log('디스커넥트 함수내부  lastChat', lastChat);
 
             //lastChat_채널아이디_유저아이디 라는 키로 해당 채팅 데이터를 넣기.(id값만 넣으면 될꺼같음.)
             let obj = {};

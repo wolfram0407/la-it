@@ -15,6 +15,7 @@ import { searchProhibitedWords } from './forbidden.words';
 import { LiveService } from 'src/live/live.service';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
+import { Cron } from '@nestjs/schedule';
 
 @WebSocketGateway({
     cors: {
@@ -36,32 +37,40 @@ export class ChatGateway {
     ) {}
     private readonly secretKey = this.configService.get<string>('JWT_SECRET_KEY');
 
-    @SubscribeMessage('count_live_chat_user')
-    async countLiveChatUser(client: Socket, channelId: string) {
-        Logger.log(`5초마다 실행되는 카운트 라이브 챗 유저 함수 ${client.id}`);
-        const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
-        console.log('룸의 사이즈', room);
-        const rooms = this.server.sockets.adapter.rooms;
+    ////@SubscribeMessage('count_live_chat_user')
+    ////@Cron('*/5  * * * * *')
+    //async countLiveChatUser(client: Socket, channelId: string) {
+    //    //Logger.log(`5초마다 실행되는 카운트 라이브 챗 유저 함수 ${client.id}`);
+    //    //console.log(`5초마다 실행되는 카운트 라이브 챗 유저 함수 ${client.id}`);
 
-        let newWatchCount = [];
-        const obj = {};
-        const keys = Object.fromEntries(rooms);
+    //    //const roomUserCtn = this.chatService.roomUserCtn(client, channelId);
+    //    //const roomUserCtn = client.nsp.adapter.rooms.get(channelId)?.size;
+    //    const roomUserCtn = this.server.sockets.adapter.rooms.get(channelId)?.size;
+    //    console.log('roomUserCtn', roomUserCtn);
+    //    return roomUserCtn;
+    //    //const room = this.server.sockets.adapter.rooms.get(channelId)?.size;
+    //    //console.log('룸의 사이즈', room);
+    //    //const rooms = this.server.sockets.adapter.rooms;
 
-        for (let data in keys) {
-            if (data.length > 20) {
-                newWatchCount.push(`${data}_${keys[data].size}`);
-            }
-        }
+    //    //let newWatchCount = [];
+    //    //const obj = {};
+    //    //const keys = Object.fromEntries(rooms);
 
-        newWatchCount.map(async (e) => {
-            const arr = e.split('_');
-            return (obj[arr[0]] = arr[1]);
-        });
-        // console.log('count_live_chat_user  오비제이이', obj, newWatchCount);
-        if (Object.keys(obj).length >= 1) {
-            await this.redis.hSet('watchCtn', obj);
-        }
-    }
+    //    //for (let data in keys) {
+    //    //    if (data.length > 20) {
+    //    //        newWatchCount.push(`${data}_${keys[data].size}`);
+    //    //    }
+    //    //}
+
+    //    //newWatchCount.map(async (e) => {
+    //    //    const arr = e.split('_');
+    //    //    return (obj[arr[0]] = arr[1]);
+    //    //});
+    //    //// console.log('count_live_chat_user  오비제이이', obj, newWatchCount);
+    //    //if (Object.keys(obj).length >= 1) {
+    //    //    await this.redis.hSet('watchCtn', obj);
+    //    //}
+    //}
 
     @UseGuards(WsGuard)
     @SubscribeMessage('create_room')
@@ -69,17 +78,15 @@ export class ChatGateway {
         const createChatRoom = await this.chatService.createChatRoom(channelId, client);
         Logger.log(`채팅방이 생성되었어요.${client.id}`);
 
-        await this.countLiveChatUser(client, channelId);
-        this.whileRepeat = true;
-        this.interval = setInterval(async () => {
-            Logger.log(`라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.${client.id}`);
-            if (!this.whileRepeat) return;
-            await this.countLiveChatUser(client, channelId);
-            // console.log('5초마다 라이브방송 참여유저수 계산중');
-        }, 5000);
+        //this.whileRepeat = true;
+        //this.interval = setInterval(async () => {
+        //    Logger.log(`라이브 방송 참여자 수 계산하는 인터벌이 작동중입니다.${client.id}`);
+        //    if (!this.whileRepeat) return;
+        //    await this.countLiveChatUser(client, channelId);
+        //    // console.log('5초마다 라이브방송 참여유저수 계산중');
+        //}, 5000);
 
         return createChatRoom;
-        return true;
     }
 
     @UseGuards(WsGuard)

@@ -2,7 +2,7 @@ import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestj
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from './schema/chat.schema';
 import { Model } from 'mongoose';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { UserService } from 'src/user/user.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -10,6 +10,8 @@ import { RedisClientType } from 'redis';
 import { object } from 'joi';
 import { DataSource, MongoDBNamespace } from 'typeorm';
 import { Client } from 'socket.io/dist/client';
+import { WebSocketServer } from '@nestjs/websockets';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ChatService {
@@ -18,6 +20,8 @@ export class ChatService {
     private setIntervalFunc;
     private intervalDataPush;
     private createChatRoomNoChatData;
+    private server: Server;
+    private socket: Socket;
 
     constructor(
         @InjectModel(Chat.name) private readonly ChatModel: Model<Chat>,
@@ -190,6 +194,23 @@ export class ChatService {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
             //throw new WsException('Invalid credentials.');
         }
+    }
+
+    //socket 객체 저장
+    public setServer(server: Server) {
+        this.server = server;
+    }
+
+    //실시간 방송 시청자수
+    @Cron('*/5  * * * * *')
+    async roomUserCtn() {
+        const roomsMapObj = this.server.sockets.adapter.rooms;
+        const watchCtn = {};
+        for (let [k, e] of roomsMapObj) {
+            const channelIdExists = await this.userService.FindChannelIdByChannel(k);
+            watchCtn[k] = e.size;
+        }
+        return watchCtn;
     }
 
     async getAllChatByChannelId(channelId: string) {

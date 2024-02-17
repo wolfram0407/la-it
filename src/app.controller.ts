@@ -12,6 +12,9 @@ import { Role } from './common/types/userRoles.type';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { RedisClientType } from 'redis';
+import { WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
+import { ChatService } from './chat/chat.service';
 
 @ApiTags('Frontend')
 @Controller()
@@ -20,25 +23,39 @@ export class AppController {
         private readonly userService: UserService,
         private readonly liveService: LiveService,
         private readonly mainService: MainService,
+        private readonly chatService: ChatService,
+
         @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
     ) {}
 
+    @WebSocketServer() server: Server;
     @Get()
     @Render('main') // Render the 'main' EJS template
     async main(@Req() req, @Query('s') s) {
         const status = s ? s : false;
         Logger.log('스테이터스가 있다면 리로드 되고 있다.', status);
         const lives = await this.liveService.findAll();
-        const getRedisData = await this.redis.hGetAll('watchCtn');
+        //const getRedisData = await this.redis.hGetAll('watchCtn');
+        //let getRedisData;
+        const roomUserCtn = await this.chatService.roomUserCtn();
+        console.log('__roomUserCtn', roomUserCtn);
+
         lives.map((e) => {
             const channelId = e.channel.channelId;
-            const redisId = Object.keys(getRedisData);
-            if (!redisId.length) {
-                return (e.channel['watchNum'] = 0);
-            } else {
-                const findData = redisId.filter((e) => e === channelId)[0];
-                return (e.channel['watchNum'] = getRedisData[findData]);
-            }
+            //console.log('__channelId', channelId);
+            //const roomWatcherCtn = roomUserCtn[channelId];
+            //console.log('__roomWatcherCtn', roomWatcherCtn);
+            e.channel['watchNum'] = roomUserCtn[channelId];
+
+            //const roomUserCtn = this.server.sockets.adapter.rooms.get(channelId)?.size;
+            //e.channel['watchNum'] = roomUserCtn;
+            //const redisId = Object.keys(getRedisData);
+            //if (!redisId.length) {
+            //    return (e.channel['watchNum'] = 0);
+            //} else {
+            //    const findData = redisId.filter((e) => e === channelId)[0];
+            //    return (e.channel['watchNum'] = getRedisData[findData]);
+            //}
         });
         const livesIncludeHlsUrl = { lives, hlsUrl: process.env.HLS_URL };
         return { title: 'Home Page', path: req.url, livesIncludeHlsUrl, status };

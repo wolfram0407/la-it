@@ -16,6 +16,7 @@ import { SentryInterceptor } from './common/interceptor/sentry.interceptor';
 import * as Sentry from '@sentry/node';
 import { ConfigService } from '@nestjs/config';
 import { RedisIoAdapter } from './redis/redis.adapter';
+import { ChatService } from './chat/chat.service';
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: WinstonModule.createLogger({
@@ -46,7 +47,7 @@ async function bootstrap() {
     app.use(cookieParser());
     //소켓 어뎁터로 연결(nest에서 웹소켓을 사용할 수 있도록)
     const redisIoAdapter = new RedisIoAdapter(app);
-    await redisIoAdapter.connectToRedis(configService);
+    const connectSocket = await redisIoAdapter.connectToRedis(configService);
     app.useWebSocketAdapter(redisIoAdapter);
 
     //app.useWebSocketAdapter(new IoAdapter(app));
@@ -76,5 +77,8 @@ async function bootstrap() {
     app.useGlobalInterceptors(new SentryInterceptor());
     await app.listen(3002);
     Logger.log(`listening on 3002`);
+
+    const chatService = app.get(ChatService);
+    chatService.setServer(redisIoAdapter.getServerInstance());
 }
 bootstrap();

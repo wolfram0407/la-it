@@ -58,9 +58,9 @@ export class ChatService {
         try {
             const joinTheChatRoom = socket.join(channelId);
 
-            const getChannelChatCacheData = await this.redis.xRange(channelId, '-', '+');
-
-            return getChannelChatCacheData;
+            const getChannelChatCacheData = await this.redis.XRANGE(channelId, '-', '+');
+            const getChannelChatCacheDataRecent = getChannelChatCacheData.slice(-30);
+            return getChannelChatCacheDataRecent;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }

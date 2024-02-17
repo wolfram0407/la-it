@@ -15,6 +15,7 @@ import { RedisClientType } from 'redis';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { ChatService } from './chat/chat.service';
+import { boolean } from 'joi';
 
 @ApiTags('Frontend')
 @Controller()
@@ -31,8 +32,9 @@ export class AppController {
     @WebSocketServer() server: Server;
     @Get()
     @Render('main') // Render the 'main' EJS template
-    async main(@Req() req, @Query('s') s) {
-        const status = s ? s : false;
+    async main(@Req() req, @Query() query: object) {
+        const status = query['s'] ? query['s'] : false;
+        if (!status && Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.1');
         Logger.log('스테이터스가 있다면 리로드 되고 있다.', status);
         const lives = await this.liveService.findAll();
         //const getRedisData = await this.redis.hGetAll('watchCtn');
@@ -82,8 +84,11 @@ export class AppController {
 
     @Get('channel/:channelId')
     @Render('main')
-    async live(@Param('channelId') channelId: string) {
+    async live(@Param('channelId') channelId: string, @Query() query: string) {
+        console.log('쿼리', query);
+        if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
         const channel = await this.userService.FindChannelIdByChannel(channelId);
+        if (!channel) throw new Error('존재하지 않는 방송입니다.');
         const live = await this.liveService.findByChannelIdOnlyCurrentLive(channelId);
         const channelLive = { ...channel, ...live };
 
@@ -101,10 +106,11 @@ export class AppController {
 
     @Get('my-page/:channelId')
     @Render('main') // Render the 'main' EJS template
-    async myInfo(@Param('channelId') channelId: string) {
-        // console.log('_________');
+    async myInfo(@Param('channelId') channelId: string, @Query() query: string) {
         // 내채널 클릭 시 Id값 필요
+        if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
         const channel = await this.userService.FindChannelIdByChannel(channelId);
+        if (!channel) throw new Error('정상적인 접근이 아닙니다.');
         // console.log('channel가져옴', channel);
         return { title: 'My Page', path: '/my-page', channel: { ...channel, channelId: channelId } };
         //return { title: 'User - channel info view page', path: '/my-page', live: live };
@@ -120,8 +126,13 @@ export class AppController {
 
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
-    async provideLive(@Param('channelId') channelId: string, @Req() req) {
+    async provideLive(@Param('channelId') channelId: string, @Req() req, @Query() query: string) {
+        console.log('스트리머 쿼리', query);
+        if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
         const channel = await this.userService.FindChannelIdByChannel(channelId);
+        console.log('channel', channel);
+
+        if (!channel) throw new Error('정상적인 접근이 아닙니다.');
         const live = await this.liveService.findOneByChannelId(channelId);
 
         const liveStatusValue = live ? live.status : false;

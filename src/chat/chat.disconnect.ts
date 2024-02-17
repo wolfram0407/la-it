@@ -31,7 +31,7 @@ export class ChatGatewayDisconnect implements OnGatewayDisconnect {
         try {
             const reason = client.disconnect; // Socket.IO 3.x 이상에서 사용 가능
             Logger.log('디스커넥트 함수내부 끊긴이유===>reason', reason);
-            Logger.log(`___________________________ ${client.id}`);
+            Logger.log(`__________________________ ${client.id}`);
 
             const url = client.handshake.headers.referer.split('/');
             const channelId = url[url.length - 1];

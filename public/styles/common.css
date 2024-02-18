@@ -877,20 +877,30 @@ input {
     height: 100%;
 }
 
+.broadcastBtn {
+    border: 1px solid rgb(85, 85, 85);
+    color: #ffffff;
+}
+
 .broadcastBtn,
 .broadcastCloseBtn {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #ffe062;
+
     border-radius: 10px;
-    color: black;
+
     text-align: center;
     font-weight: 700;
     width: 150px;
     height: 70px;
     padding: 10px;
+}
+
+.broadcastCloseBtn {
+    background-color: #ffe062;
+    color: black;
 }
 
 .broadcastBtnImg {

@@ -2,8 +2,8 @@
     <div class="registerForm">
         <h2 class="registerTitle">회원가입</h2>
         <input class="emailInput" id="registerEmail" type="email" name="email" placeholder="이메일 입력" required />
-        <input class="nicknameInput" id="registerNickname" type="text" name="nickname" placeholder="닉네임 입력" required />
-        <input class="pwdInput" id="registerPassword" type="password" name="password" placeholder="비밀번호 입력" required />
+        <input maxlength="10" class="nicknameInput" id="registerNickname" type="text" name="nickname" placeholder="닉네임 입력" required />
+        <input maxlength="20" class="pwdInput" id="registerPassword" type="password" name="password" placeholder="비밀번호 입력" required />
         <button id="register" class="userBtn" type="button">회원가입</button>
     </div>
 </div>
@@ -16,6 +16,29 @@
             const nickname = document.getElementById('registerNickname').value;
             const password = document.getElementById('registerPassword').value;
 
+            // 이메일 형식 검사
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(email)) {
+                alert('올바른 이메일 형식을 입력해주세요.');
+                return;
+            }
+
+            // 입력 값 공백 검사
+            if (!email.trim()) {
+                alert('이메일을 입력해주세요.');
+                return;
+            }
+
+            if (!nickname.trim()) {
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+
+            if (!password.trim()) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
             await axios
                 .post('/api/user/register', {
                     email: email,
@@ -23,14 +46,14 @@
                     password: password,
                 })
                 .then(function (response) {
-                    window.location.href = '/user/login';
+                    alert('회원가입 되었습니다.');
+                    window.location.href = '/login';
                 })
                 .catch(function (error) {
                     // console.log(error);
                     if (error.response.status === 409) {
-                        alert('이미 등록된 이메일 입니다.');
-                    } else {
-                        console.log(error);
+                        alert('이미 등록된 이메일 입니다. 로그인 해주세요.');
+                        window.location.href = '/login';
                     }
                 });
         });

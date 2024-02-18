@@ -9,11 +9,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ImageModule } from 'src/image/image.module';
 import { Heart } from 'src/heart/entities/heart.entity';
 import { Payment } from 'src/payment/entities/payment.entity';
+import { AuthService } from 'src/auth/auth.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
     imports: [JwtModule, PassportModule, ImageModule, TypeOrmModule.forFeature([User, Channel, Heart, Payment])],
     controllers: [UserController],
-    providers: [UserService],
+    providers: [UserService, AuthService],
     exports: [UserService],
 })
 export class UserModule {}

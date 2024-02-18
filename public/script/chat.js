@@ -22,7 +22,8 @@ const chatNickname = document.querySelector('#chatNickname');
 const chatText = document.querySelector('#chatText');
 const oneChat = document.querySelector('#oneChat');
 const chatInputText = document.querySelector('.chatInputText');
-
+const chatInputWrap = document.querySelector('.chatInputWrap');
+const notification1 = document.querySelector('.notification1');
 let roomNum;
 
 if (path.includes('streaming')) {
@@ -36,13 +37,16 @@ if (path.includes('streaming')) {
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(11);
         roomNum = channelId;
-        //만약 유저가 새로고침이 되어 다시 들어온거라면?
-        //유저 시간. 유저
+
         endChat.addEventListener('click', endLive);
 
         startLiveChat.addEventListener('click', (e) => {
             e.preventDefault();
+            notification1.hidden = true;
+            chatInputWrap.hidden = false;
             const createRoom = socket.emit('create_room', channelId);
+            //chatNickname.textContent = '채팅창에 유저 닉네임을 클릭하면 해당 유저를 차단할 수 있습니다.';
+            //chatNickname.style.color = '#ff3348';
         });
 
         sendChatBtnStreamerPage.addEventListener('click', chatSending);
@@ -51,7 +55,16 @@ if (path.includes('streaming')) {
                 chatSending(e);
             }
         });
-        1;
+        //스트리머가 유저 채팅 금지시키기
+        chatBox.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log(e.target.classList.value);
+            console.log(e.target.id);
+            if (+e.target.id >= 0 && e.target.classList.value === 'chatNickname') {
+                const block = confirm(`"${e.target.innerText}" 유저를 차단하시겠습니까?`);
+                if (block) socket.emit('block_user', roomNum, e.target.id, e.target.innerText);
+            }
+        });
     });
 } else if (path.includes('channel')) {
     const sendChatBtn = document.querySelector('#sendChat');
@@ -59,11 +72,14 @@ if (path.includes('streaming')) {
     //방 선택하면 서버에게 알려주는 애.
     document.addEventListener('DOMContentLoaded', function () {
         const channelId = window.location.pathname.slice(9);
-        // console.log('채널아이디', channelId);
         const enterRoom = socket.emit('enter_room', channelId);
-        // console.log('두둥', enterRoom, '---');
         roomNum = channelId;
-        // console.log('라이브 아이디', roomNum);
+
+        chatInputText.onpaste = (e) => {
+            //붙여 넣기 막기
+            e.preventDefault();
+            return false;
+        };
 
         sendChatBtn.addEventListener('click', chatSending);
         chatInputText.addEventListener('keydown', (e) => {
@@ -76,22 +92,24 @@ if (path.includes('streaming')) {
 
 // 연결 시작
 socket.on('connect', () => {
-    // console.log('연결 시작~~~');
+    console.log('연결 시작~~~');
 });
 
 //ping 테스트
 socket.io.on('ping', () => {
-    // console.log('핑이벤트 감지되었다');
+    console.log('핑이벤트 감지되었다');
 });
 
 //reconnect 테스트
 socket.io.on('reconnect', (attempt) => {
-    // console.log('리커넥트 이벤트 실행중', attempt);
+    console.log('리커넥트 이벤트 실행중', attempt);
 });
 
 // 연결 해제될때 이유 보기
 socket.on('disconnect', (reason) => {
-    // console.log('연결해제 이유', reason); //연결해제 이유 transport close
+    console.log('연결해제 이유', reason); //연결해제 이유;
+    ////broadcastBtn.hidden = false;
+    ////broadcastCloseBtn.hidden = true;
 });
 
 //재연결 시도가 시작될때
@@ -101,12 +119,12 @@ socket.io.on('reconnect_attempt', async (attempt) => {
 
 //혹시몰라 실패할때 재연결
 socket.io.on('reconnect_failed', () => {
-    // console.log('리커넥트 실패한 경우 일어나는 이벤트');
+    console.log('리커넥트 실패한 경우 일어나는 이벤트');
 });
 
 //재연결 에러날 경우 사용되는 이벤트
 socket.io.on('reconnect_error', (error) => {
-    // console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
+    console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
 });
 
 //재연결 시도중일 때
@@ -117,24 +135,24 @@ socket.on('reconnecting', async (attemptNumber) => {
 
 //연결 에러날때
 socket.on('connect_error', (err) => {
-    // console.log(err.message); //에러 이유
+    console.log(err.message); //에러 이유
     // console.log(err.description);
     // console.log(err.context);
 });
 
 //이건 되는지 테스트
 socket.on('test', (value, nickname) => {
-    // console.log('테스트가 되나요? new_message에서 이게 작동 되게 하나요?', value, nickname);
+    console.log('테스트가 되나요? new_message에서 이게 작동 되게 하나요?', value, nickname);
 });
 
 //이건 되는지 테스트2
 socket.on('test2', () => {
-    // console.log('테스트가 되나요22222? new_message에서 이게 작동 되게 하나요?');
+    console.log('테스트가 되나요22222? new_message에서 이게 작동 되게 하나요?');
 });
 
 //이건 되는지 테스트3
 socket.on('test3', () => {
-    // console.log('테스트가 되나요3333 클라이언트아이디. new_message에서 이게 작동 되게 하나요?');
+    console.log('테스트가 되나요3333 클라이언트아이디. new_message에서 이게 작동 되게 하나요?');
 });
 
 //방 삭제 테스트
@@ -148,18 +166,6 @@ async function endLive(e) {
     const url = '/?s=true';
     await socket.emit('stop_live', channelId);
     await socket.emit('exit_room', channelId);
-    //await axios
-    //    .post(`/api/live/end/${channelId}`, {
-    //        withCredentials: true,
-    //        headers: {
-    //            authorization: `${getCookie('Authorization')}`,
-    //        },
-    //    })
-    //    .then((response) => {
-    //        console.log('response', response.data.data);
-    //        return response.data.data;
-    //    });
-
     return (window.location.href = url);
 }
 
@@ -180,27 +186,23 @@ async function chatSending(e) {
             return alert('로그인 후 이용 가능합니다.');
         });
     const chatInput = document.querySelector('.chatInputText');
-    // console.log('인풋값', chatInput.value);
     if (chatInput.value.trim().length < 1) {
         return;
     } else {
-        // console.log('룸넘버 채팅방 채널아이디 확인', roomNum);
         socket.emit('new_message', chatInput.value, roomNum);
         chatInputText.value = '';
     }
 }
 
 //메세지 받아오기
-socket.on('sending_message', (msg, nickname) => {
-    // console.log('sending_message 받은거~~', msg, nickname);
-    addMessage(msg, nickname);
+socket.on('sending_message', (msg, nickname, userId) => {
+    console.log('센딩메세지의 유저아이디', userId);
+    addMessage(msg, nickname, userId);
 });
 
 //금칙어_ 허용하지 않는 단어입니다.
 socket.on('alert', (msg) => {
-    // console.log('받은거', msg);
     alert(msg);
-    //addMessage(msg, nickname);
 });
 
 //에러메세지
@@ -220,6 +222,12 @@ socket.on('bye', () => {
     return (window.location.href = url);
 });
 
+//스트리머 연결 끊기면 방송 종료 버튼 안보이게
+socket.on('streamer_reload_end', () => {
+    const url = '/streaming/:roomNum';
+    return (window.location.href = url);
+});
+
 ////서버 연결 불안정시 disconnect 되면 새로고침
 //socket.on('reload', () => {
 //    //const url = '/';
@@ -234,22 +242,25 @@ function getAllChatByChannelId(e) {
 }
 
 //메세지 그리기
-function addMessage(msg, nickname) {
-    // console.log('addMessage ==>', msg, nickname);
+function addMessage(msg, nickname, userId) {
     const chatListDiv = document.createElement('div');
     chatListDiv.classList.add('chatList');
+    if (+userId > 0) chatListDiv.id = userId;
 
     const nicknameSpan = document.createElement('span');
     nicknameSpan.classList.add('chatNickname');
+    nicknameSpan.id = userId;
     nicknameSpan.textContent = nickname + ' ';
     const messageText = document.createTextNode(msg);
 
+    if (+userId < 0) {
+        chatListDiv.style.color = '#2af23a';
+        nicknameSpan.style.color = '#2af23a';
+    }
     chatListDiv.appendChild(nicknameSpan);
     chatListDiv.appendChild(messageText);
     chatBox.appendChild(chatListDiv);
 
-    //const temp = ` <div class="chatList"><span class="chatNickname">${nickname}</span> ${msg}</div>`;
-    //chatBox.insertAdjacentHTML('beforeend', temp);
     chatScroll();
     return;
 }

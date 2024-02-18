@@ -117,51 +117,51 @@ export class ChatGateway {
             userId = verify.sub;
         }
 
-        const lastChatData = await this.redis.hGet(`lastChat_${channelId}`, `userId${userId}`);
-        Logger.log(`엔터룸 lastChatData : ${lastChatData}`);
-        if (lastChatData) {
-            const [lastChatId, lastClientIdData] = lastChatData.split('__');
-            const lastClientId = lastClientIdData.split('_')[1];
-            Logger.log('lastChatId, lastClientId', `${lastChatId}, ${lastClientId}`);
-            // console.log('lastClientId', lastClientId);
+        //const lastChatData = await this.redis.hGet(`lastChat_${channelId}`, `userId${userId}`);
+        //Logger.log(`엔터룸 lastChatData : ${lastChatData}`);
+        //if (lastChatData) {
+        //    const [lastChatId, lastClientIdData] = lastChatData.split('__');
+        //    const lastClientId = lastClientIdData.split('_')[1];
+        //    Logger.log('lastChatId, lastClientId', `${lastChatId}, ${lastClientId}`);
+        //    // console.log('lastClientId', lastClientId);
 
-            const getAllChatData = await this.redis.xRange(channelId, '-', '+');
-            // console.log('getAllChatData', getAllChatData);
-            Logger.log('enter_room 함수 안__레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
-            let lastChatIndex;
-            const findMustShowChatData = getAllChatData.filter((data, i) => {
-                if (data.id.toString() === lastChatId) {
-                    lastChatIndex = i;
-                }
-                if (i > lastChatIndex) return data;
-            });
-            //console.log('findMustShowChatData', findMustShowChatData);
+        //    const getAllChatData = await this.redis.xRange(channelId, '-', '+');
+        //    // console.log('getAllChatData', getAllChatData);
+        //    Logger.log('enter_room 함수 안__레디스에서 가져온 채팅데이터 getAllChatData', getAllChatData);
+        //    let lastChatIndex;
+        //    const findMustShowChatData = getAllChatData.filter((data, i) => {
+        //        if (data.id.toString() === lastChatId) {
+        //            lastChatIndex = i;
+        //        }
+        //        if (i > lastChatIndex) return data;
+        //    });
+        //    //console.log('findMustShowChatData', findMustShowChatData);
 
-            //Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
+        //    //Logger.log('findIndexLastChat', lastChatIndex, findMustShowChatData);
 
-            const userDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'channelId');
-            // console.log('유저가 연결 해제된 channelId', userDisconnectData);
-            //const chats = await this.chatService.enterLiveRoomChat(channelId, client);
-            userDisconnectData.split(' / ').forEach((channelId) => {
-                client.join(channelId);
-                //lastClientId.join(channelId); //오류남.
-            });
-            for (let i = 0; i < getAllChatData.length; i++) {
-                Logger.log('enter_room 함수 안에서 반복문이에요~~');
-                this.server.to(client.id).emit('sending_message', getAllChatData[i].message.content, getAllChatData[i].message.nickname);
-            }
+        //    const userDisconnectData = await this.redis.hGet(`socket_disconnect_userId_${userId}`, 'channelId');
+        //    // console.log('유저가 연결 해제된 channelId', userDisconnectData);
+        //    //const chats = await this.chatService.enterLiveRoomChat(channelId, client);
+        //    userDisconnectData.split(' / ').forEach((channelId) => {
+        //        client.join(channelId);
+        //        //lastClientId.join(channelId); //오류남.
+        //    });
+        //    for (let i = 0; i < getAllChatData.length; i++) {
+        //        Logger.log('enter_room 함수 안에서 반복문이에요~~');
+        //        this.server.to(client.id).emit('sending_message', getAllChatData[i].message.content, getAllChatData[i].message.nickname);
+        //    }
 
-            return;
-        }
+        //    return;
+        //}
 
         //유저가 다시 방에 입장하게 된다면 채팅 입력이 안되는 문제가 생긴다.
         //유저의 화면에 있는 채팅의 client id 값과, 다시 연결됬을때의 client id값이 바뀌기 때문.
 
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
-
+        console.log('챗스 입니다아아', chats);
         for (let i = 0; i < chats.length; i++) {
             Logger.log('enter_room 함수 안에서 반복문이에요~~');
-            this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname);
+            this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname, chats[i].message.userId);
         }
 
         return {
@@ -174,6 +174,7 @@ export class ChatGateway {
     @SubscribeMessage('exit_room')
     async exitLiveRoomChat(client: Socket, channelId: string): Promise<any> {
         Logger.log(`exit_room 이 실행되고 있습니다.`);
+        const deleteBlockUser = await this.chatService.deleteBlockUser(channelId);
         const moveChatData = await this.chatService.liveChatDataMoveMongo(channelId, 0);
         const endLive = await this.liveService.end(channelId);
 
@@ -186,6 +187,15 @@ export class ChatGateway {
     @SubscribeMessage('new_message')
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         const { userId, nickname } = client.handshake.auth.user;
+
+        const getRedisBlockUser = await this.redis.hGet('blockUser', `${channelId}`);
+        console.log('getRedisBlockUser', getRedisBlockUser);
+        const isBlockUser = getRedisBlockUser?.includes(userId);
+        console.log('isBlockUser', isBlockUser);
+        if (isBlockUser) {
+            this.server.to(client.id).emit('alert', '스트리머가 당신을 차단했습니다.');
+            return;
+        }
         const filterWord = await searchProhibitedWords(value);
         let result = true;
         if (filterWord) {
@@ -205,11 +215,26 @@ export class ChatGateway {
             result = false;
             return;
         }
-
+        console.log('새로운 메세제', saveChat);
         if (result) {
-            const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname);
+            const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname, saveChat);
             return sendingMessage;
         }
+    }
+
+    //채팅 금지시키기
+    @SubscribeMessage('block_user')
+    async blockUser(client: Socket, [channelId, userId, userNickName]: [channelId: string, userId: string, userNickName: string]) {
+        console.log('유저 차단중', channelId, userId);
+        const getRedisBlockUser = await this.redis.hGet('blockUser', `${channelId}`);
+        console.log('getRedisBlockUser', getRedisBlockUser);
+        let saveRedisBlockUser;
+        if (getRedisBlockUser) {
+            saveRedisBlockUser = await this.redis.hSet('blockUser', channelId, `${getRedisBlockUser}, ${userId}`);
+        } else if (!getRedisBlockUser) {
+            saveRedisBlockUser = await this.redis.hSet('blockUser', channelId, `${userId}`);
+        }
+        this.server.to(channelId).emit('sending_message', `${userNickName} 차단!!`, '스트리머', -1);
     }
 
     //@SubscribeMessage('get_all_chat_by_channelId')

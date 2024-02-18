@@ -134,7 +134,12 @@ export class AppController {
 
         if (!channel) throw new Error('정상적인 접근이 아닙니다.');
         const live = await this.liveService.findOneByChannelId(channelId);
-
+        console.log('live-->', live);
+        let liveIsGoing;
+        if (live) {
+            liveIsGoing = false;
+            //await this.liveService.end(channelId);
+        }
         const liveStatusValue = live ? live.status : false;
         const liveTitle = live ? live.title : false;
         const liveDesc = live ? live.description : false;
@@ -146,7 +151,7 @@ export class AppController {
         channel['liveTitle'] = liveTitle;
         channel['liveDesc'] = liveDesc;
         // console.log('!!!channel!!! =========> ', channel);
-        return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}` } };
+        return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}`, liveIsGoing } };
         // hls url 추가해서 환경변수로 관리
         // 'http://localhost:8080'
     }

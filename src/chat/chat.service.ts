@@ -66,6 +66,15 @@ export class ChatService {
         }
     }
 
+    async deleteBlockUser(channelId: string) {
+        try {
+            await this.redis.hDel('blockUser', `${channelId}`);
+            return;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     async liveChatDataMoveMongo(channelId: string, countNum: number) {
         try {
             let getRedisChatData;
@@ -188,7 +197,7 @@ export class ChatService {
 
             //2개의 채널이 동시에 작동하는 경우 테스트 해볼것.
 
-            return '성공';
+            return userId.toString();
         } catch (err) {
             // console.log('err', err);
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
@@ -207,9 +216,12 @@ export class ChatService {
         const roomsMapObj = this.server.sockets.adapter.rooms;
         const watchCtn = {};
         for (let [k, e] of roomsMapObj) {
-            const channelIdExists = await this.userService.FindChannelIdByChannel(k);
-            watchCtn[k] = e.size;
+            if (k.length > 30) {
+                const channelIdExists = await this.userService.FindChannelIdByChannel(k);
+                channelIdExists ? (watchCtn[k] = e.size) : watchCtn;
+            }
         }
+        console.log('와치시티엔', watchCtn);
         return watchCtn;
     }
 

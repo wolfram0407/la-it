@@ -498,6 +498,21 @@ input {
     display: flex;
     flex-direction: column;
     border-left: 1px solid #9da5b662;
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.liveChatBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.chatBox {
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.chatBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .sendChat {

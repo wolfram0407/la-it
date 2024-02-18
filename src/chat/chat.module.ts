@@ -17,5 +17,6 @@ import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
     imports: [MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]), UserModule, AuthModule, RedisModule, LiveModule], //
     controllers: [],
     providers: [ChatService, ChatGateway, ChatGatewayDisconnect, JwtStrategy],
+    exports: [ChatService],
 })
 export class ChatModule {}

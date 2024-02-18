@@ -1,5 +1,5 @@
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import { ServerOptions } from 'socket.io';
+import { Server, ServerOptions } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
 import { ConfigService } from '@nestjs/config';
@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 
 export class RedisIoAdapter extends IoAdapter {
     private adapterConstructor: ReturnType<typeof createAdapter>;
+    private serverInstance: Server;
 
     async connectToRedis(configService: ConfigService): Promise<void> {
         const pubClient = createClient({
@@ -28,6 +29,12 @@ export class RedisIoAdapter extends IoAdapter {
         const server = super.createIOServer(port, options);
         //생성된 서버 인스턴스에 레디스 어뎁터 적용.
         server.adapter(this.adapterConstructor);
+        this.serverInstance = server;
+
         return server;
+    }
+
+    getServerInstance(): Server {
+        return this.serverInstance;
     }
 }

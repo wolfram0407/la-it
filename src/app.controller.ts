@@ -1,21 +1,15 @@
 import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Inject, Logger, Param, Query, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Inject, Logger, Param, Query, Render, Req, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
-import { Roles } from './common/decorator/role.decorator';
-import { Role } from './common/types/userRoles.type';
-import { RolesGuard } from './auth/guards/roles.guard';
-import { AuthGuard } from '@nestjs/passport';
 import { RedisClientType } from 'redis';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { ChatService } from './chat/chat.service';
-import { boolean } from 'joi';
 
 @ApiTags('Frontend')
 @Controller()
@@ -39,7 +33,6 @@ export class AppController {
         const lives = await this.liveService.findAll();
         let roomUserCtn;
         Logger.log('__roomUserCtn', roomUserCtn);
-        console.log('lives', lives);
         if (lives) {
             roomUserCtn = await this.chatService.roomUserCtn();
             lives.map((e) => {
@@ -63,12 +56,6 @@ export class AppController {
         // console.log('login!!!');
         return { title: 'Login Page', path: '/login' };
     }
-    //@Get('live/:liveId')
-    //@Render('main') // Render the 'main' EJS template
-    //async live(@Param('liveId') liveId: string, @Res() res: Response) {
-    //    const live = await this.liveService.findOne(+liveId);
-    //    return { title: 'Live - User view page', path: '/live', live: live };
-    //}
 
     @Get('channel/:channelId')
     @Render('main')
@@ -88,22 +75,17 @@ export class AppController {
     @UseGuards(JwtAuthGuard)
     @Get('/my-page')
     async userInfo(@UserInfo() user: UserAfterAuth) {
-        // 내채널 클릭 시 Id값 필요
         const channel = await this.userService.findChannelIdByUserId(user.id);
-        // console.log('app.controller의 channel', channel);
         return channel.channelId;
     }
 
     @Get('my-page/:channelId')
-    @Render('main') // Render the 'main' EJS template
+    @Render('main')
     async myInfo(@Param('channelId') channelId: string, @Query() query: string) {
-        // 내채널 클릭 시 Id값 필요
         if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
         const channel = await this.userService.FindChannelIdByChannel(channelId);
         if (!channel) throw new Error('정상적인 접근이 아닙니다.');
-        // console.log('channel가져옴', channel);
         return { title: 'My Page', path: '/my-page', channel: { ...channel, channelId: channelId } };
-        //return { title: 'User - channel info view page', path: '/my-page', live: live };
     }
 
     @UseGuards(JwtAuthGuard)
@@ -117,33 +99,22 @@ export class AppController {
     @Get('streaming/:channelId')
     @Render('main') // Render the 'main' EJS template
     async provideLive(@Param('channelId') channelId: string, @Req() req, @Query() query: string) {
-        console.log('스트리머 쿼리', query);
         if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
         const channel = await this.userService.FindChannelIdByChannel(channelId);
-        console.log('channel', channel);
 
         if (!channel) throw new Error('정상적인 접근이 아닙니다.');
         const live = await this.liveService.findOneByChannelId(channelId);
-        console.log('live-->', live);
         let liveIsGoing;
         if (live) {
             liveIsGoing = false;
-            //await this.liveService.end(channelId);
         }
         const liveStatusValue = live ? live.status : false;
         const liveTitle = live ? live.title : false;
         const liveDesc = live ? live.description : false;
-        // if (liveStatusValue === true) {
-        // await this.liveService.end(channelId);
-        // }
-        //return { title: 'Streaming Page', path: '/streaming', channel, liveStatusValue };
         channel['liveStatusValue'] = liveStatusValue;
         channel['liveTitle'] = liveTitle;
         channel['liveDesc'] = liveDesc;
-        // console.log('!!!channel!!! =========> ', channel);
         return { title: 'Streaming Page', path: '/streaming', channel: { channel, hlsUrl: `${process.env.HLS_URL}`, liveIsGoing } };
-        // hls url 추가해서 환경변수로 관리
-        // 'http://localhost:8080'
     }
 
     @Render('main') // Render the 'main' EJS template
@@ -157,10 +128,9 @@ export class AppController {
         return { title: 'Search Page', path: '/search', searchs, searchState, search };
     }
 
-    @Render('payment') // Render the 'main' EJS template
+    @Render('payment')
     @Get('payments/charge')
     async paymentsCharge() {
-        // console.log('ddd');
         return { title: 'Payments Charge Page', path: '/payments/charge' };
     }
 }

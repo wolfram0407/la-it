@@ -4,18 +4,14 @@ const socket = io({
     auth: {
         token: `${getCookie('Authorization')}`,
     },
-    //transports: ['websocket'],
     reconnection: true,
     reconnectionAttempts: Infinity, // 재연결 시도 횟수 (무한)
     reconnectionDelay: 1000, // 초기 재연결 지연 시간 (밀리초)
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
     pingInterval: 2000, // 60초마다 ping->2초
     pingTimeout: 6000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
-    //pingTimeout: 6000000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림 __> 1000분
     upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
-
-// console.log('path확인', path);
 
 const chatBox = document.querySelector('#chatBox');
 const chatNickname = document.querySelector('#chatNickname');
@@ -56,8 +52,6 @@ if (path.includes('streaming')) {
         //스트리머가 유저 채팅 금지시키기
         chatBox.addEventListener('click', function (e) {
             e.preventDefault();
-            console.log(e.target.classList.value);
-            console.log(e.target.id);
             if (+e.target.id >= 0 && e.target.classList.value === 'chatNickname') {
                 const block = confirm(`"${e.target.innerText}" 유저를 차단하시겠습니까?`);
                 if (block) socket.emit('block_user', roomNum, e.target.id, e.target.innerText);
@@ -88,76 +82,6 @@ if (path.includes('streaming')) {
     });
 }
 
-// 연결 시작
-socket.on('connect', () => {
-    console.log('연결 시작~~~');
-});
-
-//ping 테스트
-socket.io.on('ping', () => {
-    console.log('핑이벤트 감지되었다');
-});
-
-//reconnect 테스트
-socket.io.on('reconnect', (attempt) => {
-    console.log('리커넥트 이벤트 실행중', attempt);
-});
-
-// 연결 해제될때 이유 보기
-socket.on('disconnect', (reason) => {
-    console.log('연결해제 이유', reason); //연결해제 이유;
-    ////broadcastBtn.hidden = false;
-    ////broadcastCloseBtn.hidden = true;
-});
-
-//재연결 시도가 시작될때
-socket.io.on('reconnect_attempt', async (attempt) => {
-    await socket.emit('reconnect', { attempt: attempt });
-});
-
-//혹시몰라 실패할때 재연결
-socket.io.on('reconnect_failed', () => {
-    console.log('리커넥트 실패한 경우 일어나는 이벤트');
-});
-
-//재연결 에러날 경우 사용되는 이벤트
-socket.io.on('reconnect_error', (error) => {
-    console.log('리커넥트 에러에러에러 경우 일어나는 이벤트');
-});
-
-//재연결 시도중일 때
-socket.on('reconnecting', async (attemptNumber) => {
-    Logger.log('리커넥팅!! 실행중', attemptNumber);
-    await socket.emit('reconnect', { attemptNumber: attemptNumber });
-});
-
-//연결 에러날때
-socket.on('connect_error', (err) => {
-    console.log(err.message); //에러 이유
-    // console.log(err.description);
-    // console.log(err.context);
-});
-
-//이건 되는지 테스트
-socket.on('test', (value, nickname) => {
-    console.log('테스트가 되나요? new_message에서 이게 작동 되게 하나요?', value, nickname);
-});
-
-//이건 되는지 테스트2
-socket.on('test2', () => {
-    console.log('테스트가 되나요22222? new_message에서 이게 작동 되게 하나요?');
-});
-
-//이건 되는지 테스트3
-socket.on('test3', () => {
-    console.log('테스트가 되나요3333 클라이언트아이디. new_message에서 이게 작동 되게 하나요?');
-});
-
-//방 삭제 테스트
-socket.on('delete-room', () => {
-    console.log('삭제삭제테스트');
-});
-
 //스트리머 방송 종료
 async function endLive(e) {
     e.preventDefault();
@@ -179,7 +103,6 @@ async function chatSending(e) {
         })
         .then((res) => {})
         .catch((err) => {
-            // console.log('catch err 로그인 에러', err);
             if (err.message === 'Network Error') return alert('500 잠시 후 다시 시도해 주세요.');
             return alert('로그인 후 이용 가능합니다.');
         });
@@ -194,7 +117,6 @@ async function chatSending(e) {
 
 //메세지 받아오기
 socket.on('sending_message', (msg, nickname, userId) => {
-    console.log('센딩메세지의 유저아이디', userId);
     addMessage(msg, nickname, userId);
 });
 
@@ -205,7 +127,6 @@ socket.on('alert', (msg) => {
 
 //에러메세지
 socket.on('error_message', (msg) => {
-    // console.log('받은거', msg);
     const getMessage = JSON.parse(msg);
     if (getMessage.error.message) {
         alert(getMessage.error.message);
@@ -214,7 +135,6 @@ socket.on('error_message', (msg) => {
 
 //방송 종료시 알림.경로 이동
 socket.on('bye', () => {
-    // console.log('종료 bye 실행중');
     alert('방송이 종료되었습니다.');
     const url = '/';
     return (window.location.href = url);
@@ -225,12 +145,6 @@ socket.on('streamer_reload_end', () => {
     const url = '/streaming/:roomNum';
     return (window.location.href = url);
 });
-
-////서버 연결 불안정시 disconnect 되면 새로고침
-//socket.on('reload', () => {
-//    //const url = '/';
-//    return window.location.reload(true);
-//});
 
 //채팅 전체 메세지 받아오기 _ 추후 방송별 채팅 메세지 받아오기 버튼 추가(유저 채널 쪽에)
 function getAllChatByChannelId(e) {

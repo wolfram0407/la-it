@@ -1,16 +1,11 @@
 import { MainService } from './main/main.service';
 import { UserService } from './user/user.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Inject, Logger, Param, Query, Redirect, Render, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Inject, Logger, Param, Query, Render, Req, UseGuards } from '@nestjs/common';
 import { LiveService } from './live/live.service';
 import { UserInfo } from './common/decorator/user.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { Response } from 'express';
 import { UserAfterAuth } from './auth/interfaces/after-auth';
-import { Roles } from './common/decorator/role.decorator';
-import { Role } from './common/types/userRoles.type';
-import { RolesGuard } from './auth/guards/roles.guard';
-import { AuthGuard } from '@nestjs/passport';
 import { RedisClientType } from 'redis';
 
 @ApiTags('Frontend')
@@ -60,14 +55,14 @@ export class AppController {
     @Render('main')
     async register(@Req() req) {
         // console.log('register!!!!');
-        return { title: 'Register Page', path: req.url };
+        return { title: 'Register Page', path: '/register' };
     }
 
     @Get('login')
     @Render('main')
     async login(@Req() req) {
-        // console.log('login!!!');
-        return { title: 'Login Page', path: req.url };
+        console.log('login!!!');
+        return { title: 'Login Page', path: '/login' };
     }
     //@Get('live/:liveId')
     //@Render('main') // Render the 'main' EJS template

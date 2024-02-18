@@ -330,7 +330,7 @@ d# 📺 라잇
 
 <br />
 
-<h2>NginX worker_processes과의 연관성</h2>
+<h2>실시간 스트리밍 딜레이와 NginX worker_processes과의 연관성</h2>
 
 -   **시도의 이유**
     -   worker_processes 설정은 Nginx가 요청을 처리하기 위해 생성할 수 있는 프로세스의 수를 지정하는 설정입니다.

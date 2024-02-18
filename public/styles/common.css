@@ -534,6 +534,17 @@ input {
     /* height: 800px; */
     margin-top: 20px;
 }
+.noScroll {
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+/* Chrome, Safari,Opera */
+.noScroll::-webkit-scrollbar {
+    display: none !important;
+}
 
 .chatBox {
     /*margin-top: 10px;*/

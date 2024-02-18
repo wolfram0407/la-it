@@ -37,28 +37,16 @@ export class AppController {
         if (!status && Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.1');
         Logger.log('스테이터스가 있다면 리로드 되고 있다.', status);
         const lives = await this.liveService.findAll();
-        //const getRedisData = await this.redis.hGetAll('watchCtn');
-        //let getRedisData;
-        const roomUserCtn = await this.chatService.roomUserCtn();
-        console.log('__roomUserCtn', roomUserCtn);
-
-        lives.map((e) => {
-            const channelId = e.channel.channelId;
-            //console.log('__channelId', channelId);
-            //const roomWatcherCtn = roomUserCtn[channelId];
-            //console.log('__roomWatcherCtn', roomWatcherCtn);
-            e.channel['watchNum'] = roomUserCtn[channelId];
-
-            //const roomUserCtn = this.server.sockets.adapter.rooms.get(channelId)?.size;
-            //e.channel['watchNum'] = roomUserCtn;
-            //const redisId = Object.keys(getRedisData);
-            //if (!redisId.length) {
-            //    return (e.channel['watchNum'] = 0);
-            //} else {
-            //    const findData = redisId.filter((e) => e === channelId)[0];
-            //    return (e.channel['watchNum'] = getRedisData[findData]);
-            //}
-        });
+        let roomUserCtn;
+        Logger.log('__roomUserCtn', roomUserCtn);
+        console.log('lives', lives);
+        if (lives) {
+            roomUserCtn = await this.chatService.roomUserCtn();
+            lives.map((e) => {
+                const channelId = e.channel.channelId;
+                e.channel['watchNum'] = roomUserCtn[channelId];
+            });
+        }
         const livesIncludeHlsUrl = { lives, hlsUrl: process.env.HLS_URL };
         return { title: 'Home Page', path: req.url, livesIncludeHlsUrl, status };
     }
@@ -90,6 +78,8 @@ export class AppController {
         const channel = await this.userService.FindChannelIdByChannel(channelId);
         if (!channel) throw new Error('존재하지 않는 방송입니다.');
         const live = await this.liveService.findByChannelIdOnlyCurrentLive(channelId);
+        console.log('live', live);
+        if (!live) throw new Error('이미 종료된 방송입니다.');
         const channelLive = { ...channel, ...live };
 
         return { title: 'Live - User view page', path: '/channel', channelLive: { channelLive, hlsUrl: process.env.HLS_URL } };

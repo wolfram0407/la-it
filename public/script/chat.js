@@ -45,8 +45,6 @@ if (path.includes('streaming')) {
             notification1.hidden = true;
             chatInputWrap.hidden = false;
             const createRoom = socket.emit('create_room', channelId);
-            //chatNickname.textContent = '채팅창에 유저 닉네임을 클릭하면 해당 유저를 차단할 수 있습니다.';
-            //chatNickname.style.color = '#ff3348';
         });
 
         sendChatBtnStreamerPage.addEventListener('click', chatSending);
@@ -245,18 +243,23 @@ function getAllChatByChannelId(e) {
 function addMessage(msg, nickname, userId) {
     const chatListDiv = document.createElement('div');
     chatListDiv.classList.add('chatList');
-    if (+userId > 0) chatListDiv.id = userId;
 
     const nicknameSpan = document.createElement('span');
     nicknameSpan.classList.add('chatNickname');
     nicknameSpan.id = userId;
-    nicknameSpan.textContent = nickname + ' ';
-    const messageText = document.createTextNode(msg);
 
-    if (+userId < 0) {
+    if (+userId > 0) {
+        chatListDiv.id = userId;
+        nicknameSpan.textContent = nickname + ' ';
+    }
+    if (+userId < 0 || nickname === '스트리머') {
         chatListDiv.style.color = '#2af23a';
         nicknameSpan.style.color = '#2af23a';
+        nicknameSpan.textContent = '스트리머' + ' ';
     }
+
+    const messageText = document.createTextNode(msg);
+
     chatListDiv.appendChild(nicknameSpan);
     chatListDiv.appendChild(messageText);
     chatBox.appendChild(chatListDiv);

@@ -8,10 +8,11 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { RedisClientType } from 'redis';
 import { object } from 'joi';
-import { DataSource, MongoDBNamespace } from 'typeorm';
+import { DataSource, Like, MongoDBNamespace } from 'typeorm';
 import { Client } from 'socket.io/dist/client';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Cron } from '@nestjs/schedule';
+import { LiveService } from 'src/live/live.service';
 
 @Injectable()
 export class ChatService {
@@ -26,6 +27,7 @@ export class ChatService {
     constructor(
         @InjectModel(Chat.name) private readonly ChatModel: Model<Chat>,
         private readonly userService: UserService,
+        private readonly liveService: LiveService,
         //@Inject(CACHE_MANAGER) private cacheManager: Cache, // 캐시 매니저 인스턴스 주입
         @Inject('REDIS_CLIENT') private readonly redis: RedisClientType,
         private dataSource: DataSource,
@@ -214,23 +216,24 @@ export class ChatService {
     @Cron('*/5  * * * * *')
     async roomUserCtn() {
         const roomsMapObj = this.server.sockets.adapter.rooms;
+        const isExistLiveStream = await this.liveService.findOnlyLiveGoing();
+        if (isExistLiveStream.length < 1) return;
         const watchCtn = {};
         for (let [k, e] of roomsMapObj) {
             if (k.length > 30) {
                 const channelIdExists = await this.userService.FindChannelIdByChannel(k);
-                channelIdExists ? (watchCtn[k] = e.size) : watchCtn;
+                channelIdExists ? (watchCtn[k] = +e.size - 1) : watchCtn;
             }
         }
+
         console.log('와치시티엔', watchCtn);
         return watchCtn;
     }
 
     async getAllChatByChannelId(channelId: string) {
         try {
-            // console.log(channelId);
-            //const chats = await this.ChatModel.find({ channelId }).select('userId nickname channelId content createdAt');
-            //console.log('chats', chats);
-            //return chats;
+            const chats = await this.ChatModel.find({ channelId }).select('userId nickname channelId content createdAt');
+            return chats;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }
@@ -238,8 +241,8 @@ export class ChatService {
 
     async getSearchChatMessage(searchValue: string, channelId: string) {
         try {
-            //const searchMessage = await this.ChatModel.findOne({ where: { channelId, content: Like(`%{searchValue}%`) } });
-            //return searchMessage;
+            const searchMessage = await this.ChatModel.findOne({ where: { channelId, content: Like(`%{searchValue}%`) } });
+            return searchMessage;
         } catch (err) {
             throw new InternalServerErrorException('알 수 없는 이유로 요청에 실패했습니다.');
         }

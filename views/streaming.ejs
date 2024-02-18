@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="liveChatBox" id="liveChatBoxContainer">
+    <div class="liveChatBox noScroll" id="liveChatBoxContainer">
         <div class="chatTitle">채팅</div>
         <div class="chatMain" id="chatBoxWrapStreaming">
             <div>
@@ -122,8 +122,6 @@
         streamingDesc.hidden = false;
         streamingTitleContent.hidden = true;
         streamingDescContent.hidden = true;
-        //document.querySelector('.chatInputWrap').hidden=true;
-        //document.querySelector('.chatNickname').textContent = '방송이 시작되어야 채팅이 가능합니다.';
     }
 
     async function createLive() {

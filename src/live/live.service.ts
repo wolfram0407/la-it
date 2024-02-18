@@ -48,6 +48,11 @@ export class LiveService {
         return allLive;
     }
 
+    async findOnlyLiveGoing(): Promise<Live[]> {
+        const allLive: Live[] = await this.liveRepository.find({ where: { status: true } });
+        return allLive;
+    }
+
     async findOne(liveId: number) {
         const live = await this.liveRepository.findOne({ relations: ['channel'], where: { live_id: liveId } });
         return live;
@@ -59,7 +64,7 @@ export class LiveService {
     }
 
     async findByChannelIdOnlyCurrentLive(channelId: string) {
-        const liveDataFromChannel = await this.liveRepository.findOne({ where: { channel: { channelId } }, order: { createdAt: 'DESC' } });
+        const liveDataFromChannel = await this.liveRepository.findOne({ where: { channel: { channelId }, status: true }, order: { createdAt: 'DESC' } });
         return liveDataFromChannel;
     }
 

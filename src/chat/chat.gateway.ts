@@ -159,6 +159,7 @@ export class ChatGateway {
 
         const chats = await this.chatService.enterLiveRoomChat(channelId, client);
         console.log('챗스 입니다아아', chats);
+
         for (let i = 0; i < chats.length; i++) {
             Logger.log('enter_room 함수 안에서 반복문이에요~~');
             this.server.to(client.id).emit('sending_message', chats[i].message.content, chats[i].message.nickname, chats[i].message.userId);
@@ -187,15 +188,18 @@ export class ChatGateway {
     @SubscribeMessage('new_message')
     async createChat(client: Socket, [value, channelId]: [value: string, channelId: string]) {
         const { userId, nickname } = client.handshake.auth.user;
+        const url = client.handshake.headers.referer.split('/');
+        const userUrlStreamOrChannel = url[url.length - 2];
 
         const getRedisBlockUser = await this.redis.hGet('blockUser', `${channelId}`);
-        console.log('getRedisBlockUser', getRedisBlockUser);
         const isBlockUser = getRedisBlockUser?.includes(userId);
-        console.log('isBlockUser', isBlockUser);
+        let saveChat;
+
         if (isBlockUser) {
             this.server.to(client.id).emit('alert', '스트리머가 당신을 차단했습니다.');
             return;
         }
+
         const filterWord = await searchProhibitedWords(value);
         let result = true;
         if (filterWord) {
@@ -204,7 +208,12 @@ export class ChatGateway {
             return;
         }
 
-        const saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
+        if (userUrlStreamOrChannel === 'streaming') {
+            saveChat = await this.chatService.createChat(client, value, channelId, userId, '스트리머');
+        } else {
+            saveChat = await this.chatService.createChat(client, value, channelId, userId, nickname);
+        }
+
         if (saveChat === 'sameChat') {
             this.server.to(client.id).emit('alert', '동일한 내용의 채팅입니다. 잠시 후 다시 시도해 주세요.');
             result = false;
@@ -215,8 +224,10 @@ export class ChatGateway {
             result = false;
             return;
         }
-        console.log('새로운 메세제', saveChat);
         if (result) {
+            if (userUrlStreamOrChannel === 'streaming') {
+                saveChat = '-1';
+            }
             const sendingMessage = this.server.to(channelId).emit('sending_message', value, nickname, saveChat);
             return sendingMessage;
         }
@@ -225,9 +236,7 @@ export class ChatGateway {
     //채팅 금지시키기
     @SubscribeMessage('block_user')
     async blockUser(client: Socket, [channelId, userId, userNickName]: [channelId: string, userId: string, userNickName: string]) {
-        console.log('유저 차단중', channelId, userId);
         const getRedisBlockUser = await this.redis.hGet('blockUser', `${channelId}`);
-        console.log('getRedisBlockUser', getRedisBlockUser);
         let saveRedisBlockUser;
         if (getRedisBlockUser) {
             saveRedisBlockUser = await this.redis.hSet('blockUser', channelId, `${getRedisBlockUser}, ${userId}`);

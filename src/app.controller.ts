@@ -54,14 +54,14 @@ export class AppController {
     @Get('register')
     @Render('main')
     async register(@Req() req) {
-        return { title: 'Register Page', path: req.url };
+        return { title: 'Register Page', path: '/register' };
     }
 
     @Get('login')
     @Render('main')
     async login(@Req() req) {
         // console.log('login!!!');
-        return { title: 'Login Page', path: req.url };
+        return { title: 'Login Page', path: '/login' };
     }
     //@Get('live/:liveId')
     //@Render('main') // Render the 'main' EJS template

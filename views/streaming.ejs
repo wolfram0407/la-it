@@ -13,12 +13,12 @@
             <div class="masterSettingBoxLeft">
                 <div class="masterSettingTitle">
                     <span>제목</span>
-                    <input maxlength="10" class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
+                    <input maxlength="20" class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
                     <span hidden id="streamingTitleContent"></span>
                 </div>
                 <div class="masterSettingDesc">
                     <span>내용</span>
-                    <input maxlength="10" class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
+                    <input maxlength="50" class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
                     <span hidden id="streamingDescContent"></span>
                 </div>
             </div>
@@ -28,13 +28,13 @@
                         <img src="/imgs/facetime-button (1).png" />
                     </div>
                     <div class="broadcastBtnDesc">
-                        <button id="liveStartBtn">방송시작</button>
+                        <button id="liveStartBtn">방송 시작</button>
                     </div>
                 </div>
                 <div class="broadcastCloseBtn" hidden>
                     <div class="broadcastBtnImg"><img src="/imgs/facetime-button (1).png" /></div>
                     <div class="broadcastCloseBtnDesc">
-                        <button id="liveEndBtn">방송종료</button>
+                        <button id="liveEndBtn">방송 종료</button>
                     </div>
                 </div>
                 <!-- <div class="masterSettingBtn">
@@ -126,9 +126,14 @@
 
     async function createLive() {
         const getAccessToken = getCookie('Authorization');
-        let streamingTitle = document.getElementById('streamingTitle').value;
-        let streamingDesc = document.getElementById('streamingDesc').value;
+        let streamingTitle = document.getElementById('streamingTitle').value.trim(); // 공백 제거 추가
+        let streamingDesc = document.getElementById('streamingDesc').value.trim(); // 공백 제거 추가
 
+        // 제목이나 내용이 비어있는 경우 alert 창 표시
+        if (!streamingTitle || !streamingDesc) {
+            alert('방송 제목과 상세정보를 입력해주세요.');
+            return; // 함수 실행 중지
+        }
         await axios
             .post(
                 `/api/live/create/${channelId}`,

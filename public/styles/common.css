@@ -246,19 +246,32 @@ input {
 
 .videoBoxTopImg {
     position: relative;
-    top: 60px;
+    top: 110px;
     left: 10px;
     z-index: 1;
+}
+
+.howManyWatch {
+    width: 83%;
+    margin: 10px;
 }
 
 .videoBoxBottom {
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: start;
     height: 100%;
-    /* margin-top: 350px; */
+    padding-top: 30px;
+    margin-top: 20px;
     /* width: 330px; */
+}
+.videoBoxBottomInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+    width: 60%;
 }
 
 .videoBoxBottomImgWrap {
@@ -278,8 +291,8 @@ input {
 
 .videoBoxBottomNickname {
     color: rgba(255, 255, 255, 0.73);
-    font-weight: 800;
-    font-size: 20px;
+    /* font-weight: 800; */
+    font-size: 15px;
 }
 
 .videoThumbnail {
@@ -629,6 +642,7 @@ input {
 .infoContentWrap {
     display: flex;
     flex-direction: column;
+    width: 80%;
 }
 
 .inChannelVideoBox {
@@ -682,6 +696,7 @@ input {
     margin-top: 30px;
     margin-left: 30px;
     margin-bottom: 50px;
+    width: 50%;
 }
 
 .myChannelInfoSubDetail {
@@ -731,12 +746,51 @@ input {
 .homeBox {
     /* width: 100%; */
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     margin: 50px 0 50px 0;
     padding-bottom: 50px;
     border-radius: 10px;
     /* border: 1px solid rgba(255, 255, 255, 0.428); */
+}
+
+.guideCallout {
+    border: 1px solid rgba(255, 255, 255, 0.428);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px 0 100px 0;
+    font-size: 18px;
+}
+
+.guidBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.guideList {
+    font-size: 24px;
+    margin-top: 70px;
+    margin-bottom: 50px;
+}
+
+.obsLink {
+    padding: 20px;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.guideImg {
+    text-align: center;
+    width: 900px;
+    height: auto;
+}
+
+.guideImg img {
+    width: 100%;
+    height: 100%;
 }
 
 /* 라이브 생성화면 */
@@ -849,20 +903,30 @@ input {
     height: 100%;
 }
 
+.broadcastBtn {
+    border: 1px solid rgb(85, 85, 85);
+    color: #ffffff;
+}
+
 .broadcastBtn,
 .broadcastCloseBtn {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #ffe062;
+
     border-radius: 10px;
-    color: black;
+
     text-align: center;
     font-weight: 700;
     width: 150px;
     height: 70px;
     padding: 10px;
+}
+
+.broadcastCloseBtn {
+    background-color: #ffe062;
+    color: black;
 }
 
 .broadcastBtnImg {

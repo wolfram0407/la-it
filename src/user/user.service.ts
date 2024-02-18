@@ -1,10 +1,13 @@
 import { Channel } from 'src/user/entities/channel.entity';
-import { HttpException, Injectable, NotAcceptableException, ServiceUnavailableException } from '@nestjs/common';
+import { ConflictException, HttpException, Injectable, NotAcceptableException, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { DataSource, Like, Repository } from 'typeorm';
 import { ReqCreateUserDto } from 'src/auth/dto/req.auth.dto';
 import crypto from 'crypto';
+import { ReqRegisterDto, ReqUpdateUserInfoDto, ReqLoginDto } from './dto/req.user.dto';
+import { compare, hash } from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -14,6 +17,7 @@ export class UserService {
         @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
         private dataSource: DataSource,
+        private readonly jwtService: JwtService,
     ) {}
 
     async createUserAndChannel(reqCreateUserDto: ReqCreateUserDto) {
@@ -37,7 +41,37 @@ export class UserService {
 
             return user;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            throw new ServiceUnavailableException();
+        }
+    }
+
+    async register(reqRegisterDto: ReqRegisterDto) {
+        const { email, nickname, password } = reqRegisterDto;
+        const existUser = await this.userRepository.findOne({ where: { email } });
+        if (existUser) {
+            throw new ConflictException('이미 등록된 이메일입니다.');
+        }
+        const hashedPassword = await hash(password, 10);
+        const randomId = () => crypto.randomBytes(8).toString('hex').toString();
+        const dummyHashValue = crypto.createHash('sha256').update(email).digest('hex');
+        try {
+            const newUser = await this.userRepository.save({
+                kakaoId: dummyHashValue,
+                email,
+                nickname,
+                password: hashedPassword,
+            });
+
+            // user channel create
+            const newChannel = await this.channelRepository.save({
+                description: '',
+                channelImage: '/imgs/defaultProfileImage.png',
+                streamKey: randomId(),
+                user: newUser,
+            });
+            return newUser;
+        } catch (error) {
             throw new ServiceUnavailableException();
         }
     }
@@ -57,6 +91,14 @@ export class UserService {
         return user;
     }
 
+    async findByEmail(email: string): Promise<User> {
+        const user = await this.userRepository.findOne({
+            where: { email: email },
+        });
+        // console.log('email user ===> ', user);
+        return user;
+    }
+
     async updateUserInfo(userId: number, nickname: string, profileImage: string, email: string) {
         try {
             const user = await this.userRepository.findOne({
@@ -68,7 +110,7 @@ export class UserService {
             user.email = email ? email : user.email;
             return await this.userRepository.save(user);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     async findByKakaoId(id: string) {
@@ -146,14 +188,14 @@ export class UserService {
     // channel information update
     async updateChannelInfo(id: string, channelName: string, description: string, channelImage: string) {
         try {
-            console.log('서비스', id, channelName, description, channelImage);
+            // console.log('서비스', id, channelName, description, channelImage);
             const channel = await this.channelRepository.findOne({ where: { channelId: id } });
             channel.channelName = channelName ? channelName : channel.channelName;
             channel.description = description ? description : channel.description;
             channel.channelImage = channelImage ? channelImage : channel.channelImage;
             return await this.channelRepository.save(channel);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     // channel Image update
@@ -163,7 +205,7 @@ export class UserService {
             channel.channelImage = channelImage;
             return await this.channelRepository.save(channel);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -175,7 +217,7 @@ export class UserService {
             channel.streamKey = randomId();
             return await this.channelRepository.save(channel);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -185,7 +227,7 @@ export class UserService {
             channel.streamKey = '';
             return await this.channelRepository.save(channel);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 }

@@ -61,13 +61,16 @@ export class AppController {
     @Render('main')
     async live(@Param('channelId') channelId: string, @Query() query: string) {
         console.log('쿼리', query);
-        if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
-        const channel = await this.userService.FindChannelIdByChannel(channelId);
-        if (!channel) throw new Error('존재하지 않는 방송입니다.');
+        let errMessage = { errMessage: 0 };
+        //if (Object.keys(query).length !== 0) throw new Error('정상적인 접근이 아닙니다.');
+        if (Object.keys(query).length !== 0) errMessage.errMessage = 1;
         const live = await this.liveService.findByChannelIdOnlyCurrentLive(channelId);
-        console.log('live', live);
-        if (!live) throw new Error('이미 종료된 방송입니다.');
-        const channelLive = { ...channel, ...live };
+        //if (!live) throw new Error('이미 종료된 방송입니다.');
+        if (!live) errMessage.errMessage = 3;
+        const channel = await this.userService.FindChannelIdByChannel(channelId);
+        //if (!channel) throw new Error('존재하지 않는 방송입니다.');
+        if (!channel) errMessage.errMessage = 2;
+        const channelLive = { ...channel, ...live, ...errMessage };
 
         return { title: 'Live - User view page', path: '/channel', channelLive: { channelLive, hlsUrl: process.env.HLS_URL } };
     }

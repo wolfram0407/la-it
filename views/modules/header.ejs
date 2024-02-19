@@ -27,8 +27,8 @@
         </div>
 
         <div class="userBtnWrap">
-            <div hidden class="registerBtn userBtn"><button id="registerBtn">회원가입</button></div>
-            <div hidden class="defaultLoginBtn userBtn"><button id="loginBtn">로그인</button></div>
+            <div class="registerBtn userBtn"><button id="registerBtn">회원가입</button></div>
+            <div class="defaultLoginBtn userBtn"><button id="loginBtn">로그인</button></div>
             <div class="logoutBtn userBtn"><button id="logoutBtn">로그아웃</button></div>
             <div class="myInfoBtn userBtn"><button id="goToMyChannelBtn">내 채널</button></div>
 
@@ -59,7 +59,7 @@
 
         kakaoLink.href = kakaoUrl
 
-        if (!getAccessToken) {
+        if (!getAccessToken || getAccessToken === 'logout') {
             myInfoBtn.hidden = true;
             //myNotificationBtn.hidden = true;
             logoutBtn.hidden = true;
@@ -104,7 +104,7 @@
         })
 
         logoutBtn.addEventListener('click', () => {
-            document.cookie = 'Authorization' + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;'
+            document.cookie = "Authorization=logout; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT max-age=0;"
             window.location.href = '/'
         })
         function getCookie(name) {

@@ -29,9 +29,9 @@ export class HeartService {
                 category: Category.charge,
                 heartAdditions: +chargeHeart,
             });
-            console.log('하트테이블 데이터 저장 성공', createHeartData);
+            // console.log('하트테이블 데이터 저장 성공', createHeartData);
         } catch (err) {
-            console.log('err', err);
+            // console.log('err', err);
         }
     }
 }

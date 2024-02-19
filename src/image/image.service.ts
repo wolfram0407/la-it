@@ -24,7 +24,7 @@ export class ImageService {
         ext: string, //파일확장자
     ) {
         try {
-            console.log('----- 이미지 서비스 시작 ------');
+            // console.log('----- 이미지 서비스 시작 ------');
 
             //const allowedExtensions = ['jpg', 'jpeg'];
             //if (!allowedExtensions.includes(ext)) {
@@ -42,7 +42,7 @@ export class ImageService {
             await this.s3Client.send(command);
             return `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${fileName}`;
         } catch (err) {
-            console.log(err.message);
+            // console.log(err.message);
         }
     }
 }

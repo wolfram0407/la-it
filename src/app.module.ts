@@ -21,6 +21,7 @@ import { HeartModule } from './heart/heart.module';
 import { ChannelNoticeModule } from './channel-notice/channel-notice.module';
 import { PaymentModule } from './payment/payment.module';
 import { RedisModule } from './redis/redis.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
@@ -52,6 +53,7 @@ import { RedisModule } from './redis/redis.module';
             }),
         }),
         ConfigModule.forRoot(),
+        ScheduleModule.forRoot(),
         TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         LiveModule,
         UserModule,

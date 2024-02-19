@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="liveChatBox" id="liveChatBoxContainer">
+    <div class="liveChatBox noScroll" id="liveChatBoxContainer">
         <div class="chatTitle">채팅</div>
         <div class="chatMain" id="chatBoxWrapStreaming">
             <div class="chatBox" id="chatBox">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="chatInputWrap streamingChatInputWrap">
-                <input type="text" id="chatInputStreamerPage" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px" />
+                <input maxlength="300" type="text" id="chatInputStreamerPage" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px" />
                 <button class="sendChat" id="sendChat">전송</button>
             </div>
         </div>
@@ -76,7 +76,7 @@
         await axios
             .get(`/api/live/${liveId}`)
             .then(function (response) {
-                console.log('response: ', response.data.channel.channelImage);
+                // console.log('response: ', response.data.channel.channelImage);
 
                 const streamKey = response.data.channel.streamKey;
                 //console.log('streamKey: ', streamKey);
@@ -86,8 +86,8 @@
                     const hls = new Hls({
                         debug: false,
                     });
-                    console.log(`<%= channelLive.hlsUrl %>/thumb/thumbnail_${streamKey}.png`);
-                    console.log(`<%= channelLive.hlsUrl %>/hls/${streamKey}/index.m3u8`);
+                    // console.log(`<%= channelLive.hlsUrl %>/thumb/thumbnail_${streamKey}.png`);
+                    // console.log(`<%= channelLive.hlsUrl %>/hls/${streamKey}/index.m3u8`);
                     hls.loadSource(`<%= channelLive.hlsUrl %>/hls/${streamKey}/index.m3u8`);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MEDIA_ATTACHED, function () {

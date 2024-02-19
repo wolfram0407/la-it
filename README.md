@@ -1,4 +1,4 @@
-# 📺 라잇
+d# 📺 라잇
 
 실시간 스트리밍 방송과 채팅을 제공하는 서비스 입니다.
 
@@ -81,9 +81,9 @@
 <br>
 <br>
 
-## 🎈 중간 MVP 까지의 서비스 아키텍처(수정중)
+## 🎈 서비스 아키텍처
 
-<img  src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/d91c0de6-ff9d-4183-9ff5-cb4df126d488/Untitled.png?id=e30cf654-427e-4d95-a1c4-aed9581ff655&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1706911200000&signature=DkAn4igKYj70HJtHTqX4zxM_iy76m5ZwjA4LPl4xtLo&downloadName=Untitled.png">
+<img src="./public/imgs/architecture.png">
 
 <br>
 <br>
@@ -222,12 +222,12 @@
 
 ## 🛢 ERD
 
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/e7a014d6-96fa-4c7a-879b-f97fd08152b7/Untitled.png?id=ef77d1a1-e03d-4913-af88-a07665e356e1&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1706911200000&signature=AkNQo6vpidNtysOPROq7EBrc78vpJj8_xtqVBE_EO-A&downloadName=Untitled.png">
+<img src="./public/imgs/erd.png" />
 
 <br>
 <br>
 
-## 👾 중간 MVP 전 Trouble Shooting
+## 👾 Trouble Shooting
 
 <h2>배포</h2>
 
@@ -253,3 +253,102 @@
 
 -   인스턴스 컴퓨터를 한 대 더 만들어 서비스용, 스트리밍 전용으로, 로드밸런서도 포트별로 분리!
 -   기존 도커 컴포즈 파일을 백엔드 컴퓨터와 nginx (스트리밍용) 두개로 분리 후 각 컴퓨터에서 따로 실행
+
+<br />
+
+<h2>실시간 스트리밍 딜레이</h2>
+
+-   **상황**
+
+    -   OBS Studio에서 송출 되고 있는 영상과 사이트 내에서 보여지는 영상의 딜레이가 생겼으며, 배포 상황에서 더 지연되는 상황이 발생하였습니다.
+
+        | 상황 | 딜레이    |
+        | ---- | --------- |
+        | 로컬 | 20초 이상 |
+        | 배포 | 30초 이상 |
+
+-   **원인**
+    <details>
+    <summary><strong>네트워크의 지연</strong></summary>
+    <div markdown = "1"> 로컬 환경보다 클라우드 환경에서는 데이터가 여러 네트워크 노드를 거치며 전송이 되므로 많은 네트워크 지연이 발생할 수 있습니다.</div>
+    </details>
+
+    <details>
+    <summary><strong>인코딩 및 트랜스 코딩</strong></summary>
+    <div markdown = "1">영상을 인코딩하고 다양한 해상도로 트랜스 코딩하는 과정에서의 처리시간이 발생되며, 클라우드 환경에서는 이 과정이 더욱 복잡해집니다.</div>
+    </details>
+
+    <details>
+    <summary><strong>HLS 프로토콜 자체의 특성</strong></summary>
+    <div markdown = "1">HLS는 영상을 여러 짧은 세그먼트로 분할하고, 클라이언트는 이 세그먼트들을 다운로드하여 재생하는 방식입니다.</div>
+    <div markdown = "1">이 방식은 네트워크 상황에 유연하게 대응할 수는 있지만, 세그먼트 길이와 버퍼링으로 인해 딜레이가 발생하게 됩니다.</div>
+    </details>
+
+    <br />
+
+-   **시도 및 결과**
+    <details>
+    <summary><strong>OBS Studio 설정 조정 → 채택</strong></summary>
+    <div markdown = "1">비디오 비트레이트 값을 7000kbs 이상으로 설정하였습니다.</div>
+    <div markdown = "1">결과 - 3, 4초 정도가 감소되었습니다.</div>
+    </details>
+
+    <details>
+    <summary><strong>트랜스 코딩 설정 조정 → 채택</strong></summary>
+    <div markdown = "1">동일한 OBS 설정 상태에서 측정하였습니다.</div>
+    <div markdown = "1">ffmpeg의 설정 값을 조정하였습니다.</div>
+    <div markdown = "1">결과 - 전반적으로 10초 이상 감소되었습니다.</div>
+    <details>
+    <summary><strong>조정 전</strong></summary>
+    <div markdown = "1">프리셋 값 `superfast`</div>
+    <div markdown = "1">키프레임 간격 `1초` → flv -g 30 = 1초당 30프레임</div>
+    <div>
+     <pre>
+            exec ffmpeg -i rtmp://localhost:1935/stream/$name
+                          -c:a libfdk_aac -b:a 128k -c:v libx264 -b:v 750k -f flv -g 30 -r 30 -s 640x360 -preset superfast -profile:v baseline rtmp://localhost:1935/live/$name_360p878kbs
+                          -c:a libfdk_aac -b:a 128k -c:v libx264 -b:v 400k -f flv -g 30 -r 30 -s 426x240 -preset superfast -profile:v baseline rtmp://localhost:1935/live/$name_240p528kbs
+                          -c:a libfdk_aac -b:a 64k -c:v libx264 -b:v 200k -f flv -g 15 -r 15 -s 426x240 -preset superfast -profile:v baseline rtmp://localhost:1935/live/$name_240p264kbs;
+            </pre>
+    </div>
+    </details>
+
+     <details>
+    <summary><strong>조정 후</strong></summary>
+    <div markdown = "1">프리셋 값 `ultrafast` 변경</div>
+    <div markdown = "1">인코딩 속도를 더욱 높여줄 수 있으나, 비트레이트 대비 품질 다소 저하 가능성이 존재합니다.</div>
+    <div>
+     <pre>
+           exec ffmpeg -i rtmp://localhost:1935/stream/$name
+                          -c:a libfdk_aac -b:a 128k -c:v libx264 -b:v 750k -f flv -g 90 -r 30 -s 640x360 -preset ultrafast -profile:v baseline rtmp://localhost:1935/live/$name_360p878kbs
+                          -c:a libfdk_aac -b:a 128k -c:v libx264 -b:v 400k -f flv -g 90 -r 30 -s 426x240 -preset ultrafast -profile:v baseline rtmp://localhost:1935/live/$name_240p528kbs
+                          -c:a libfdk_aac -b:a 64k -c:v libx264 -b:v 200k -f flv -g 90 -r 15 -s 426x240 -preset ultrafast -profile:v baseline rtmp://localhost:1935/live/$name_240p264kbs;
+            </pre>
+    </div>
+    </details>
+
+    </details>
+
+<br />
+
+<h2>실시간 스트리밍 딜레이와 NginX worker_processes과의 연관성</h2>
+
+-   **시도의 이유**
+    -   worker_processes 설정은 Nginx가 요청을 처리하기 위해 생성할 수 있는 프로세스의 수를 지정하는 설정입니다.
+    -   요청에 대한 처리부터 효율적으로 받아오면 딜레이는 단축될 것인가에 대한 테스트를 해보았습니다.
+-   **시도 방식**
+    운영체제에 따라서 worker_processes 할당 값을 올려주는 방식대로 진행하였습니다.
+-   **결과**
+
+    -   측정한 결과 값으로만 판단한 결과이므로 유저마다 운영체제도 다르고 스펙도 다르기 때문에 정확한 수치라고는 보기 어렵습니다.
+    -   worker_process가 딜레이에 영향을 주는지, 요청에 관한 처리가 효율적으로 진행될 때 딜레이도 같이 영향을 주는 지에 대한 결과는 정확히 나타낼 수 없습니다.
+
+    <details>
+    <summary><strong>Mac</strong></summary>
+    <div markdown = "1">`worker_processes: 6` 설정이 비교적 낮은 CPU 사용량(11.24%, 9.51%)과 딜레이(12.542ms, 13.371ms)를 제공하여, Mac 환경에서 가장 효율적인 균형을 보입니다.</div>
+    </details>
+
+    <details>
+    <summary><strong>Windows</strong></summary>
+    <div markdown = "1"> `worker_processes: 6` 두 번째 측정에서 매우 낮은 딜레이(11.710ms)와 높은 CPU 사용량(20.12%)을 보여주는데, 이는 특정 상황에서는 우수한 성능을 나타낼 수 있습니다.</div>
+    <div markdown = "1"> 균형성이 좋은건 `worker_processes: 2` 설정입니다.</div>
+    </details>

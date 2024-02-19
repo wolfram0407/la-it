@@ -3,25 +3,51 @@
         <h2 class="loginTitle">로그인</h2>
         <input id="loginInput" class="emailInput" type="email" name="email" placeholder="이메일 입력" required />
         <input id="pwdInput" class="pwdInput" type="password" name="password" placeholder="비밀번호 입력" required />
-        <button class="userBtn" type="button" id="loginBtn">로그인</button>
+        <button class="userBtn" type="button" id="loginFormInBtn">로그인</button>
     </form>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const loginBtn = document.getElementById('loginBtn');
+    document.addEventListener('DOMContentLoaded', async () => {
+        const loginBtn = document.getElementById('loginFormInBtn');
         loginBtn.addEventListener('click', async () => {
+            // console.log('click');
             const email = document.getElementById('loginInput').value;
             const password = document.getElementById('pwdInput').value;
 
+            // 이메일 형식 검사
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(email)) {
+                alert('올바른 이메일 형식을 입력해주세요.');
+                return;
+            }
+
+            // 입력 값 공백 검사
+            if (!email.trim()) {
+                alert('이메일을 입력해주세요.');
+                return;
+            }
+
+            if (!password.trim()) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
             await axios
-                .post('/api/user/login', {
+                .post('/api/auth/login', {
                     email: email,
                     password: password,
                 })
-                .then(function (response) {})
+                .then(function (response) {
+                    alert('로그인 되었습니다.');
+                    window.location.href = '/';
+                })
                 .catch(function (error) {
-                    console.log(error);
+                    // console.log(error);
+                    if (error.response.status === 401) {
+                        alert('잘못된 정보입니다. 다시 로그인 해주세요.');
+                        window.location.href = '/login';
+                    }
                 });
         });
     });

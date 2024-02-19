@@ -13,12 +13,12 @@
             <div class="masterSettingBoxLeft">
                 <div class="masterSettingTitle">
                     <span>제목</span>
-                    <input maxlength="10" class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
+                    <input maxlength="20" class="titleInput" id="streamingTitle" type="text" placeholder="방송 제목 입력해주세요." />
                     <span hidden id="streamingTitleContent"></span>
                 </div>
                 <div class="masterSettingDesc">
                     <span>내용</span>
-                    <input maxlength="10" class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
+                    <input maxlength="50" class="descInput" id="streamingDesc" type="text" placeholder="방송 상세정보를 입력해주세요." />
                     <span hidden id="streamingDescContent"></span>
                 </div>
             </div>
@@ -28,13 +28,13 @@
                         <img src="/imgs/facetime-button (1).png" />
                     </div>
                     <div class="broadcastBtnDesc">
-                        <button id="liveStartBtn">방송시작</button>
+                        <button id="liveStartBtn">방송 시작</button>
                     </div>
                 </div>
                 <div class="broadcastCloseBtn" hidden>
                     <div class="broadcastBtnImg"><img src="/imgs/facetime-button (1).png" /></div>
                     <div class="broadcastCloseBtnDesc">
-                        <button id="liveEndBtn">방송종료</button>
+                        <button id="liveEndBtn">방송 종료</button>
                     </div>
                 </div>
                 <!-- <div class="masterSettingBtn">
@@ -44,17 +44,21 @@
             </div>
         </div>
     </div>
-    <div class="liveChatBox" id="liveChatBoxContainer">
+    <div class="liveChatBox noScroll" id="liveChatBoxContainer">
         <div class="chatTitle">채팅</div>
         <div class="chatMain" id="chatBoxWrapStreaming">
-            <div class="chatBox" id="chatBox" style="margin-bottom: -13px">
+            <div>
+                <p class="notification1" style="color: #fe00fa">방송이 시작되어야 채팅이 가능합니다.</p>
+                <p class="notification2" style="color: #fe00fa">채팅창에 유저 닉네임을 클릭하면 해당 유저를 차단할 수 있습니다.</p>
+            </div>
+            <div class="chatBox" id="chatBox" style="margin-bottom: -13px; margin-top: -20px; height: 670px">
                 <div class="chatList" id="oneChat">
                     <div class="chatNickname" id="chatNickname"></div>
                     <div class="chatText" id="chatText"></div>
                 </div>
             </div>
-            <div class="chatInputWrap streamingChatInputWrap">
-                <input maxlength="50" type="text" id="chatInputStreamerPage" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px" />
+            <div class="chatInputWrap streamingChatInputWrap" hidden>
+                <input maxlength="300" type="text" id="chatInputStreamerPage" class="chatInputText" style="width: 80%; font-size: 20px; color: whitesmoke; border-radius: 10px" />
                 <button class="sendChat" id="sendChatBtnStreamerPage">전송</button>
             </div>
         </div>
@@ -72,15 +76,18 @@
     const streamingDesc = document.getElementById('streamingDesc');
     const streamingTitleContent = document.getElementById('streamingTitleContent');
     const streamingDescContent = document.getElementById('streamingDescContent');
-    console.log('channelId: ', channelId);
+    // console.log('channelId: ', channelId);
 
     const video = document.getElementById('video');
 
     // 방송 시작 버튼 눌렀을때 라이브 등록 처리
     liveStartBtn.addEventListener('click', createLive);
     let liveStatus = `<%= channel.channel.liveStatusValue %>`;
-    console.log('liveStatus', typeof liveStatus);
+    let liveIsGoing = `<%= channel.liveIsGoing %>`;
+    console.log('liveIsGoing', liveIsGoing.length);
+    console.log('liveStatus', liveStatus);
     if (liveStatus === 'true') {
+        //if (!liveIsGoing.length) {
         broadcastBtn.hidden = true;
         broadcastCloseBtn.hidden = false;
         streamingTitle.hidden = true;
@@ -105,16 +112,28 @@
                 video.play();
             });
         }
-    } else if (liveStatus === 'false') {
+    }
+    if (liveIsGoing === 'false') {
+        // || liveStatus === 'false'
+        alert('방송이 종료되었습니다.');
         broadcastBtn.hidden = false;
         broadcastCloseBtn.hidden = true;
+        streamingTitle.hidden = false;
+        streamingDesc.hidden = false;
+        streamingTitleContent.hidden = true;
+        streamingDescContent.hidden = true;
     }
 
     async function createLive() {
         const getAccessToken = getCookie('Authorization');
-        let streamingTitle = document.getElementById('streamingTitle').value;
-        let streamingDesc = document.getElementById('streamingDesc').value;
+        let streamingTitle = document.getElementById('streamingTitle').value.trim(); // 공백 제거 추가
+        let streamingDesc = document.getElementById('streamingDesc').value.trim(); // 공백 제거 추가
 
+        // 제목이나 내용이 비어있는 경우 alert 창 표시
+        if (!streamingTitle || !streamingDesc) {
+            alert('방송 제목과 상세정보를 입력해주세요.');
+            return; // 함수 실행 중지
+        }
         await axios
             .post(
                 `/api/live/create/${channelId}`,

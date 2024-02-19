@@ -11,7 +11,6 @@ const socket = io({
     reconnectionDelayMax: 5000, // 최대 재연결 지연 시간 (밀리초)
     pingInterval: 2000, // 60초마다 ping->2초
     pingTimeout: 60000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림
-    //pingTimeout: 6000000, // 60초 동안 응답 없으면 연결 종료->10분으로 늘림 __> 1000분
     upgradeTimeout: 60000, // 연결 업그레이드 시간 제한
 });
 

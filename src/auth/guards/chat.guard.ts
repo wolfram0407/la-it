@@ -42,7 +42,7 @@ export class WsGuard implements CanActivate {
             };
             return await verifyToken(token);
         } catch (err) {
-            console.log('___에러에러');
+            // console.log('___에러에러');
 
             throw new WsException('로그인이 필요합니다.');
         }

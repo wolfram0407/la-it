@@ -13,14 +13,14 @@ export class ImageController {
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('file'))
     async saveImage(@Body() data, @UploadedFile() file: Express.Multer.File, @Param() channelId: string, @UserInfo() { id }: UserAfterAuth) {
-        console.log('!');
+        // console.log('!');
         try {
-            console.log('이미지 데이터', data);
+            // console.log('이미지 데이터', data);
             const exp = file.mimetype.slice(6);
             const fileName = `${id}_${channelId['channelId']}_채널이미지`;
 
             const saveImageToS3 = await this.imageService.saveImage(fileName, file, exp);
-            console.log('saveImageToS3', saveImageToS3);
+            // console.log('saveImageToS3', saveImageToS3);
             //if (saveImageToS3 === 'notAllowFileFormat') {
             //    return {
             //        success: false,
@@ -41,7 +41,7 @@ export class ImageController {
                 };
             }
         } catch (err) {
-            console.log('err', err);
+            // console.log('err', err);
         }
     }
 }
